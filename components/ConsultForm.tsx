@@ -4,6 +4,18 @@ import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
 
 const goals = ["Fat loss", "Muscle gain", "Recomp", "Performance"];
+const timezones = [
+  "US / Pacific (UTC-08:00)",
+  "US / Mountain (UTC-07:00)",
+  "US / Central (UTC-06:00)",
+  "US / Eastern (UTC-05:00)",
+  "UK / Ireland (UTC+00:00)",
+  "Europe / Central (UTC+01:00)",
+  "Europe / Eastern (UTC+02:00)",
+  "India (UTC+05:30)",
+  "Singapore / Hong Kong (UTC+08:00)",
+  "Australia / Eastern (UTC+10:00)",
+];
 
 function validateEmail(email: string) {
   return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(email);
@@ -71,7 +83,7 @@ export function ConsultForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="glass rounded-3xl p-8 md:p-10 space-y-5 border border-[var(--panelBorder)] max-w-3xl w-full">
+    <form onSubmit={handleSubmit} className="glass rounded-3xl p-8 md:p-10 space-y-5 border border-[var(--border)] max-w-3xl w-full">
       <div className="space-y-2">
         <h1 className="text-3xl md:text-4xl font-semibold">Book a consult</h1>
         <p className="text-muted">Tell us what you need; we’ll respond with a plan that fits your schedule.</p>
@@ -110,12 +122,18 @@ export function ConsultForm() {
         </label>
         <label className="flex flex-col gap-2 text-sm">
           Timezone
-          <input
-            value={form.timezone}
-            onChange={(e) => handleChange("timezone", e.target.value)}
-            className="rounded-xl px-3 py-3"
-            placeholder="e.g., GMT+5:30"
-          />
+         <select
+           value={form.timezone}
+           onChange={(e) => handleChange("timezone", e.target.value)}
+           className="rounded-xl px-3 py-3"
+         >
+            <option value="">Select timezone / region</option>
+            {timezones.map((tz) => (
+              <option key={tz} value={tz}>
+                {tz}
+              </option>
+            ))}
+         </select>
         </label>
         <label className="flex flex-col gap-2 text-sm">
           Primary goal

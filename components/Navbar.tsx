@@ -3,14 +3,14 @@ import { cn } from "@/utils/cn";
 
 const links = [
   { href: "#services", label: "Services" },
-  { href: "#why", label: "Why" },
+  { href: "#video", label: "Video" },
   { href: "#testimonials", label: "Testimonials" },
 ];
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl border-b border-[var(--panelBorder)] bg-[rgba(11,12,16,0.6)]">
-      <div className="section-space flex items-center justify-between py-4">
+    <header className="sticky top-0 z-50 backdrop-blur-xl border-b border-[var(--border)] bg-[rgba(5,6,7,0.45)] shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+      <div className="section-space flex items-center justify-between py-4 max-w-6xl mx-auto">
         <Link href="/" className="font-semibold tracking-[0.08em] text-lg">BRUTAL</Link>
         <nav className="hidden md:flex items-center gap-8 text-sm text-muted">
           {links.map((link) => (

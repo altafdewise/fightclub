@@ -3,7 +3,7 @@
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-[var(--panelBorder)] bg-[rgba(255,255,255,0.02)]">
+    <footer className="border-t border-[var(--border)] bg-[rgba(255,255,255,0.02)]">
       <div className="section-space py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-sm text-muted">
         <div className="space-y-1">
           <p className="font-semibold text-white">BRUTAL</p>

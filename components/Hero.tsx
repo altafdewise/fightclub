@@ -1,78 +1,39 @@
-﻿import Link from "next/link";
-import { Reveal } from "./Reveal";
+import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="section-space pt-10 md:pt-20 pb-14 md:pb-24" id="home">
-      <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-center max-w-6xl mx-auto">
-        <Reveal>
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--panelBorder)] text-xs text-muted bg-[rgba(255,255,255,0.02)]">
-              <span className="w-2 h-2 rounded-full bg-[var(--accent)]" aria-hidden />
-              Online coaching, anywhere, anytime.
-            </div>
-            <h1 className="text-[2.1rem] leading-tight font-semibold md:text-5xl">
-              Online coaching, built for all timezones.
-            </h1>
-            <p className="text-base md:text-lg text-muted max-w-2xl">
-              Structured programming, accountability, and expert guidance—wherever you train.
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/get-started" className="btn-primary w-full sm:w-auto text-center">Book a consult</Link>
-              <a href="#services" className="btn-secondary w-full sm:w-auto text-center">View services</a>
-            </div>
-            <div className="flex flex-wrap gap-4 text-sm text-muted">
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" aria-hidden /> Certified professionals
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" aria-hidden /> Personalized plans
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" aria-hidden /> Ongoing support
-              </span>
-            </div>
-          </div>
-        </Reveal>
-        <Reveal delay={120}>
-          <div className="glass rounded-3xl p-8 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[rgba(142,27,42,0.12)] via-transparent to-transparent" />
-            <div className="relative space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-muted text-sm">BRUTAL</p>
-                  <p className="text-xl font-semibold">Anywhere, anytime</p>
-                </div>
-                <div className="w-12 h-12 rounded-2xl border border-[var(--panelBorder)] flex items-center justify-center bg-[rgba(255,255,255,0.04)] text-sm">
-                  24/7
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="glass rounded-2xl p-4 border border-[var(--panelBorder)]">
-                  <p className="text-sm text-muted">Focus</p>
-                  <p className="font-semibold">Progression</p>
-                  <p className="text-sm text-muted">Measured weekly</p>
-                </div>
-                <div className="glass rounded-2xl p-4 border border-[var(--panelBorder)]">
-                  <p className="text-sm text-muted">Support</p>
-                  <p className="font-semibold">Responsive</p>
-                  <p className="text-sm text-muted">Feedback loops</p>
-                </div>
-              </div>
-              <div className="glass rounded-2xl p-5 border border-[var(--panelBorder)] flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted">Timezones</p>
-                  <p className="font-semibold">Global fit</p>
-                </div>
-                <div className="text-xs px-3 py-1 rounded-full border border-[var(--panelBorder)]">
-                  Calm & Clear
-                </div>
-              </div>
-            </div>
-          </div>
-        </Reveal>
+    <section className="relative overflow-hidden" id="home">
+      <div className="absolute inset-0">
+        <video
+          className="h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src="/Videos/video1.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/60" />
+      </div>
+
+      <div className="relative min-h-[100svh] flex flex-col items-center justify-center px-6 py-20 md:py-28 mb-12 md:mb-16 gap-8 text-center">
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center mt-4">
+          <Link
+            href="/get-started"
+            className="w-full sm:w-auto text-center rounded-full px-6 py-3 font-semibold text-[var(--gold)] border border-[var(--gold)] bg-[rgba(201,168,106,0.08)] backdrop-blur-md hover:bg-[rgba(201,168,106,0.12)] transition"
+          >
+            Book a consult
+          </Link>
+          <a
+            href="#services"
+            className="btn-secondary w-full sm:w-auto text-center border-[var(--border)] bg-[rgba(255,255,255,0.03)]"
+          >
+            View services
+          </a>
+        </div>
       </div>
     </section>
   );
 }
-

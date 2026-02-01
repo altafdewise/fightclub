@@ -1,16 +1,16 @@
-﻿import { Dumbbell, ClipboardCheck, Apple, Clock3 } from "lucide-react";
+import { Dumbbell, ClipboardCheck, Apple, Clock3, HeartPulse } from "lucide-react";
 import { Reveal } from "./Reveal";
 
 const services = [
-  { icon: Dumbbell, title: "1:1 Coaching", desc: "Personal direction with clear feedback." },
-  { icon: ClipboardCheck, title: "Training Program", desc: "Structured plans tailored to your setup." },
-  { icon: Apple, title: "Nutrition Guidance", desc: "Balanced habits that match your schedule." },
-  { icon: Clock3, title: "Accountability & Check-ins", desc: "Consistent touchpoints to keep momentum." },
+  { icon: Dumbbell, title: "1:1 Coaching", desc: "Personalized programming and accountability." },
+  { icon: ClipboardCheck, title: "Training Plans", desc: "Structured progression, no noise." },
+  { icon: Apple, title: "Nutrition Guidance", desc: "Simple, sustainable strategies." },
+  { icon: Clock3, title: "Check-ins", desc: "Clear feedback and course correction." },
 ];
 
 export function Services() {
   return (
-    <section id="services" className="section-space pb-16 md:pb-24">
+    <section id="services" className="section-space py-20 sm:py-28">
       <div className="flex flex-col gap-6 mb-10">
         <Reveal>
           <p className="text-sm text-muted">Services</p>
@@ -20,8 +20,8 @@ export function Services() {
       <div className="grid md:grid-cols-2 gap-6">
         {services.map((service, idx) => (
           <Reveal key={service.title} delay={idx * 60}>
-            <div className="glass rounded-2xl p-6 flex items-start gap-4 border border-[var(--panelBorder)] hover:border-[var(--accent)] transition">
-              <div className="w-11 h-11 rounded-xl bg-[rgba(142,27,42,0.12)] border border-[var(--panelBorder)] flex items-center justify-center text-[var(--accent)]">
+            <div className="glass rounded-2xl p-6 flex items-start gap-4 border border-[var(--border)] hover:border-[var(--gold)] transition">
+              <div className="w-11 h-11 rounded-xl bg-[rgba(201,168,106,0.08)] border border-[var(--border)] flex items-center justify-center text-[var(--gold)]">
                 <service.icon size={22} />
               </div>
               <div>
@@ -32,7 +32,22 @@ export function Services() {
           </Reveal>
         ))}
       </div>
+      <Reveal delay={240}>
+        <div className="glass rounded-2xl p-6 mt-6 border border-[var(--border)] hover:border-[var(--gold)] transition">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-11 h-11 rounded-xl bg-[rgba(201,168,106,0.08)] border border-[var(--border)] flex items-center justify-center text-[var(--gold)]">
+              <HeartPulse size={22} />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">Cycle Sync Coaching</h3>
+            </div>
+          </div>
+          <p className="text-muted text-sm leading-relaxed">
+            Training, nutrition, and recovery aligned to the four phases—built for consistency and reduced fatigue.
+            Guided by certified professionals.
+          </p>
+        </div>
+      </Reveal>
     </section>
   );
 }
-

@@ -19,7 +19,7 @@ export function Why() {
       <div className="grid md:grid-cols-2 gap-6">
         {reasons.map((item, idx) => (
           <Reveal key={item.title} delay={idx * 70}>
-            <div className="glass rounded-2xl p-6 border border-[var(--panelBorder)]">
+            <div className="glass rounded-2xl p-6 border border-[var(--border)]">
               <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
               <p className="text-sm text-muted leading-relaxed">{item.desc}</p>
             </div>
