@@ -10,7 +10,7 @@ const services = [
 
 export function Services() {
   return (
-    <section id="services" className="section-space py-20 sm:py-28">
+    <section id="services" className="section-space pt-16 sm:pt-20 pb-12 sm:pb-14">
       <div className="flex flex-col gap-6 mb-10">
         <Reveal>
           <p className="text-sm text-muted">Services</p>

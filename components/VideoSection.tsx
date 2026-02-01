@@ -2,9 +2,9 @@ import { Reveal } from "./Reveal";
 
 export function VideoSection() {
   return (
-    <section id="video" className="section-space py-20 sm:py-28">
+    <section id="video" className="section-space pt-10 sm:pt-12 pb-16 sm:pb-20">
       <Reveal>
-        <div className="flex flex-col gap-1 mb-4">
+        <div className="flex flex-col gap-1 mb-3">
           <p className="text-sm text-muted">Video</p>
           <h2 className="text-3xl md:text-4xl font-semibold">See how we work.</h2>
         </div>
