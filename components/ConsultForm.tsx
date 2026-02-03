@@ -3,18 +3,25 @@
 import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
 
-const goals = ["Fat loss", "Muscle gain", "Recomp", "Performance"];
-const timezones = [
-  "US / Pacific (UTC-08:00)",
-  "US / Mountain (UTC-07:00)",
-  "US / Central (UTC-06:00)",
-  "US / Eastern (UTC-05:00)",
-  "UK / Ireland (UTC+00:00)",
-  "Europe / Central (UTC+01:00)",
-  "Europe / Eastern (UTC+02:00)",
-  "India (UTC+05:30)",
-  "Singapore / Hong Kong (UTC+08:00)",
-  "Australia / Eastern (UTC+10:00)",
+const goals = ["Fat loss", "Muscle gain", "Recomp", "Performance", "Cycle syncing"];
+const countryCodes = [
+  { code: "+1", label: "US (+1)" },
+  { code: "+1", label: "CA (+1)" },
+  { code: "+44", label: "UK (+44)" },
+  { code: "+61", label: "AU (+61)" },
+  { code: "+64", label: "NZ (+64)" },
+  { code: "+65", label: "SG (+65)" },
+  { code: "+91", label: "IN (+91)" },
+  { code: "+971", label: "UAE (+971)" },
+  { code: "+966", label: "KSA (+966)" },
+  { code: "+49", label: "DE (+49)" },
+  { code: "+33", label: "FR (+33)" },
+  { code: "+34", label: "ES (+34)" },
+  { code: "+39", label: "IT (+39)" },
+  { code: "+31", label: "NL (+31)" },
+  { code: "+46", label: "SE (+46)" },
+  { code: "+55", label: "BR (+55)" },
+  { code: "+52", label: "MX (+52)" },
 ];
 
 function validateEmail(email: string) {
@@ -25,9 +32,9 @@ export function ConsultForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    countryCode: countryCodes[0].code,
     whatsapp: "",
     goal: goals[0],
-    timezone: "",
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -42,7 +49,7 @@ export function ConsultForm() {
   const redirectToWhatsApp = () => {
     const digitsOnly = whatsappNumber.replace(/[^\d]/g, "");
     const text = encodeURIComponent(
-      `Hi, I'm ${form.name}. Goal: ${form.goal}. Timezone: ${form.timezone || "not provided"}.`
+      `Hi, I'm ${form.name}. Goal: ${form.goal}.`
     );
     window.location.href = `https://wa.me/${digitsOnly}?text=${text}`;
   };
@@ -63,10 +70,14 @@ export function ConsultForm() {
     setStatus("sending");
 
     try {
+      const payload = {
+        ...form,
+        whatsapp: `${form.countryCode} ${form.whatsapp}`.trim(),
+      };
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -112,28 +123,26 @@ export function ConsultForm() {
         </label>
         <label className="flex flex-col gap-2 text-sm">
           WhatsApp number *
-          <input
-            value={form.whatsapp}
-            onChange={(e) => handleChange("whatsapp", e.target.value)}
-            required
-            className="rounded-xl px-3 py-3"
-            placeholder="+00 12345 67890"
-          />
-        </label>
-        <label className="flex flex-col gap-2 text-sm">
-          Timezone
-         <select
-           value={form.timezone}
-           onChange={(e) => handleChange("timezone", e.target.value)}
-           className="rounded-xl px-3 py-3"
-         >
-            <option value="">Select timezone / region</option>
-            {timezones.map((tz) => (
-              <option key={tz} value={tz}>
-                {tz}
-              </option>
-            ))}
-         </select>
+          <div className="flex gap-2">
+            <select
+              value={form.countryCode}
+              onChange={(e) => handleChange("countryCode", e.target.value)}
+              className="rounded-xl px-3 py-3 w-[120px]"
+            >
+              {countryCodes.map((code) => (
+                <option key={`${code.label}-${code.code}`} value={code.code}>
+                  {code.label}
+                </option>
+              ))}
+            </select>
+            <input
+              value={form.whatsapp}
+              onChange={(e) => handleChange("whatsapp", e.target.value)}
+              required
+              className="rounded-xl px-3 py-3 flex-1"
+              placeholder="12345 67890"
+            />
+          </div>
         </label>
         <label className="flex flex-col gap-2 text-sm">
           Primary goal

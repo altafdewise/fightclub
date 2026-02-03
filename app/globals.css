@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --bg0: #050607;
-  --bg1: #0a0d0f;
-  --panel: rgba(255, 255, 255, 0.04);
+  --bg-base: #050607;
+  --bg-elevated: #0a0d0f;
+  --bg-panel: rgba(255, 255, 255, 0.04);
+  --panel: var(--bg-panel);
   --panel2: rgba(255, 255, 255, 0.06);
   --border: rgba(255, 255, 255, 0.08);
   --text: #f4f4f0;
@@ -24,9 +25,7 @@ html {
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(51, 94, 86, 0.08), transparent 34%),
-    radial-gradient(circle at 78% 8%, rgba(47, 71, 64, 0.08), transparent 30%),
-    linear-gradient(145deg, var(--bg0) 0%, var(--bg1) 70%, var(--bg0) 100%);
+  background: #000;
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   min-height: 100vh;
@@ -47,6 +46,10 @@ a {
 
 .text-muted {
   color: var(--muted);
+}
+
+.font-accent {
+  font-family: var(--font-accent);
 }
 
 .btn-primary {
@@ -155,6 +158,9 @@ select option:checked {
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
+  }
+  body::before, body::after {
+    filter: blur(80px);
   }
 }
 

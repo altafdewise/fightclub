@@ -10,7 +10,7 @@ const isValidEmail = (value: string | undefined) =>
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, whatsapp, goal, timezone, message } = body || {};
+    const { name, email, whatsapp, goal, message } = body || {};
 
     if (!name || !email || !whatsapp) {
       return NextResponse.json({ message: "Missing required fields." }, { status: 400 });
@@ -23,14 +23,13 @@ export async function POST(req: Request) {
     const { data, error } = await resend.emails.send({
       from: process.env.FROM_EMAIL,
       to: [TO_EMAIL],
-      subject: "New consult request � BRUTAL",
+      subject: "New consult request - BRUTAL",
       html: `<p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>WhatsApp:</strong> ${whatsapp}</p>
         <p><strong>Goal:</strong> ${goal}</p>
-        <p><strong>Timezone:</strong> ${timezone}</p>
         <p><strong>Message:</strong> ${message || "(none)"}</p>`,
-      text: `Name: ${name}\nEmail: ${email}\nWhatsApp: ${whatsapp}\nGoal: ${goal}\nTimezone: ${timezone}\nMessage: ${message}`,
+      text: `Name: ${name}\nEmail: ${email}\nWhatsApp: ${whatsapp}\nGoal: ${goal}\nMessage: ${message || "(none)"}`,
     });
 
     if (error) {

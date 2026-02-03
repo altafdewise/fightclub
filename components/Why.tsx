@@ -10,7 +10,7 @@ const reasons = [
 export function Why() {
   return (
     <section id="why" className="section-space pb-16 md:pb-24">
-      <div className="flex flex-col gap-6 mb-8">
+      <div className="flex flex-col gap-6 mb-8 text-center">
         <Reveal>
           <p className="text-sm text-muted">Why BRUTAL</p>
           <h2 className="text-3xl md:text-4xl font-semibold">Focused coaching without the noise.</h2>

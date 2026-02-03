@@ -1,3 +1,5 @@
 {
+  "/api/lead/route": "app/api/lead/route.js",
+  "/get-started/page": "app/get-started/page.js",
   "/page": "app/page.js"
 }

@@ -3,7 +3,7 @@ import { Reveal } from "./Reveal";
 
 export function CTA() {
   return (
-    <section className="section-space py-20 sm:py-28">
+    <section className="section-space pt-12 sm:pt-16 pb-20 sm:pb-28">
       <Reveal>
         <div className="relative">
           <div className="absolute inset-0 blur-3xl bg-[rgba(201,168,106,0.08)] pointer-events-none" />
