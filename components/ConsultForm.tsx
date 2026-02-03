@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
 
-const goals = ["Fat loss", "Muscle gain", "Recomp", "Performance", "Cycle syncing"];
+const goals = ["Fat loss", "Muscle gain", "Recomp", "Performance", "Cycle syncing", "Other"];
 const countryCodes = [
   { code: "+1", label: "US (+1)" },
   { code: "+1", label: "CA (+1)" },
@@ -22,6 +22,7 @@ const countryCodes = [
   { code: "+46", label: "SE (+46)" },
   { code: "+55", label: "BR (+55)" },
   { code: "+52", label: "MX (+52)" },
+  { code: "OTHER", label: "Other" },
 ];
 
 function validateEmail(email: string) {
@@ -33,8 +34,10 @@ export function ConsultForm() {
     name: "",
     email: "",
     countryCode: countryCodes[0].code,
+    customCountryCode: "",
     whatsapp: "",
     goal: goals[0],
+    customGoal: "",
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -48,8 +51,9 @@ export function ConsultForm() {
 
   const redirectToWhatsApp = () => {
     const digitsOnly = whatsappNumber.replace(/[^\d]/g, "");
+    const selectedGoal = form.goal === "Other" ? form.customGoal : form.goal;
     const text = encodeURIComponent(
-      `Hi, I'm ${form.name}. Goal: ${form.goal}.`
+      `Hi, I'm ${form.name}. Goal: ${selectedGoal || "not provided"}.`
     );
     window.location.href = `https://wa.me/${digitsOnly}?text=${text}`;
   };
@@ -62,6 +66,14 @@ export function ConsultForm() {
       setError("Please fill in the required fields.");
       return;
     }
+    if (form.countryCode === "OTHER" && !form.customCountryCode.trim()) {
+      setError("Please enter your country code.");
+      return;
+    }
+    if (form.goal === "Other" && !form.customGoal.trim()) {
+      setError("Please enter your primary goal.");
+      return;
+    }
     if (!validateEmail(form.email)) {
       setError("Enter a valid email.");
       return;
@@ -70,9 +82,12 @@ export function ConsultForm() {
     setStatus("sending");
 
     try {
+      const selectedCode = form.countryCode === "OTHER" ? form.customCountryCode : form.countryCode;
+      const selectedGoal = form.goal === "Other" ? form.customGoal : form.goal;
       const payload = {
         ...form,
-        whatsapp: `${form.countryCode} ${form.whatsapp}`.trim(),
+        goal: selectedGoal,
+        whatsapp: `${selectedCode} ${form.whatsapp}`.trim(),
       };
       const res = await fetch("/api/lead", {
         method: "POST",
@@ -143,6 +158,14 @@ export function ConsultForm() {
               placeholder="12345 67890"
             />
           </div>
+          {form.countryCode === "OTHER" && (
+            <input
+              value={form.customCountryCode}
+              onChange={(e) => handleChange("customCountryCode", e.target.value)}
+              className="rounded-xl px-3 py-3"
+              placeholder="+00"
+            />
+          )}
         </label>
         <label className="flex flex-col gap-2 text-sm">
           Primary goal
@@ -155,6 +178,14 @@ export function ConsultForm() {
               <option key={goal}>{goal}</option>
             ))}
           </select>
+          {form.goal === "Other" && (
+            <input
+              value={form.customGoal}
+              onChange={(e) => handleChange("customGoal", e.target.value)}
+              className="rounded-xl px-3 py-3"
+              placeholder="Your primary goal"
+            />
+          )}
         </label>
         <label className="flex flex-col gap-2 text-sm md:col-span-2">
           Message
