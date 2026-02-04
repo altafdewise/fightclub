@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Cormorant_Garamond } from "next/font/google";
+import { BackgroundLightLines } from "@/components/Decor/BackgroundLightLines";
 
 const inter = Inter({ subsets: ["latin"] });
 const cormorant = Cormorant_Garamond({
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={cormorant.variable}>
       <body className={inter.className} suppressHydrationWarning>
-        {children}
+        <div className="relative min-h-screen">
+          <BackgroundLightLines />
+          <div className="relative z-10">{children}</div>
+        </div>
       </body>
     </html>
   );

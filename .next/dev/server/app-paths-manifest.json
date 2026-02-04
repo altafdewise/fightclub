@@ -1,10 +1,8 @@
 {
-  "/api/portal/login/route": "app/api/portal/login/route.js",
-  "/api/portal/today/check/route": "app/api/portal/today/check/route.js",
-  "/api/admin/clients/[id]/exercises/route": "app/api/admin/clients/[id]/exercises/route.js",
+  "/api/admin/clients/[id]/analytics/route": "app/api/admin/clients/[id]/analytics/route.js",
+  "/api/portal/calendar/route": "app/api/portal/calendar/route.js",
+  "/page": "app/page.js",
   "/admin/page": "app/admin/page.js",
   "/portal/page": "app/portal/page.js",
-  "/admin/clients/[id]/page": "app/admin/clients/[id]/page.js",
-  "/page": "app/page.js",
-  "/portal/login/page": "app/portal/login/page.js"
+  "/admin/clients/[id]/page": "app/admin/clients/[id]/page.js"
 }

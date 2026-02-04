@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getClientSession } from "@/lib/auth";
 import { query } from "@/lib/db";
 import { todayKey } from "@/lib/date";
+import { calculateDayStats, getDaySummary, upsertDaySummary } from "@/lib/portal";
 
 export async function POST(req: Request) {
   const session = await getClientSession();
@@ -39,10 +40,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Not allowed." }, { status: 403 });
     }
 
-    const updated = await query(
+    const existingSummary = await getDaySummary(session.client.id, row.date);
+    if (existingSummary?.is_submitted) {
+      return NextResponse.json({ message: "Day already submitted." }, { status: 403 });
+    }
+
+    await query(
       "UPDATE daily_checklist_items SET checked = $1, updated_at = NOW() WHERE id = $2",
       [checked, itemId]
     );
+
+    const stats = await calculateDayStats(session.client.id, row.date);
+    await upsertDaySummary(session.client.id, row.date, stats);
 
     return NextResponse.json({ ok: true, item: { id: itemId, checked } });
   } catch (error) {

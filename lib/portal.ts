@@ -1,5 +1,22 @@
 import { query, transaction } from "./db";
-import { todayKey, lastNDaysKeys } from "./date";
+import { todayKey, lastNDaysKeys, toDateKey } from "./date";
+
+type DayStats = {
+  totalItems: number;
+  completedItems: number;
+  completionPct: number;
+  isWinDay: boolean;
+};
+
+type DaySummaryRow = {
+  date: string;
+  total_items: number;
+  completed_items: number;
+  completion_pct: number;
+  is_submitted: boolean;
+  is_win_day: boolean;
+  submitted_at: string | null;
+};
 
 async function getTemplateItems(clientId: string) {
   const templateChecklist = await query<{ id: string }>(
@@ -20,6 +37,147 @@ async function getTemplateItems(clientId: string) {
   );
 
   return { checklistId: templateChecklist.rows[0].id, items: items.rows };
+}
+
+export async function calculateDayStats(clientId: string, date: string): Promise<DayStats> {
+  const { checklistId } = await ensureDailyChecklist(clientId, date);
+  const counts = await query<{ total: number; checked: number }>(
+    `SELECT COUNT(*)::int AS total,
+            COALESCE(SUM(CASE WHEN checked THEN 1 ELSE 0 END),0)::int AS checked
+     FROM daily_checklist_items
+     WHERE daily_checklist_id = $1`,
+    [checklistId]
+  );
+  const totalItems = counts.rows[0]?.total || 0;
+  const completedItems = counts.rows[0]?.checked || 0;
+  const completionPct = totalItems > 0 ? Math.floor((completedItems / totalItems) * 100) : 0;
+  const isWinDay = completionPct >= 60;
+  return { totalItems, completedItems, completionPct, isWinDay };
+}
+
+export async function upsertDaySummary(
+  clientId: string,
+  date: string,
+  stats: DayStats,
+  options?: { submitted?: boolean }
+) {
+  const baseFields = {
+    total: stats.totalItems,
+    completed: stats.completedItems,
+    pct: stats.completionPct,
+    win: stats.isWinDay,
+  };
+
+  if (options?.submitted) {
+    await query(
+      `INSERT INTO client_day_summaries
+        (client_id, date, total_items, completed_items, completion_pct, is_win_day, is_submitted, submitted_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, true, NOW(), NOW())
+       ON CONFLICT (client_id, date)
+       DO UPDATE SET
+         total_items = EXCLUDED.total_items,
+         completed_items = EXCLUDED.completed_items,
+         completion_pct = EXCLUDED.completion_pct,
+         is_win_day = EXCLUDED.is_win_day,
+         is_submitted = true,
+         submitted_at = NOW(),
+         updated_at = NOW()`,
+      [clientId, date, baseFields.total, baseFields.completed, baseFields.pct, baseFields.win]
+    );
+    return;
+  }
+
+  await query(
+    `INSERT INTO client_day_summaries
+      (client_id, date, total_items, completed_items, completion_pct, is_win_day, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, NOW())
+     ON CONFLICT (client_id, date)
+     DO UPDATE SET
+       total_items = EXCLUDED.total_items,
+       completed_items = EXCLUDED.completed_items,
+       completion_pct = EXCLUDED.completion_pct,
+       is_win_day = EXCLUDED.is_win_day,
+       updated_at = NOW()`,
+    [clientId, date, baseFields.total, baseFields.completed, baseFields.pct, baseFields.win]
+  );
+}
+
+export async function getDaySummary(clientId: string, date: string) {
+  const summary = await query<DaySummaryRow>(
+    `SELECT date, total_items, completed_items, completion_pct, is_submitted, is_win_day, submitted_at
+     FROM client_day_summaries
+     WHERE client_id = $1 AND date = $2
+     LIMIT 1`,
+    [clientId, date]
+  );
+  return summary.rows[0] || null;
+}
+
+export async function getStreaks(clientId: string) {
+  const today = new Date();
+  const start = new Date(today);
+  start.setUTCDate(start.getUTCDate() - 365);
+
+  const startKey = toDateKey(start);
+  const endKey = toDateKey(today);
+
+  const summaries = await query<Pick<DaySummaryRow, "date" | "is_submitted" | "is_win_day">>(
+    `SELECT date, is_submitted, is_win_day
+     FROM client_day_summaries
+     WHERE client_id = $1 AND date BETWEEN $2 AND $3`,
+    [clientId, startKey, endKey]
+  );
+
+  const map = new Map(
+    summaries.rows.map((row) => {
+      const dateKey = toDateKey(new Date(row.date as unknown as string));
+      return [
+        dateKey,
+        { isSubmitted: row.is_submitted, isWinDay: row.is_win_day },
+      ] as const;
+    })
+  );
+
+  let best = 0;
+  let run = 0;
+  const cursor = new Date(start);
+  while (cursor <= today) {
+    const key = toDateKey(cursor);
+    const entry = map.get(key);
+    if (entry?.isSubmitted && entry.isWinDay) {
+      run += 1;
+      if (run > best) best = run;
+    } else {
+      run = 0;
+    }
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+
+  let current = 0;
+  const todayKey = toDateKey(today);
+  const todayEntry = map.get(todayKey);
+  const anchor = new Date(today);
+
+  if (todayEntry?.isSubmitted) {
+    if (!todayEntry.isWinDay) {
+      return { current: 0, best };
+    }
+  } else {
+    anchor.setUTCDate(anchor.getUTCDate() - 1);
+  }
+
+  while (true) {
+    const key = toDateKey(anchor);
+    const entry = map.get(key);
+    if (entry?.isSubmitted && entry.isWinDay) {
+      current += 1;
+      anchor.setUTCDate(anchor.getUTCDate() - 1);
+      continue;
+    }
+    break;
+  }
+
+  return { current, best };
 }
 
 export async function ensureDailyChecklist(clientId: string, date: string) {
@@ -91,6 +249,10 @@ export async function getTodayPayload(clientId: string) {
   const date = todayKey();
   const { checklistId } = await ensureDailyChecklist(clientId, date);
 
+  const stats = await calculateDayStats(clientId, date);
+  await upsertDaySummary(clientId, date, stats);
+  const summary = await getDaySummary(clientId, date);
+
   const items = await query<{ id: string; label: string; checked: boolean; video_url: string | null }>(
     `SELECT id, label, checked, video_url
      FROM daily_checklist_items
@@ -113,6 +275,23 @@ export async function getTodayPayload(clientId: string) {
       checked: item.checked,
       videoUrl: item.video_url ?? null,
     })),
+    summary: summary
+      ? {
+          date: summary.date,
+          totalItems: summary.total_items,
+          completedItems: summary.completed_items,
+          completionPct: summary.completion_pct,
+          isSubmitted: summary.is_submitted,
+          isWinDay: summary.is_win_day,
+        }
+      : {
+          date,
+          totalItems: stats.totalItems,
+          completedItems: stats.completedItems,
+          completionPct: stats.completionPct,
+          isSubmitted: false,
+          isWinDay: stats.isWinDay,
+        },
   };
 }
 

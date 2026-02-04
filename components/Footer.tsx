@@ -16,13 +16,16 @@ export function Footer() {
           <Link href="/get-started" className="hover:text-[var(--gold)] transition-colors">
             Book a consult
           </Link>
-          <Link href="#" className="hover:text-[var(--gold)] transition-colors">
+          <Link href="#member-access" className="hover:text-[var(--gold)] transition-colors">
+            Member
+          </Link>
+          <Link href="/privacy" className="hover:text-[var(--gold)] transition-colors">
             Privacy
           </Link>
         </div>
       </div>
       <div className="section-space pb-8 flex flex-col md:flex-row md:items-center md:justify-between text-xs text-muted">
-        <span>© {year} BRUTAL</span>
+        <span>(c) {year} BRUTAL</span>
         <span className="text-[var(--gold)]">www.brutal.fit</span>
       </div>
     </footer>

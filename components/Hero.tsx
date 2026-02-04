@@ -21,7 +21,7 @@ export function Hero() {
 
       <div className="relative min-h-[100svh] flex flex-col items-center justify-center px-6 py-20 md:py-28 mb-12 md:mb-16 gap-4 sm:gap-6 md:gap-8 text-center">
         <h1
-          className="text-[clamp(3.5rem,12vw,5rem)] sm:text-[clamp(4.5rem,10vw,7rem)] md:text-[clamp(6rem,10vw,10rem)] font-black text-white/10 tracking-[0.25em] -mx-2 backdrop-blur-md rounded-2xl border border-white/5 py-4 px-6"
+          className="text-[clamp(3.5rem,12vw,5rem)] sm:text-[clamp(4.5rem,10vw,7rem)] md:text-[clamp(6rem,10vw,10rem)] font-black text-white/10 tracking-[0.25em] mx-auto backdrop-blur-md rounded-2xl border border-white/5 py-4 px-6"
           style={{ textShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
         >
           BRUTAL

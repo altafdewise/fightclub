@@ -18,7 +18,7 @@ export default function HomePage() {
       <Why />
       <TestimonialsMarquee />
       <CTA />
-      <section className="section-space pt-4 pb-16" aria-label="Access">
+      <section id="member-access" className="section-space pt-4 pb-16" aria-label="Access">
         <div className="mb-6 text-center space-y-2">
           <p className="text-sm text-white/60">I'm a BRUTAL member.</p>
           <h2 className="text-2xl md:text-3xl font-semibold">Member Access</h2>

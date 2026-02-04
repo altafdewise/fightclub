@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
+import { ClientAnalytics } from "@/components/admin/ClientAnalytics";
 
 type ExerciseItem = {
   id: string;
@@ -137,6 +138,8 @@ export function ClientDetail({ client }: ClientDetailProps) {
           {savingNote ? "Saving..." : "Save note"}
         </button>
       </div>
+
+      <ClientAnalytics clientId={client.id} />
 
       <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-5">
         <div>
