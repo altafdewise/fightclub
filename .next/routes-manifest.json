@@ -1,0 +1,177 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/clients/[id]",
+      "regex": "^/admin/clients/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/clients/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/clients/[id]",
+      "regex": "^/api/admin/clients/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/clients/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/clients/[id]/exercises",
+      "regex": "^/api/admin/clients/([^/]+?)/exercises(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/clients/(?<nxtPid>[^/]+?)/exercises(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/login",
+      "regex": "^/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/login(?:/)?$"
+    },
+    {
+      "page": "/api/admin/clients",
+      "regex": "^/api/admin/clients(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/clients(?:/)?$"
+    },
+    {
+      "page": "/api/admin/login",
+      "regex": "^/api/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/login(?:/)?$"
+    },
+    {
+      "page": "/api/admin/logout",
+      "regex": "^/api/admin/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/logout(?:/)?$"
+    },
+    {
+      "page": "/api/lead",
+      "regex": "^/api/lead(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/lead(?:/)?$"
+    },
+    {
+      "page": "/api/portal/history",
+      "regex": "^/api/portal/history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/portal/history(?:/)?$"
+    },
+    {
+      "page": "/api/portal/login",
+      "regex": "^/api/portal/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/portal/login(?:/)?$"
+    },
+    {
+      "page": "/api/portal/logout",
+      "regex": "^/api/portal/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/portal/logout(?:/)?$"
+    },
+    {
+      "page": "/api/portal/today",
+      "regex": "^/api/portal/today(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/portal/today(?:/)?$"
+    },
+    {
+      "page": "/api/portal/today/check",
+      "regex": "^/api/portal/today/check(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/portal/today/check(?:/)?$"
+    },
+    {
+      "page": "/get-started",
+      "regex": "^/get\\-started(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/get\\-started(?:/)?$"
+    },
+    {
+      "page": "/portal",
+      "regex": "^/portal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal(?:/)?$"
+    },
+    {
+      "page": "/portal/history",
+      "regex": "^/portal/history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal/history(?:/)?$"
+    },
+    {
+      "page": "/portal/login",
+      "regex": "^/portal/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal/login(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

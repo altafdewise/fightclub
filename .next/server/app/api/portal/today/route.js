@@ -1,0 +1,8 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/portal/today/route.js")
+R.c("server/chunks/_aa63bc0b._.js")
+R.c("server/chunks/[root-of-the-server]__3765436d._.js")
+R.c("server/chunks/node_modules_next_f5199d09._.js")
+R.c("server/chunks/[root-of-the-server]__6ac8ec31._.js")
+R.c("server/chunks/_next-internal_server_app_api_portal_today_route_actions_8ea16272.js")
+R.m(45394)
+module.exports=R.m(45394).exports

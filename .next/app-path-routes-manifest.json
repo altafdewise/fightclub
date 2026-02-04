@@ -1,0 +1,23 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/clients/[id]/page": "/admin/clients/[id]",
+  "/admin/login/page": "/admin/login",
+  "/admin/page": "/admin",
+  "/api/admin/clients/[id]/exercises/route": "/api/admin/clients/[id]/exercises",
+  "/api/admin/clients/[id]/route": "/api/admin/clients/[id]",
+  "/api/admin/clients/route": "/api/admin/clients",
+  "/api/admin/login/route": "/api/admin/login",
+  "/api/admin/logout/route": "/api/admin/logout",
+  "/api/lead/route": "/api/lead",
+  "/api/portal/history/route": "/api/portal/history",
+  "/api/portal/login/route": "/api/portal/login",
+  "/api/portal/logout/route": "/api/portal/logout",
+  "/api/portal/today/check/route": "/api/portal/today/check",
+  "/api/portal/today/route": "/api/portal/today",
+  "/get-started/page": "/get-started",
+  "/page": "/",
+  "/portal/history/page": "/portal/history",
+  "/portal/login/page": "/portal/login",
+  "/portal/page": "/portal"
+}

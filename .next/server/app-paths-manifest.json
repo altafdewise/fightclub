@@ -1,0 +1,23 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/clients/[id]/page": "app/admin/clients/[id]/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/api/admin/clients/[id]/exercises/route": "app/api/admin/clients/[id]/exercises/route.js",
+  "/api/admin/clients/[id]/route": "app/api/admin/clients/[id]/route.js",
+  "/api/admin/clients/route": "app/api/admin/clients/route.js",
+  "/api/admin/login/route": "app/api/admin/login/route.js",
+  "/api/admin/logout/route": "app/api/admin/logout/route.js",
+  "/api/lead/route": "app/api/lead/route.js",
+  "/api/portal/history/route": "app/api/portal/history/route.js",
+  "/api/portal/login/route": "app/api/portal/login/route.js",
+  "/api/portal/logout/route": "app/api/portal/logout/route.js",
+  "/api/portal/today/check/route": "app/api/portal/today/check/route.js",
+  "/api/portal/today/route": "app/api/portal/today/route.js",
+  "/get-started/page": "app/get-started/page.js",
+  "/page": "app/page.js",
+  "/portal/history/page": "app/portal/history/page.js",
+  "/portal/login/page": "app/portal/login/page.js",
+  "/portal/page": "app/portal/page.js"
+}
