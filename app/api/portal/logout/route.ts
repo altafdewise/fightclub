@@ -1,0 +1,22 @@
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { deleteSession } from "@/lib/session";
+
+export async function POST() {
+  const cookieStore = cookies();
+  const sessionId = cookieStore.get("client_session")?.value;
+
+  if (sessionId) {
+    await deleteSession(sessionId);
+  }
+
+  const response = NextResponse.json({ ok: true });
+  response.cookies.set("client_session", "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 0,
+  });
+  return response;
+}
