@@ -8,11 +8,11 @@ async function getTemplateItems(clientId: string) {
   );
 
   if (templateChecklist.rows.length === 0) {
-    return { checklistId: null, items: [] as { label: string; sort_order: number }[] };
+    return { checklistId: null, items: [] as { label: string; sort_order: number; video_url: string | null }[] };
   }
 
-  const items = await query<{ label: string; sort_order: number }>(
-    `SELECT label, sort_order
+  const items = await query<{ label: string; sort_order: number; video_url: string | null }>(
+    `SELECT label, sort_order, video_url
      FROM daily_checklist_items
      WHERE daily_checklist_id = $1
      ORDER BY sort_order ASC`,
@@ -41,11 +41,14 @@ export async function ensureDailyChecklist(clientId: string, date: string) {
 
       if (template.items.length > 0) {
         const values = template.items
-          .map((item, index) => `($1, $${index * 2 + 2}, $${index * 2 + 3}, false)`)
+          .map((item, index) => `($1, $${index * 3 + 2}, $${index * 3 + 3}, false, $${index * 3 + 4})`)
           .join(", ");
-        const params = [checklistId, ...template.items.flatMap((item) => [item.label, item.sort_order])];
+        const params = [
+          checklistId,
+          ...template.items.flatMap((item) => [item.label, item.sort_order, item.video_url ?? null]),
+        ];
         await client.query(
-          `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked) VALUES ${values}`,
+          `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked, video_url) VALUES ${values}`,
           params
         );
       }
@@ -68,11 +71,14 @@ export async function ensureDailyChecklist(clientId: string, date: string) {
 
     if (missing.length > 0) {
       const values = missing
-        .map((item, index) => `($1, $${index * 2 + 2}, $${index * 2 + 3}, false)`)
+        .map((item, index) => `($1, $${index * 3 + 2}, $${index * 3 + 3}, false, $${index * 3 + 4})`)
         .join(", ");
-      const params = [checklistId, ...missing.flatMap((item) => [item.label, item.sort_order])];
+      const params = [
+        checklistId,
+        ...missing.flatMap((item) => [item.label, item.sort_order, item.video_url ?? null]),
+      ];
       await query(
-        `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked) VALUES ${values}`,
+        `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked, video_url) VALUES ${values}`,
         params
       );
     }
@@ -85,8 +91,8 @@ export async function getTodayPayload(clientId: string) {
   const date = todayKey();
   const { checklistId } = await ensureDailyChecklist(clientId, date);
 
-  const items = await query<{ id: string; label: string; checked: boolean }>(
-    `SELECT id, label, checked
+  const items = await query<{ id: string; label: string; checked: boolean; video_url: string | null }>(
+    `SELECT id, label, checked, video_url
      FROM daily_checklist_items
      WHERE daily_checklist_id = $1
      ORDER BY sort_order ASC`,
@@ -101,7 +107,12 @@ export async function getTodayPayload(clientId: string) {
   return {
     date,
     note: note.rows[0]?.note || "",
-    items: items.rows,
+    items: items.rows.map((item) => ({
+      id: item.id,
+      label: item.label,
+      checked: item.checked,
+      videoUrl: item.video_url ?? null,
+    })),
   };
 }
 

@@ -30,7 +30,7 @@ export default async function PortalHistoryPage() {
             </div>
             <div className="h-2 rounded-full bg-white/10 overflow-hidden">
               <div
-                className="h-full bg-white/70 transition-all"
+                className="h-full bg-white transition-all shadow-[0_0_12px_rgba(255,255,255,0.6)]"
                 style={{ width: `${day.completion}%` }}
               />
             </div>

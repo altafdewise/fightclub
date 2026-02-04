@@ -64,8 +64,8 @@ export function PortalLoginForm() {
         type="submit"
         disabled={loading}
         className={cn(
-          "inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-black px-4 py-3 text-sm font-semibold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-60",
-          loading && "hover:bg-black"
+          "inline-flex w-full items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-3 text-sm font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60",
+          loading && "hover:bg-white"
         )}
       >
         {loading ? "Signing in..." : "Sign in"}

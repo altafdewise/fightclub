@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/auth";
 import { query, transaction } from "@/lib/db";
+import { isSafeHttpUrl } from "@/utils/url";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await getAdminSession();
@@ -16,8 +17,26 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     }
 
     const cleaned = items
-      .map((label: string) => String(label || "").trim())
-      .filter((label: string) => label.length > 0);
+      .map((item: any) => {
+        if (typeof item === "string") {
+          return { label: String(item || "").trim(), videoUrl: null as string | null };
+        }
+        const label = String(item?.label || "").trim();
+        const rawVideo = String(item?.videoUrl ?? item?.video_url ?? "").trim();
+        const videoUrl = rawVideo.length === 0 ? null : rawVideo;
+        return { label, videoUrl };
+      })
+      .filter((item: { label: string }) => item.label.length > 0);
+
+    const invalid = cleaned.find(
+      (item: { videoUrl: string | null }) => item.videoUrl && !isSafeHttpUrl(item.videoUrl)
+    );
+    if (invalid) {
+      return NextResponse.json(
+        { message: "Video link must start with http:// or https://." },
+        { status: 400 }
+      );
+    }
 
     await transaction(async (client) => {
       const template = await client.query<{ id: string }>(
@@ -38,21 +57,25 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
       if (cleaned.length > 0) {
         const values = cleaned
-          .map((_, index) => `($1, $${index * 2 + 2}, $${index * 2 + 3}, false)`)
+          .map((_, index) => `($1, $${index * 3 + 2}, $${index * 3 + 3}, false, $${index * 3 + 4})`)
           .join(", ");
-        const paramsList = [checklistId, ...cleaned.flatMap((label, index) => [label, index])];
+        const paramsList = [
+          checklistId,
+          ...cleaned.flatMap((item, index) => [item.label, index, item.videoUrl]),
+        ];
         await client.query(
-          `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked)
+          `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked, video_url)
            VALUES ${values}`,
           paramsList
         );
       }
     });
 
-    const updated = cleaned.map((label, index) => ({
+    const updated = cleaned.map((item, index) => ({
       id: `${id}-${index}`,
-      label,
+      label: item.label,
       sortOrder: index,
+      videoUrl: item.videoUrl,
     }));
 
     return NextResponse.json({ ok: true, items: updated });

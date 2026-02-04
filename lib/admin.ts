@@ -73,14 +73,14 @@ export async function getClientDetail(clientId: string) {
   );
 
   const items = templateChecklist.rows.length
-    ? await query<{ label: string; sort_order: number }>(
-        `SELECT label, sort_order
+    ? await query<{ label: string; sort_order: number; video_url: string | null }>(
+        `SELECT label, sort_order, video_url
          FROM daily_checklist_items
          WHERE daily_checklist_id = $1
          ORDER BY sort_order ASC`,
         [templateChecklist.rows[0].id]
       )
-    : { rows: [] as { label: string; sort_order: number }[] };
+    : { rows: [] as { label: string; sort_order: number; video_url: string | null }[] };
 
   return {
     id: clientResult.rows[0].id,
@@ -91,6 +91,7 @@ export async function getClientDetail(clientId: string) {
       id: `${clientId}-${index}`,
       label: row.label,
       sortOrder: row.sort_order,
+      videoUrl: row.video_url ?? null,
     })),
   };
 }

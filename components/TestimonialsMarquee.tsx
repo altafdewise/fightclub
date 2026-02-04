@@ -19,7 +19,7 @@ export function TestimonialsMarquee() {
 
   return (
     <section id="testimonials" className="pb-16 md:pb-24">
-      <div className="section-space flex flex-col gap-6 mb-8">
+      <div className="section-space flex flex-col gap-6 mb-8 text-center items-center">
         <Reveal>
           <p className="text-sm text-muted">Testimonials</p>
           <h2 className="text-3xl md:text-4xl font-semibold">Quiet confidence from clients.</h2>

@@ -6,22 +6,11 @@ import { cn } from "@/utils/cn";
 const goals = ["Fat loss", "Muscle gain", "Recomp", "Performance", "Cycle syncing", "Other"];
 const countryCodes = [
   { code: "+1", label: "US (+1)" },
-  { code: "+1", label: "CA (+1)" },
   { code: "+44", label: "UK (+44)" },
   { code: "+61", label: "AU (+61)" },
-  { code: "+64", label: "NZ (+64)" },
   { code: "+65", label: "SG (+65)" },
   { code: "+91", label: "IN (+91)" },
   { code: "+971", label: "UAE (+971)" },
-  { code: "+966", label: "KSA (+966)" },
-  { code: "+49", label: "DE (+49)" },
-  { code: "+33", label: "FR (+33)" },
-  { code: "+34", label: "ES (+34)" },
-  { code: "+39", label: "IT (+39)" },
-  { code: "+31", label: "NL (+31)" },
-  { code: "+46", label: "SE (+46)" },
-  { code: "+55", label: "BR (+55)" },
-  { code: "+52", label: "MX (+52)" },
   { code: "OTHER", label: "Other" },
 ];
 
@@ -142,7 +131,7 @@ export function ConsultForm() {
             <select
               value={form.countryCode}
               onChange={(e) => handleChange("countryCode", e.target.value)}
-              className="rounded-xl px-3 py-3 w-[120px]"
+              className="rounded-xl px-3 py-2 text-sm w-[110px] sm:py-3 sm:text-base sm:w-[120px]"
             >
               {countryCodes.map((code) => (
                 <option key={`${code.label}-${code.code}`} value={code.code}>

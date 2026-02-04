@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
+import { isSafeHttpUrl } from "@/utils/url";
 
 type ChecklistItem = {
   id: string;
   label: string;
   checked: boolean;
+  videoUrl?: string | null;
 };
 
 type ClientTodayProps = {
@@ -100,14 +102,19 @@ export function ClientToday({ name, note, items: initialItems, date }: ClientTod
         </div>
 
         <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-          <div className="h-full bg-white/70 transition-all" style={{ width: `${progress}%` }} />
+          <div
+            className="h-full bg-white transition-all shadow-[0_0_12px_rgba(255,255,255,0.6)]"
+            style={{ width: `${progress}%` }}
+          />
         </div>
 
         {total === 0 ? (
           <p className="text-sm text-white/50">No exercises assigned yet.</p>
         ) : (
           <div className="space-y-3">
-            {items.map((item) => (
+            {items.map((item) => {
+              const hasVideo = isSafeHttpUrl(item.videoUrl);
+              return (
               <label
                 key={item.id}
                 className={cn(
@@ -115,16 +122,58 @@ export function ClientToday({ name, note, items: initialItems, date }: ClientTod
                   item.checked && "bg-white/[0.05]"
                 )}
               >
+                <div className="flex items-center gap-4 flex-1 min-w-0">
                 <input
                   type="checkbox"
                   checked={item.checked}
                   onChange={() => toggle(item)}
                   disabled={savingId === item.id}
-                  className="h-5 w-5 accent-white"
+                  className="sr-only"
                 />
-                <span className="text-sm text-white/90">{item.label}</span>
+                <span
+                  className={cn(
+                    "h-5 w-5 rounded-md border flex items-center justify-center transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60",
+                    item.checked ? "bg-white border-white" : "bg-transparent border-white/30"
+                  )}
+                >
+                  <svg
+                    viewBox="0 0 16 16"
+                    className={cn(
+                      "h-3.5 w-3.5 text-black transition",
+                      item.checked ? "opacity-100" : "opacity-0"
+                    )}
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12.5 4.5 6.8 10.2 3.5 6.9"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span className="text-sm text-white/90 truncate">{item.label}</span>
+                </div>
+                {hasVideo && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (item.videoUrl) {
+                        window.open(item.videoUrl, "_blank", "noopener,noreferrer");
+                      }
+                    }}
+                    className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-white/80 transition hover:bg-white/[0.06]"
+                  >
+                    Video
+                  </button>
+                )}
               </label>
-            ))}
+            );
+            })}
           </div>
         )}
       </div>

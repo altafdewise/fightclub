@@ -8,6 +8,7 @@ type ExerciseItem = {
   id: string;
   label: string;
   sortOrder: number;
+  videoUrl?: string | null;
 };
 
 type ClientDetailProps = {
@@ -23,7 +24,12 @@ type ClientDetailProps = {
 export function ClientDetail({ client }: ClientDetailProps) {
   const router = useRouter();
   const [note, setNote] = useState(client.trainerDietNote || "");
-  const [items, setItems] = useState(client.exerciseItems.map((item) => item.label));
+  const [items, setItems] = useState(
+    client.exerciseItems.map((item) => ({
+      label: item.label,
+      videoUrl: item.videoUrl || "",
+    }))
+  );
   const [newItem, setNewItem] = useState("");
   const [savingNote, setSavingNote] = useState(false);
   const [savingItems, setSavingItems] = useState(false);
@@ -37,7 +43,7 @@ export function ClientDetail({ client }: ClientDetailProps) {
     setItems(next);
   };
 
-  const saveItems = async (nextItems: string[]) => {
+  const saveItems = async (nextItems: { label: string; videoUrl?: string }[]) => {
     setSavingItems(true);
     setError(null);
     try {
@@ -67,7 +73,7 @@ export function ClientDetail({ client }: ClientDetailProps) {
   const addItem = () => {
     const trimmed = newItem.trim();
     if (!trimmed) return;
-    setItems((prev) => [...prev, trimmed]);
+    setItems((prev) => [...prev, { label: trimmed, videoUrl: "" }]);
     setNewItem("");
   };
 
@@ -144,12 +150,27 @@ export function ClientDetail({ client }: ClientDetailProps) {
           )}
           {items.map((item, index) => (
             <div
-              key={`${item}-${index}`}
+              key={`${item.label}-${index}`}
               className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 md:flex-row md:items-center"
             >
               <div className="flex items-center gap-3">
                 <span className="text-xs text-white/50 w-6 text-center">{index + 1}</span>
-                <span className="flex-1 text-sm text-white/90">{item}</span>
+                <span className="flex-1 text-sm text-white/90">{item.label}</span>
+              </div>
+              <div className="flex-1">
+                <input
+                  value={item.videoUrl || ""}
+                  onChange={(e) =>
+                    setItems((prev) =>
+                      prev.map((entry, idx) =>
+                        idx === index ? { ...entry, videoUrl: e.target.value } : entry
+                      )
+                    )
+                  }
+                  aria-label="Video link (optional)"
+                  className="w-full rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
+                  placeholder="Video link (optional)"
+                />
               </div>
               <div className="flex flex-wrap items-center gap-2 md:ml-auto">
                 <button
