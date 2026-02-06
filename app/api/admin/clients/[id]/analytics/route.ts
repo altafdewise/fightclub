@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminSession } from "@/lib/auth";
+import { getAdminSession, getHQSession } from "@/lib/auth";
 import { query } from "@/lib/db";
 import { toDateKey } from "@/lib/date";
 
@@ -7,21 +7,24 @@ export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getAdminSession();
-  if (!session?.admin) {
-    return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
-  }
-
-  const { id } = await params;
-  if (!id) {
-    return NextResponse.json({ message: "Missing client id." }, { status: 400 });
-  }
-
-  const { searchParams } = new URL(req.url);
-  const rangeParam = searchParams.get("range");
-  const range = rangeParam === "90" ? 90 : 30;
-
   try {
+    const adminSession = await getAdminSession();
+    const hqSession = await getHQSession();
+
+    // Allow both admin and hq sessions to access analytics
+    if (!adminSession?.admin && !hqSession?.hq) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
+
+    const { id } = await params;
+    if (!id) {
+      return NextResponse.json({ message: "Missing client id." }, { status: 400 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const rangeParam = searchParams.get("range");
+    const range = rangeParam === "90" ? 90 : 30;
+
     const today = new Date();
     const start = new Date(today);
     start.setUTCDate(start.getUTCDate() - (range - 1));

@@ -7,6 +7,7 @@ import { Services } from "@/components/Services";
 import { VideoSection } from "@/components/VideoSection";
 import { TestimonialsMarquee } from "@/components/TestimonialsMarquee";
 import { Why } from "@/components/Why";
+import Plans from "@/components/Plans";
 
 export default function HomePage() {
   return (
@@ -17,6 +18,7 @@ export default function HomePage() {
       <VideoSection />
       <Why />
       <TestimonialsMarquee />
+      <Plans />
       <CTA />
       <section id="member-access" className="section-space pt-4 pb-16" aria-label="Access">
         <div className="mb-6 text-center space-y-2">

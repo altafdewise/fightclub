@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/auth";
 import { getClientsWithStats } from "@/lib/admin";
-import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { TrainerDashboard } from "@/components/admin/TrainerDashboard";
 
 export default async function AdminPage() {
   const admin = await requireAdmin();
@@ -8,7 +8,7 @@ export default async function AdminPage() {
 
   return (
     <section className="section-space py-16">
-      <AdminDashboard adminName={admin.username} initialClients={clients} />
+      <TrainerDashboard trainerName={admin.username} initialClients={clients} />
     </section>
   );
 }

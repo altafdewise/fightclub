@@ -4,7 +4,7 @@ import { query } from "./db";
 const SESSION_DAYS = 7;
 export const SESSION_MAX_AGE = SESSION_DAYS * 24 * 60 * 60;
 
-export type SessionType = "admin" | "client";
+export type SessionType = "admin" | "client" | "hq";
 
 export function sessionCookieOptions() {
   return {

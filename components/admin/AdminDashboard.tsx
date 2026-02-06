@@ -98,8 +98,8 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
     <div className="space-y-10 md:space-y-12">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Admin</p>
-          <h1 className="text-3xl md:text-4xl font-semibold">Welcome back, {adminName}.</h1>
+          <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Admin</p>
+          <h1 className="text-3xl md:text-4xl font-bold">Welcome back, {adminName}.</h1>
         </div>
         <button
           onClick={handleLogout}
@@ -109,12 +109,12 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
         </button>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-6">
+      <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-6">
         <h2 className="text-xl font-semibold">Create client</h2>
 
         <form onSubmit={handleCreate} className="space-y-6">
           <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-white/50">Client info</p>
+            <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Client info</p>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="flex flex-col gap-2 text-sm text-white/80">
                 Name
@@ -122,7 +122,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
                   value={form.name}
                   onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
                   required
-                  className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
+                  className="w-full rounded-[14px] border border-white/15 bg-white/[0.06] px-4 py-3.5 text-white placeholder:text-white/40 transition-all duration-300 focus:outline-none focus:border-white/30 focus:bg-white/[0.08] focus:ring-2 focus:ring-white/20"
                   placeholder="Client name"
                 />
               </label>
@@ -130,7 +130,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
           </div>
 
           <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-white/50">Login credentials</p>
+            <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Login credentials</p>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="flex flex-col gap-2 text-sm text-white/80">
                 Username
@@ -138,7 +138,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
                   value={form.username}
                   onChange={(e) => setForm((prev) => ({ ...prev, username: e.target.value }))}
                   required
-                  className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
+                  className="w-full rounded-[14px] border border-white/15 bg-white/[0.06] px-4 py-3.5 text-white placeholder:text-white/40 transition-all duration-300 focus:outline-none focus:border-white/30 focus:bg-white/[0.08] focus:ring-2 focus:ring-white/20"
                   placeholder="client123"
                 />
               </label>
@@ -148,7 +148,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
                   value={form.passcode}
                   onChange={(e) => setForm((prev) => ({ ...prev, passcode: e.target.value }))}
                   required
-                  className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
+                  className="w-full rounded-[14px] border border-white/15 bg-white/[0.06] px-4 py-3.5 text-white placeholder:text-white/40 transition-all duration-300 focus:outline-none focus:border-white/30 focus:bg-white/[0.08] focus:ring-2 focus:ring-white/20"
                   placeholder="Minimum 4 chars"
                 />
               </label>
@@ -156,14 +156,14 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
           </div>
 
           <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-white/50">Optional notes</p>
+            <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Optional notes</p>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="flex flex-col gap-2 text-sm text-white/80">
                 Email (optional)
                 <input
                   value={form.email}
                   onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
-                  className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
+                  className="w-full rounded-[14px] border border-white/15 bg-white/[0.06] px-4 py-3.5 text-white placeholder:text-white/40 transition-all duration-300 focus:outline-none focus:border-white/30 focus:bg-white/[0.08] focus:ring-2 focus:ring-white/20"
                   placeholder="client@email.com"
                 />
               </label>
@@ -175,7 +175,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
             type="submit"
             disabled={loading}
             className={cn(
-              "inline-flex w-full items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-3 text-sm font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto",
+              "inline-flex w-full items-center justify-center rounded-[14px] border border-white/20 bg-white px-4 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-white/95 hover:border-white/40 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto",
               loading && "hover:bg-white"
             )}
           >
@@ -194,20 +194,20 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
           {clients.map((client) => (
             <div
               key={client.id}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+              className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-5 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-white/50">Client</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Client</p>
                 <h3 className="text-lg font-semibold">{client.name}</h3>
                 <p className="text-sm text-white/50">@{client.username}</p>
               </div>
               <div className="flex flex-wrap gap-6 text-sm text-white/60">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.12em] text-white/50">Today</p>
+                  <p className="text-xs uppercase tracking-[0.12em] text-white/50 font-medium">Today</p>
                   <p className="text-base text-white">{client.todayCompletion}%</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.12em] text-white/50">Last activity</p>
+                  <p className="text-xs uppercase tracking-[0.12em] text-white/50 font-medium">Last activity</p>
                   <p className="text-base text-white">{formatDate(client.lastActivity)}</p>
                 </div>
               </div>

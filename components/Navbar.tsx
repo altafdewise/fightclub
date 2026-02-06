@@ -1,10 +1,11 @@
-﻿import Link from "next/link";
+﻿﻿import Link from "next/link";
 import { cn } from "@/utils/cn";
 
 const links = [
   { href: "#services", label: "Services" },
   { href: "#video", label: "Video" },
   { href: "#testimonials", label: "Testimonials" },
+  { href: "#pricing", label: "Pricing" },
   { href: "#member-access", label: "Member" },
 ];
 
@@ -29,4 +30,3 @@ export function Navbar() {
     </header>
   );
 }
-

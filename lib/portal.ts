@@ -266,6 +266,11 @@ export async function getTodayPayload(clientId: string) {
     [clientId]
   );
 
+  // Check if data is stale (reset occurred after last update)
+  // const isResetDetected = summary?.reset_at
+  //   ? new Date(summary.reset_at) > new Date(summary.updated_at)
+  //   : false;
+
   return {
     date,
     note: note.rows[0]?.note || "",
@@ -322,3 +327,62 @@ export async function getHistoryPayload(clientId: string) {
     return { date, completion, total, checked };
   });
 }
+
+// Undertaking agreement functions
+export async function checkUndertakingExists(clientId: string): Promise<boolean> {
+  const result = await query<{ id: string }>(
+    `SELECT id FROM client_undertakings
+     WHERE client_id = $1 AND all_checkboxes_confirmed = true
+     LIMIT 1`,
+    [clientId]
+  );
+  return result.rows.length > 0;
+}
+
+export async function createUndertaking(
+  clientId: string,
+  pdfUrl: string
+): Promise<{ id: string; agreedAt: string }> {
+  const result = await query<{ id: string; agreed_at: string }>(
+    `INSERT INTO client_undertakings (client_id, all_checkboxes_confirmed, pdf_url)
+     VALUES ($1, true, $2)
+     RETURNING id, agreed_at`,
+    [clientId, pdfUrl]
+  );
+
+  if (result.rows.length === 0) {
+    throw new Error("Failed to create undertaking");
+  }
+
+  return {
+    id: result.rows[0].id,
+    agreedAt: result.rows[0].agreed_at,
+  };
+}
+
+export async function getUndertakingByClientId(clientId: string): Promise<{
+  id: string;
+  agreedAt: string;
+  pdfUrl: string | null;
+} | null> {
+  const result = await query<{
+    id: string;
+    agreed_at: string;
+    pdf_url: string | null;
+  }>(
+    `SELECT id, agreed_at, pdf_url FROM client_undertakings
+     WHERE client_id = $1 LIMIT 1`,
+    [clientId]
+  );
+
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  return {
+    id: result.rows[0].id,
+    agreedAt: result.rows[0].agreed_at,
+    pdfUrl: result.rows[0].pdf_url,
+  };
+}
+

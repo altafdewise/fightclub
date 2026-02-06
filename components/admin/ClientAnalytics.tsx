@@ -85,6 +85,7 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [mockMode, setMockMode] = useState<"streak" | "break" | null>(null);
+  const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -101,11 +102,13 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
 
   useEffect(() => {
     let alive = true;
+    setAnimated(false);
     if (mockMode) {
       const mock = mockMode === "break" ? buildMockBreakData() : buildMockData(10);
       setData(mock);
       setLoading(false);
       setError(null);
+      requestAnimationFrame(() => setAnimated(true));
       return () => {
         alive = false;
       };
@@ -122,6 +125,7 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
         const payload = (await res.json()) as AnalyticsResponse;
         if (alive) {
           setData(payload);
+          requestAnimationFrame(() => setAnimated(true));
         }
       } catch (err: any) {
         if (alive) {
@@ -166,9 +170,16 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
     });
   }, [data]);
 
-  const path = useMemo(() => {
-    if (points.length === 0) return "";
-    return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
+  const smoothPath = useMemo(() => {
+    if (points.length < 2) return "";
+    let smoothedPath = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 1; i < points.length; i++) {
+      const xMid = (points[i - 1].x + points[i].x) / 2;
+      const yMid = (points[i - 1].y + points[i].y) / 2;
+      smoothedPath += ` Q ${points[i - 1].x} ${points[i - 1].y} ${xMid} ${yMid}`;
+    }
+    smoothedPath += ` T ${points[points.length - 1].x} ${points[points.length - 1].y}`;
+    return smoothedPath;
   }, [points]);
 
   const winLine = useMemo(() => {
@@ -179,13 +190,31 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
     return minY + (1 - 0.6) * (maxY - minY);
   }, []);
 
+  // Generate weekday labels
+  const weekdayLabels = useMemo(() => {
+    if (!data?.series?.length) return [];
+    const labels = ["S", "M", "T", "W", "T", "F", "S"];
+    const result = [];
+    for (let i = 0; i < data.series.length; i++) {
+      const date = new Date(data.series[i].date);
+      const dayIndex = date.getDay();
+      result.push({
+        index: i,
+        label: labels[dayIndex],
+        date: data.series[i].date,
+      });
+    }
+    // Show every Nth label based on range to avoid crowding
+    const step = range === 90 ? Math.ceil(result.length / 6) : Math.ceil(result.length / 8);
+    return result.filter((_, i) => i % step === 0 || i === result.length - 1);
+  }, [data, range]);
+
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Client Analytics</p>
-          <h2 className="text-xl font-semibold">Monthly progression</h2>
-          <p className="text-xs text-white/50 mt-1">Daily completion percentage</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-white/40">Client Analytics</p>
+          <h2 className="text-2xl font-semibold">Progress & consistency</h2>
         </div>
         <div className="inline-flex rounded-xl border border-white/15 bg-white/[0.02] p-1">
           {RANGE_OPTIONS.map((value) => (
@@ -197,7 +226,7 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
                 "px-3 py-1.5 text-xs font-medium rounded-lg transition",
                 range === value
                   ? "bg-white text-black"
-                  : "text-white/70 hover:text-white"
+                  : "text-white/60 hover:text-white"
               )}
             >
               {value}D
@@ -206,76 +235,108 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
         </div>
       </div>
 
-      {loading && <p className="text-sm text-white/50">Loading analytics...</p>}
+      {loading && <p className="text-sm text-white/40">Loading...</p>}
       {error && <p className="text-sm text-red-300">{error}</p>}
 
       {!loading && !error && data && (
         <>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
-              <p className="text-xs text-white/50">Avg completion</p>
-              <p className="text-lg font-semibold">{data.summary.avgPct}%</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
-              <p className="text-xs text-white/50">Win days</p>
-              <p className="text-lg font-semibold">{data.summary.winDays}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
-              <p className="text-xs text-white/50">Submitted days</p>
-              <p className="text-lg font-semibold">{data.summary.submittedDays}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
-              <p className="text-xs text-white/50">Best day</p>
-              <p className="text-lg font-semibold">{data.summary.bestPct}%</p>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 overflow-hidden">
-            {data.series.length === 0 ? (
-              <p className="text-sm text-white/50">No submitted days yet for this range.</p>
-            ) : (
-              <svg
-                viewBox="0 0 100 100"
-                className="w-full h-40 scale-[1.06] origin-center transform-gpu"
-              >
-                <line
-                  x1="10"
-                  x2="90"
-                  y1={winLine}
-                  y2={winLine}
-                  stroke="rgba(255,255,255,0.2)"
-                  strokeDasharray="2 3"
-                />
-                <path
-                  d={path}
-                  fill="none"
-                  stroke="rgba(255,255,255,0.8)"
-                  strokeWidth="2"
-                />
-                {points.length > 0 && points[0].isGhost && (
-                  <circle
-                    cx={points[0].x}
-                    cy={points[0].y}
-                    r="2.2"
-                    fill="rgba(255,255,255,0.35)"
+          {data.series.length === 0 ? (
+            <p className="text-sm text-white/40">No submitted days yet for this range.</p>
+          ) : (
+            <div className="space-y-6">
+              {/* Main SVG Graph */}
+              <div className="relative">
+                <svg
+                  viewBox="0 0 100 100"
+                  className="w-full h-48 transform-gpu"
+                  style={{ perspective: "1000px" }}
+                >
+                  {/* Horizontal guideline (60% threshold) */}
+                  <line
+                    x1="8"
+                    x2="92"
+                    y1={winLine}
+                    y2={winLine}
+                    stroke="rgba(255,255,255,0.08)"
+                    strokeWidth="1"
+                    vectorEffect="non-scaling-stroke"
                   />
-                )}
-                {points.length > 0 && (
-                  <circle
-                    cx={points[points.length - 1].x}
-                    cy={points[points.length - 1].y}
-                    r="2.2"
-                    fill="white"
-                  />
-                )}
-              </svg>
-            )}
-          </div>
 
-          {data.summary.trend && (
-            <p className="text-xs text-white/50">
-              Trend: {data.summary.trend}
-            </p>
+                  {/* Subtle top guideline */}
+                  <line
+                    x1="8"
+                    x2="92"
+                    y1="10"
+                    y2="10"
+                    stroke="rgba(255,255,255,0.04)"
+                    strokeWidth="1"
+                    vectorEffect="non-scaling-stroke"
+                  />
+
+                  {/* Main data line with animation */}
+                  <path
+                    d={smoothPath}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.85)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    vectorEffect="non-scaling-stroke"
+                    style={{
+                      opacity: animated ? 1 : 0,
+                      transition: "opacity 600ms ease-out",
+                      strokeDasharray: animated ? "0" : "1000",
+                      strokeDashoffset: animated ? "0" : "1000",
+                      transitionProperty: "stroke-dashoffset, opacity",
+                      transitionDuration: "700ms, 600ms",
+                      transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1), ease-out",
+                    }}
+                  />
+
+                  {/* Points */}
+                  {points.map((point, idx) => (
+                    <circle
+                      key={`point-${idx}`}
+                      cx={point.x}
+                      cy={point.y}
+                      r="2.5"
+                      fill={point.isGhost ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.9)"}
+                      style={{
+                        opacity: animated ? 1 : 0,
+                        transition: `opacity 600ms ease-out ${animated ? 200 + idx * 20 : 0}ms`,
+                        filter: "drop-shadow(0 0 1px rgba(255,255,255,0.4))",
+                      }}
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  ))}
+                </svg>
+              </div>
+
+              {/* X-Axis Labels (Weekdays) */}
+              <div className="flex justify-between px-2 text-xs text-white/30 font-medium tracking-wider">
+                {weekdayLabels.map((label, idx) => (
+                  <span key={`label-${idx}`} className="opacity-60">
+                    {label.label}
+                  </span>
+                ))}
+              </div>
+
+              {/* Metrics Summary */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="text-center py-2">
+                  <p className="text-xs text-white/40 uppercase tracking-wider">Win days</p>
+                  <p className="text-2xl font-semibold mt-1">{data.summary.winDays}</p>
+                </div>
+                <div className="text-center py-2">
+                  <p className="text-xs text-white/40 uppercase tracking-wider">Submitted</p>
+                  <p className="text-2xl font-semibold mt-1">{data.summary.submittedDays}</p>
+                </div>
+                <div className="text-center py-2">
+                  <p className="text-xs text-white/40 uppercase tracking-wider">Best day</p>
+                  <p className="text-2xl font-semibold mt-1">{data.summary.bestPct}%</p>
+                </div>
+              </div>
+            </div>
           )}
         </>
       )}

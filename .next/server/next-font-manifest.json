@@ -20,6 +20,18 @@
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
     ],
+    "[project]/app/hq/clients/[id]/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
+    ],
+    "[project]/app/hq/login/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
+    ],
+    "[project]/app/hq/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
+    ],
     "[project]/app/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
@@ -33,6 +45,10 @@
       "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
     ],
     "[project]/app/portal/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
+      "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
+    ],
+    "[project]/app/privacy/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2",
       "static/media/16e0e94777d7bd9f-s.p.53426b5e.woff2"
     ]

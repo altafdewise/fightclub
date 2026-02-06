@@ -1,8 +1,7 @@
 {
-  "/api/admin/clients/[id]/analytics/route": "app/api/admin/clients/[id]/analytics/route.js",
-  "/api/portal/calendar/route": "app/api/portal/calendar/route.js",
-  "/page": "app/page.js",
   "/admin/page": "app/admin/page.js",
-  "/portal/page": "app/portal/page.js",
-  "/admin/clients/[id]/page": "app/admin/clients/[id]/page.js"
+  "/admin/clients/[id]/page": "app/admin/clients/[id]/page.js",
+  "/hq/page": "app/hq/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/hq/clients/[id]/page": "app/hq/clients/[id]/page.js"
 }

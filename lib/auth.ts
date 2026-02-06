@@ -6,13 +6,14 @@ import { deleteSession, SessionType } from "./session";
 const COOKIE_NAMES = {
   admin: "admin_session",
   client: "client_session",
+  hq: "hq_session",
 };
 
 type AdminRow = { id: string; username: string };
-type ClientRow = { id: string; name: string; username: string };
+type ClientRow = { id: string; name: string; username: string; email?: string | null };
 
 async function getSessionByType(type: SessionType) {
-  const cookieName = type === "admin" ? COOKIE_NAMES.admin : COOKIE_NAMES.client;
+  const cookieName = type === "admin" ? COOKIE_NAMES.admin : type === "client" ? COOKIE_NAMES.client : COOKIE_NAMES.hq;
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get(cookieName)?.value;
   if (!sessionToken) return null;
@@ -47,6 +48,10 @@ async function getSessionByType(type: SessionType) {
     return { admin: admin.rows[0] || null };
   }
 
+  if (type === "hq") {
+    return { hq: true };
+  }
+
   const client = await query<ClientRow>(
     "SELECT id, name, username FROM clients WHERE id = $1 LIMIT 1",
     [row.client_id]
@@ -66,10 +71,20 @@ export async function requireClient() {
   return session.client;
 }
 
+export async function requireHQ() {
+  const session = await getSessionByType("hq");
+  if (!session?.hq) redirect("/hq/login");
+  return true;
+}
+
 export async function getAdminSession() {
   return getSessionByType("admin");
 }
 
 export async function getClientSession() {
   return getSessionByType("client");
+}
+
+export async function getHQSession() {
+  return getSessionByType("hq");
 }

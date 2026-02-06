@@ -95,3 +95,26 @@ export async function getClientDetail(clientId: string) {
     })),
   };
 }
+
+export async function getTrainerCount() {
+  const result = await query<{ count: string }>(
+    "SELECT COUNT(*)::int AS count FROM admins"
+  );
+  return parseInt(result.rows[0]?.count || "0", 10);
+}
+
+export async function getTrainersWithStats() {
+  const trainersResult = await query<{
+    id: string;
+    username: string;
+    created_at: string;
+  }>("SELECT id, username, created_at FROM admins ORDER BY created_at DESC");
+
+  const stats = trainersResult.rows.map((trainer) => ({
+    id: trainer.id,
+    username: trainer.username,
+    joinedDate: trainer.created_at,
+  }));
+
+  return stats;
+}

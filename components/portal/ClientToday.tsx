@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { isSafeHttpUrl } from "@/utils/url";
+import { ClientProgressAnalytics } from "@/components/portal/ClientProgressAnalytics";
 
 type ChecklistItem = {
   id: string;
@@ -33,6 +34,7 @@ type ClientTodayProps = {
   date: string;
   summary: DaySummary;
   streaks: Streaks;
+  isResetDetected?: boolean;
 };
 
 type CalendarDay = {
@@ -66,6 +68,7 @@ export function ClientToday({
   date,
   summary: initialSummary,
   streaks: initialStreaks,
+  isResetDetected,
 }: ClientTodayProps) {
   const router = useRouter();
   const [items, setItems] = useState<ChecklistItem[]>(initialItems);
@@ -100,6 +103,14 @@ export function ClientToday({
     const startWeekday = start.getUTCDay();
     return { year, monthIndex, daysInMonth, startWeekday };
   }, [calendarMonth]);
+
+  // Detect if daily reset occurred (data is stale)
+  useEffect(() => {
+    if (isResetDetected) {
+      console.log("[RESET DETECTED] Daily reset occurred, reloading page...");
+      window.location.reload();
+    }
+  }, [isResetDetected]);
 
   useEffect(() => {
     let alive = true;
@@ -219,8 +230,8 @@ export function ClientToday({
     <div className="space-y-10 md:space-y-12">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Today</p>
-          <h1 className="text-3xl md:text-4xl font-semibold">Welcome, {name}.</h1>
+          <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Today</p>
+          <h1 className="text-3xl md:text-4xl font-bold">Welcome, {name}.</h1>
           <p className="text-xs text-white/50 mt-2">{date}</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -239,35 +250,35 @@ export function ClientToday({
         </div>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-3">
-        <div className="flex flex-wrap items-center gap-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted">Streak</p>
-            <p className="text-2xl font-semibold">{streaks.current} days</p>
-            <p className="text-xs text-white/50 mt-1">Current streak</p>
+      <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-6">
+        <div className="grid grid-cols-2 gap-6">
+          <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 text-center">
+            <p className="text-4xl font-bold text-white">{streaks.current}</p>
+            <p className="text-xs text-white/50 uppercase tracking-wider mt-3">Current Streak</p>
           </div>
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted">Best</p>
-            <p className="text-2xl font-semibold">{streaks.best} days</p>
-            <p className="text-xs text-white/50 mt-1">Best streak</p>
+          <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 text-center">
+            <p className="text-4xl font-bold text-white">{streaks.best}</p>
+            <p className="text-xs text-white/50 uppercase tracking-wider mt-3">Best Streak</p>
           </div>
         </div>
-        <p className="text-xs text-white/50">
-          Win day = 60%+ completion (submitted).
-        </p>
+        <div className="flex items-start gap-2 bg-white/[0.02] border border-white/10 rounded-lg p-3">
+          <p className="text-xs text-white/60 leading-relaxed">
+            <span className="font-medium text-white">Win day</span> = 60%+ completion (submitted)
+          </p>
+        </div>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-4">
+      <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-4">
         <h2 className="text-xl font-semibold">Trainer Note</h2>
         <p className="text-sm text-white/70 leading-relaxed">
           {note ? note : "No note added yet. Check back soon for your updated guidance."}
         </p>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-5">
+      <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-5">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted">Exercise Checklist</p>
+            <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Exercise Checklist</p>
             <h2 className="text-xl font-semibold">Today's work</h2>
           </div>
           <div className="text-sm text-white/60">
@@ -377,9 +388,11 @@ export function ClientToday({
         </div>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-4">
+      <ClientProgressAnalytics clientName={name} />
+
+      <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-4">
         <div className="flex flex-col gap-1">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Calendar</p>
+          <p className="text-xs uppercase tracking-[0.15em] text-white/50 font-medium">Calendar</p>
           <h2 className="text-xl font-semibold">
             {MONTHS[calendarMeta.monthIndex]} {calendarMeta.year}
           </h2>
@@ -457,9 +470,18 @@ export function ClientToday({
           <p className="text-sm text-white/70 mt-2">
             Completion {hoorahCompletion}% {hoorahWin ? "win day." : "keep going."}
           </p>
-          <p className="text-sm text-white/70 mt-1">
-            Current streak {streaks.current} days | Best {streaks.best} days
-          </p>
+
+          <div className="flex items-center justify-center gap-8 mt-8">
+            <div className="text-center">
+              <p className="text-6xl font-bold text-white">{streaks.current}</p>
+              <p className="text-xs text-white/50 uppercase tracking-wider mt-2">Current</p>
+            </div>
+            <div className="h-16 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent"></div>
+            <div className="text-center">
+              <p className="text-6xl font-bold text-white">{streaks.best}</p>
+              <p className="text-xs text-white/50 uppercase tracking-wider mt-2">Best</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
