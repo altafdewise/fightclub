@@ -3,8 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
+import { WeeklyCheckinCard } from "@/components/portal/WeeklyCheckinCard";
+import ProgressAnalyticsChart from "@/components/charts/ProgressAnalyticsChart";
 import { isSafeHttpUrl } from "@/utils/url";
-import { ClientProgressAnalytics } from "@/components/portal/ClientProgressAnalytics";
 
 type ChecklistItem = {
   id: string;
@@ -27,6 +28,14 @@ type Streaks = {
   best: number;
 };
 
+type WeeklyStatus = {
+  canSubmit: boolean;
+  daysRemaining: number;
+  nextUnlockDate: Date | null;
+};
+
+type RangeOption = "7D" | "30D" | "90D";
+
 type ClientTodayProps = {
   name: string;
   note: string;
@@ -35,6 +44,8 @@ type ClientTodayProps = {
   summary: DaySummary;
   streaks: Streaks;
   isResetDetected?: boolean;
+  weeklyStatus: WeeklyStatus;
+  progressData?: { date: string; completion: number }[];
 };
 
 type CalendarDay = {
@@ -69,6 +80,8 @@ export function ClientToday({
   summary: initialSummary,
   streaks: initialStreaks,
   isResetDetected,
+  weeklyStatus,
+  progressData,
 }: ClientTodayProps) {
   const router = useRouter();
   const [items, setItems] = useState<ChecklistItem[]>(initialItems);
@@ -87,6 +100,7 @@ export function ClientToday({
   const [hoorahOpen, setHoorahOpen] = useState(false);
   const [hoorahCompletion, setHoorahCompletion] = useState(0);
   const [hoorahWin, setHoorahWin] = useState(false);
+  const [selectedRange, setSelectedRange] = useState<RangeOption>("30D");
   const isLocked = summary.isSubmitted;
 
   const total = items.length;
@@ -94,6 +108,12 @@ export function ClientToday({
   const progress = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
 
   const calendarMonth = date.slice(0, 7);
+  const normalizedWeeklyStatus = useMemo<WeeklyStatus>(() => {
+    const parsedDate = weeklyStatus.nextUnlockDate
+      ? new Date(weeklyStatus.nextUnlockDate as unknown as string)
+      : null;
+    return { ...weeklyStatus, nextUnlockDate: parsedDate };
+  }, [weeklyStatus]);
   const calendarMeta = useMemo(() => {
     const [yearText, monthText] = calendarMonth.split("-");
     const year = Number(yearText);
@@ -103,6 +123,27 @@ export function ClientToday({
     const startWeekday = start.getUTCDay();
     return { year, monthIndex, daysInMonth, startWeekday };
   }, [calendarMonth]);
+
+  const displayedProgressData = useMemo(() => {
+    if (!progressData) return [];
+    const rangeMap: Record<RangeOption, number> = { "7D": 7, "30D": 30, "90D": 90 };
+    const limit = rangeMap[selectedRange];
+    return limit ? progressData.slice(-limit) : progressData;
+  }, [progressData, selectedRange]);
+
+  const progressStats = useMemo(() => {
+    if (!displayedProgressData || displayedProgressData.length === 0) {
+      return { average: 0, submitted: 0, best: 0 };
+    }
+
+    const submissions = displayedProgressData.map((entry) => Number(entry.completion) || 0);
+    const submitted = submissions.filter((value) => value > 0).length;
+    const total = submissions.reduce((acc, value) => acc + value, 0);
+    const average = Math.round(total / submissions.length);
+    const best = Math.max(...submissions, 0);
+
+    return { average, submitted, best };
+  }, [displayedProgressData]);
 
   // Detect if daily reset occurred (data is stale)
   useEffect(() => {
@@ -261,11 +302,10 @@ export function ClientToday({
             <p className="text-xs text-white/50 uppercase tracking-wider mt-3">Best Streak</p>
           </div>
         </div>
-        <div className="flex items-start gap-2 bg-white/[0.02] border border-white/10 rounded-lg p-3">
-          <p className="text-xs text-white/60 leading-relaxed">
-            <span className="font-medium text-white">Win day</span> = 60%+ completion (submitted)
-          </p>
-        </div>
+      </div>
+
+      <div className="mt-6 mb-2">
+        <WeeklyCheckinCard status={normalizedWeeklyStatus} />
       </div>
 
       <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-4">
@@ -315,7 +355,11 @@ export function ClientToday({
                     <input
                       type="checkbox"
                       checked={item.checked}
-                      onChange={() => toggle(item)}
+                      readOnly
+                      onClick={(event) => {
+                        event.preventDefault();
+                        toggle(item);
+                      }}
                       disabled={savingId === item.id || isLocked}
                       className="sr-only"
                     />
@@ -388,7 +432,57 @@ export function ClientToday({
         </div>
       </div>
 
-      <ClientProgressAnalytics clientName={name} />
+      {progressData && (
+        <div className="relative w-full rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 md:p-8 overflow-hidden before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/5 before:to-transparent before:pointer-events-none before:content-['']">
+          <div className="relative z-10 flex items-start justify-between mb-6">
+            <div>
+              <p className="text-xs tracking-widest text-neutral-500 uppercase">CLIENT ANALYTICS</p>
+              <h2 className="text-2xl md:text-3xl font-semibold text-white">Progress &amp; consistency</h2>
+            </div>
+
+            <div className="flex bg-white/5 border border-white/10 rounded-full p-1">
+              {["7D", "30D", "90D"].map((range) => {
+                const isActive = range === selectedRange;
+                return (
+                  <button
+                    key={range}
+                    type="button"
+                    className={cn(
+                      "px-4 py-1.5 rounded-full text-sm transition",
+                      isActive
+                        ? "bg-white text-black font-medium shadow-md"
+                        : "text-neutral-400"
+                    )}
+                    aria-pressed={isActive}
+                    onClick={() => setSelectedRange(range as RangeOption)}
+                  >
+                    {range}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative z-10 mt-6 pt-2 pb-4">
+            <ProgressAnalyticsChart data={displayedProgressData} />
+          </div>
+
+          <div className="relative z-10 grid grid-cols-3 mt-6 pt-6 border-t border-white/10 text-center">
+            <div>
+              <p className="text-xs text-neutral-500 tracking-wide uppercase">Avg</p>
+              <p className="text-2xl md:text-3xl font-semibold text-white mt-1">{progressStats.average}%</p>
+            </div>
+            <div>
+              <p className="text-xs text-neutral-500 tracking-wide uppercase">Submitted</p>
+              <p className="text-2xl md:text-3xl font-semibold text-white mt-1">{progressStats.submitted}</p>
+            </div>
+            <div>
+              <p className="text-xs text-neutral-500 tracking-wide uppercase">Best day</p>
+              <p className="text-2xl md:text-3xl font-semibold text-white mt-1">{progressStats.best}%</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-4">
         <div className="flex flex-col gap-1">

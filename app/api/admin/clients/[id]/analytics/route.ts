@@ -23,66 +23,71 @@ export async function GET(
 
     const { searchParams } = new URL(req.url);
     const rangeParam = searchParams.get("range");
-    const range = rangeParam === "90" ? 90 : 30;
-
-    const today = new Date();
-    const start = new Date(today);
-    start.setUTCDate(start.getUTCDate() - (range - 1));
-    const startKey = toDateKey(start);
+    const range = ["7", "30", "90"].includes(rangeParam || "")
+      ? Number(rangeParam)
+      : 7;
 
     const summaryResult = await query<{
       avg_pct: number;
       best_pct: number;
       submitted_days: number;
-      win_days: number;
     }>(
-      `SELECT
+      `WITH params AS (
+         SELECT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Kolkata')::date AS today_local
+       )
+       SELECT
          COALESCE(AVG(completion_pct),0)::int AS avg_pct,
          COALESCE(MAX(completion_pct),0)::int AS best_pct,
-         COUNT(*)::int AS submitted_days,
-         COALESCE(SUM(CASE WHEN is_win_day THEN 1 ELSE 0 END),0)::int AS win_days
+         COUNT(*)::int AS submitted_days
        FROM client_day_summaries
-       WHERE client_id = $1 AND is_submitted = true AND date >= $2`,
-      [id, startKey]
+       WHERE client_id = $1
+         AND is_submitted = true
+         AND created_at >= ((SELECT today_local FROM params) - INTERVAL '${range - 1} days')`,
+      [id]
     );
 
-    let series: { date: string; pct: number }[] = [];
+    const seriesResult = await query<{
+      date: string;
+      completion_pct: number;
+    }>(
+      `WITH params AS (
+         SELECT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Kolkata')::date AS today_local, $1::uuid AS cid
+       ), day_range AS (
+         SELECT generate_series(
+           (SELECT today_local FROM params) - INTERVAL '${range - 1} days',
+           (SELECT today_local FROM params),
+           INTERVAL '1 day'
+         )::date AS day
+       ), submitted AS (
+         SELECT
+           DATE(created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') AS day,
+           completion_pct
+         FROM client_day_summaries
+         WHERE client_id = (SELECT cid FROM params)
+           AND is_submitted = true
+           AND created_at >= ((SELECT today_local FROM params) - INTERVAL '${range - 1} days')
+       )
+       SELECT d.day AS date, COALESCE(s.completion_pct, 0) AS completion_pct
+       FROM day_range d
+       LEFT JOIN submitted s ON s.day = d.day
+       ORDER BY d.day ASC`,
+      [id]
+    );
 
-    if (range === 90) {
-      const weekly = await query<{ week_start: string; avg_pct: number }>(
-        `SELECT date_trunc('week', date)::date AS week_start,
-                COALESCE(AVG(completion_pct),0)::int AS avg_pct
-         FROM client_day_summaries
-         WHERE client_id = $1 AND is_submitted = true AND date >= $2
-         GROUP BY week_start
-         ORDER BY week_start ASC`,
-        [id, startKey]
-      );
-      series = weekly.rows.map((row) => ({
-        date: toDateKey(new Date(row.week_start as unknown as string)),
-        pct: row.avg_pct,
-      }));
-    } else {
-      const daily = await query<{ date: string; completion_pct: number }>(
-        `SELECT date, completion_pct
-         FROM client_day_summaries
-         WHERE client_id = $1 AND is_submitted = true AND date >= $2
-         ORDER BY date ASC`,
-        [id, startKey]
-      );
-      series = daily.rows.map((row) => ({
-        date: toDateKey(new Date(row.date as unknown as string)),
-        pct: row.completion_pct,
-      }));
-    }
+    const series = seriesResult.rows.map((row) => ({
+      date: toDateKey(new Date(row.date as unknown as string)),
+      pct: row.completion_pct,
+    }));
 
     const trendRows = await query<{ completion_pct: number }>(
       `SELECT completion_pct
        FROM client_day_summaries
-       WHERE client_id = $1 AND is_submitted = true AND date >= $2
-       ORDER BY date DESC
+       WHERE client_id = $1
+         AND is_submitted = true
+         AND created_at >= ((CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Kolkata')::date - INTERVAL '${Math.max(13, range - 1)} days')
+       ORDER BY created_at DESC
        LIMIT 14`,
-      [id, startKey]
+      [id]
     );
 
     const recent = trendRows.rows.slice(0, 7);
@@ -104,14 +109,12 @@ export async function GET(
       avg_pct: 0,
       best_pct: 0,
       submitted_days: 0,
-      win_days: 0,
     };
 
     return NextResponse.json({
       series,
       summary: {
         avgPct: summaryRow.avg_pct || 0,
-        winDays: summaryRow.win_days || 0,
         submittedDays: summaryRow.submitted_days || 0,
         bestPct: summaryRow.best_pct || 0,
         trend,

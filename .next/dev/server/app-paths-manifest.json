@@ -1,7 +1,5 @@
 {
-  "/admin/page": "app/admin/page.js",
-  "/admin/clients/[id]/page": "app/admin/clients/[id]/page.js",
-  "/hq/page": "app/hq/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/hq/clients/[id]/page": "app/hq/clients/[id]/page.js"
+  "/api/portal/calendar/route": "app/api/portal/calendar/route.js",
+  "/portal/page": "app/portal/page.js",
+  "/page": "app/page.js"
 }

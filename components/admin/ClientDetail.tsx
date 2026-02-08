@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { ClientAnalytics } from "@/components/admin/ClientAnalytics";
+import { ClientCheckinHistory } from "@/components/admin/ClientCheckinHistory";
 
 type ExerciseItem = {
   id: string;
@@ -178,6 +179,8 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
           {savingNote ? "Saving..." : "Save note"}
         </button>
       </div>
+
+      <ClientCheckinHistory clientId={client.id} isHQ={isHQ} />
 
       <ClientAnalytics clientId={client.id} />
 

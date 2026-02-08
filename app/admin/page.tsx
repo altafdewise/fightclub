@@ -4,7 +4,7 @@ import { TrainerDashboard } from "@/components/admin/TrainerDashboard";
 
 export default async function AdminPage() {
   const admin = await requireAdmin();
-  const clients = await getClientsWithStats();
+  const clients = await getClientsWithStats(admin.id);
 
   return (
     <section className="section-space py-16">

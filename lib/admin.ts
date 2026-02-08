@@ -1,13 +1,20 @@
 import { query } from "./db";
 import { todayKey } from "./date";
 
-export async function getClientsWithStats() {
+export async function getClientsWithStats(trainerId?: string) {
   const clientsResult = await query<{
     id: string;
     name: string;
     username: string;
     email: string | null;
-  }>("SELECT id, name, username, email FROM clients ORDER BY created_at DESC");
+  }>(
+    `SELECT c.id, c.name, c.username, c.email
+     FROM clients c
+     LEFT JOIN client_trainer_assignments cta ON cta.client_id = c.id
+     WHERE $1::uuid IS NULL OR cta.trainer_id = $1
+     ORDER BY c.created_at DESC` as string,
+    [trainerId ?? null]
+  );
 
   const today = todayKey();
 
@@ -67,20 +74,23 @@ export async function getClientDetail(clientId: string) {
 
   if (clientResult.rows.length === 0) return null;
 
-  const templateChecklist = await query<{ id: string }>(
-    "SELECT id FROM daily_checklists WHERE client_id = $1 AND date = 'template' LIMIT 1",
-    [clientId]
+  const today = todayKey();
+  const checklist = await query<{ id: string }>(
+    "SELECT id FROM daily_checklists WHERE client_id = $1 AND date = $2 LIMIT 1",
+    [clientId, today]
   );
 
-  const items = templateChecklist.rows.length
-    ? await query<{ label: string; sort_order: number; video_url: string | null }>(
-        `SELECT label, sort_order, video_url
+  const checklistId = checklist.rows[0]?.id;
+
+  const items = checklistId
+    ? await query<{ id: string; label: string; sort_order: number; video_url: string | null }>(
+        `SELECT id, label, sort_order, video_url
          FROM daily_checklist_items
          WHERE daily_checklist_id = $1
          ORDER BY sort_order ASC`,
-        [templateChecklist.rows[0].id]
+        [checklistId]
       )
-    : { rows: [] as { label: string; sort_order: number; video_url: string | null }[] };
+    : { rows: [] as { id: string; label: string; sort_order: number; video_url: string | null }[] };
 
   return {
     id: clientResult.rows[0].id,
@@ -88,7 +98,7 @@ export async function getClientDetail(clientId: string) {
     username: clientResult.rows[0].username,
     trainerDietNote: clientResult.rows[0].trainer_note,
     exerciseItems: items.rows.map((row, index) => ({
-      id: `${clientId}-${index}`,
+      id: row.id || `${clientId}-${index}`,
       label: row.label,
       sortOrder: row.sort_order,
       videoUrl: row.video_url ?? null,

@@ -38,6 +38,7 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
     username: "",
     passcode: "",
     email: "",
+    trainerId: "",
   });
 
   const [trainerForm, setTrainerForm] = useState({
@@ -60,7 +61,13 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
       const res = await fetch("/api/admin/clients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(clientForm),
+        body: JSON.stringify({
+          name: clientForm.name,
+          username: clientForm.username,
+          passcode: clientForm.passcode,
+          email: clientForm.email,
+          trainerId: clientForm.trainerId || null,
+        }),
       });
 
       if (!res.ok) {
@@ -68,7 +75,7 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
         throw new Error(data?.message || "Unable to create client.");
       }
 
-      setClientForm({ name: "", username: "", passcode: "", email: "" });
+  setClientForm({ name: "", username: "", passcode: "", email: "", trainerId: "" });
       router.refresh();
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
@@ -233,6 +240,21 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
                     placeholder="Client name"
                   />
                 </label>
+                <label className="flex flex-col gap-2 text-sm text-white/80">
+                  Assign trainer (optional)
+                  <select
+                    value={clientForm.trainerId}
+                    onChange={(e) => setClientForm((prev) => ({ ...prev, trainerId: e.target.value }))}
+                    className="w-full rounded-[14px] border border-white/15 bg-white/[0.06] px-4 py-3.5 text-white placeholder:text-white/40 transition-all duration-300 focus:outline-none focus:border-white/30 focus:bg-white/[0.08] focus:ring-2 focus:ring-white/20 bg-[#0f1119]"
+                  >
+                    <option value="">Unassigned</option>
+                    {trainers.map((trainer) => (
+                      <option key={trainer.id} value={trainer.id}>
+                        {trainer.username}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
             </div>
 
@@ -396,6 +418,12 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
+                    <Link
+                      href={`/hq/messages/${client.id}`}
+                      className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
+                    >
+                      Messages
+                    </Link>
                     <Link
                       href={`/hq/clients/${client.id}`}
                       className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90"

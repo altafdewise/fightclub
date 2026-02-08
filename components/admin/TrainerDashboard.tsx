@@ -87,6 +87,12 @@ export function TrainerDashboard({ trainerName, initialClients }: TrainerDashboa
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <Link
+                    href={`/trainer/messages/${client.id}`}
+                    className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
+                  >
+                    Messages
+                  </Link>
+                  <Link
                     href={`/admin/clients/${client.id}`}
                     className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90"
                   >

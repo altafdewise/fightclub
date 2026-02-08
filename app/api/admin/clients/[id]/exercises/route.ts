@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/auth";
 import { query, transaction } from "@/lib/db";
+import { todayKey } from "@/lib/date";
 import { isSafeHttpUrl } from "@/utils/url";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -38,17 +39,19 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       );
     }
 
+    const today = todayKey();
+
     await transaction(async (client) => {
-      const template = await client.query<{ id: string }>(
-        "SELECT id FROM daily_checklists WHERE client_id = $1 AND date = 'template' LIMIT 1",
-        [id]
+      const existing = await client.query<{ id: string }>(
+        "SELECT id FROM daily_checklists WHERE client_id = $1 AND date = $2 LIMIT 1",
+        [id, today]
       );
 
-      let checklistId = template.rows[0]?.id;
+      let checklistId = existing.rows[0]?.id;
       if (!checklistId) {
         const created = await client.query<{ id: string }>(
-          "INSERT INTO daily_checklists (client_id, date) VALUES ($1, 'template') RETURNING id",
-          [id]
+          "INSERT INTO daily_checklists (client_id, date) VALUES ($1, $2) RETURNING id",
+          [id, today]
         );
         checklistId = created.rows[0].id;
       }

@@ -146,6 +146,28 @@ select option:checked {
   width: 100%;
 }
 
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 140, 140, 0.35) transparent;
+}
+
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(90, 90, 90, 0.35);
+  border-radius: 9999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(110, 110, 110, 0.55);
+}
+
 @media (max-width: 640px) {
   .section-space {
     @apply px-5;

@@ -18,27 +18,6 @@ type DaySummaryRow = {
   submitted_at: string | null;
 };
 
-async function getTemplateItems(clientId: string) {
-  const templateChecklist = await query<{ id: string }>(
-    "SELECT id FROM daily_checklists WHERE client_id = $1 AND date = 'template' LIMIT 1",
-    [clientId]
-  );
-
-  if (templateChecklist.rows.length === 0) {
-    return { checklistId: null, items: [] as { label: string; sort_order: number; video_url: string | null }[] };
-  }
-
-  const items = await query<{ label: string; sort_order: number; video_url: string | null }>(
-    `SELECT label, sort_order, video_url
-     FROM daily_checklist_items
-     WHERE daily_checklist_id = $1
-     ORDER BY sort_order ASC`,
-    [templateChecklist.rows[0].id]
-  );
-
-  return { checklistId: templateChecklist.rows[0].id, items: items.rows };
-}
-
 export async function calculateDayStats(clientId: string, date: string): Promise<DayStats> {
   const { checklistId } = await ensureDailyChecklist(clientId, date);
   const counts = await query<{ total: number; checked: number }>(
@@ -186,8 +165,6 @@ export async function ensureDailyChecklist(clientId: string, date: string) {
     [clientId, date]
   );
 
-  const template = await getTemplateItems(clientId);
-
   if (existing.rows.length === 0) {
     const created = await transaction(async (client) => {
       const createdChecklist = await client.query<{ id: string }>(
@@ -195,54 +172,14 @@ export async function ensureDailyChecklist(clientId: string, date: string) {
         [clientId, date]
       );
 
-      const checklistId = createdChecklist.rows[0].id;
-
-      if (template.items.length > 0) {
-        const values = template.items
-          .map((item, index) => `($1, $${index * 3 + 2}, $${index * 3 + 3}, false, $${index * 3 + 4})`)
-          .join(", ");
-        const params = [
-          checklistId,
-          ...template.items.flatMap((item) => [item.label, item.sort_order, item.video_url ?? null]),
-        ];
-        await client.query(
-          `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked, video_url) VALUES ${values}`,
-          params
-        );
-      }
-
-      return checklistId;
+      return createdChecklist.rows[0].id;
     });
 
-    return { checklistId: created, templateItems: template.items };
+    return { checklistId: created, templateItems: [] };
   }
 
   const checklistId = existing.rows[0].id;
-
-  if (template.items.length > 0) {
-    const existingItems = await query<{ label: string }>(
-      "SELECT label FROM daily_checklist_items WHERE daily_checklist_id = $1",
-      [checklistId]
-    );
-    const existingLabels = new Set(existingItems.rows.map((row) => row.label));
-    const missing = template.items.filter((item) => !existingLabels.has(item.label));
-
-    if (missing.length > 0) {
-      const values = missing
-        .map((item, index) => `($1, $${index * 3 + 2}, $${index * 3 + 3}, false, $${index * 3 + 4})`)
-        .join(", ");
-      const params = [
-        checklistId,
-        ...missing.flatMap((item) => [item.label, item.sort_order, item.video_url ?? null]),
-      ];
-      await query(
-        `INSERT INTO daily_checklist_items (daily_checklist_id, label, sort_order, checked, video_url) VALUES ${values}`,
-        params
-      );
-    }
-  }
-
-  return { checklistId, templateItems: template.items };
+  return { checklistId, templateItems: [] };
 }
 
 export async function getTodayPayload(clientId: string) {
@@ -384,5 +321,79 @@ export async function getUndertakingByClientId(clientId: string): Promise<{
     agreedAt: result.rows[0].agreed_at,
     pdfUrl: result.rows[0].pdf_url,
   };
+}
+
+export async function getClientCheckinStatus(clientId: string) {
+  const latest = await query<{ created_at: string }>(
+    `SELECT created_at
+     FROM weekly_checkins
+     WHERE client_id = $1
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [clientId]
+  );
+
+  const createdAt = latest.rows[0]?.created_at ? new Date(latest.rows[0].created_at) : null;
+
+  if (!createdAt) {
+    return {
+      canSubmit: true,
+      daysRemaining: 0,
+      nextUnlockDate: null,
+    } as const;
+  }
+
+  const now = new Date();
+  const daysSince = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+  const unlockDate = new Date(createdAt);
+  unlockDate.setDate(unlockDate.getDate() + 7);
+
+  if (daysSince >= 7) {
+    return {
+      canSubmit: true,
+      daysRemaining: 0,
+      nextUnlockDate: unlockDate,
+    } as const;
+  }
+
+  const daysRemaining = Math.max(0, Math.ceil(7 - daysSince));
+
+  return {
+    canSubmit: false,
+    daysRemaining,
+    nextUnlockDate: unlockDate,
+  } as const;
+}
+
+export async function getClientProgressSeries(clientId: string, range: number = 30) {
+  const result = await query<{ date: string; completion_pct: number }>(
+    `WITH params AS (
+       SELECT (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Kolkata')::date AS today_local, $1::uuid AS cid
+     ), day_range AS (
+       SELECT generate_series(
+         (SELECT today_local FROM params) - INTERVAL '${range - 1} days',
+         (SELECT today_local FROM params),
+         INTERVAL '1 day'
+       )::date AS day
+     ), submitted AS (
+       SELECT
+         DATE(created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kolkata') AS day,
+         completion_pct
+       FROM client_day_summaries
+       WHERE client_id = (SELECT cid FROM params)
+         AND is_submitted = true
+         AND created_at >= ((SELECT today_local FROM params) - INTERVAL '${range - 1} days')
+     )
+     SELECT d.day AS date, COALESCE(s.completion_pct, 0) AS completion_pct
+     FROM day_range d
+     LEFT JOIN submitted s ON s.day = d.day
+     ORDER BY d.day ASC`,
+    [clientId]
+  );
+
+  return result.rows.map((row) => ({
+    date: new Date(row.date).toISOString(),
+    completion: Number(row.completion_pct) || 0,
+  }));
 }
 

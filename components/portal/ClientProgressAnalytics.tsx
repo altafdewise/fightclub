@@ -8,9 +8,16 @@ type SeriesPoint = {
   pct: number;
 };
 
+type PlotPoint = {
+  x: number;
+  y: number;
+  value: number | null;
+  date: string;
+  submitted: boolean;
+};
+
 type Summary = {
   avgPct: number;
-  winDays: number;
   submittedDays: number;
   bestPct: number;
   trend?: "up" | "down" | "flat";
@@ -25,16 +32,17 @@ type ClientProgressAnalyticsProps = {
   clientName: string;
 };
 
-const RANGE_OPTIONS = [30, 90] as const;
+const RANGE_OPTIONS = [7, 30, 90] as const;
 
 export function ClientProgressAnalytics({
   clientName,
 }: ClientProgressAnalyticsProps) {
-  const [range, setRange] = useState<(typeof RANGE_OPTIONS)[number]>(30);
+  const [range, setRange] = useState<(typeof RANGE_OPTIONS)[number]>(7);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [animated, setAnimated] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -69,92 +77,112 @@ export function ClientProgressAnalytics({
     };
   }, [range]);
 
-  const points = useMemo(() => {
-    if (!data?.series?.length) return [];
-    const width = 100;
-    const height = 100;
-    const padding = 10;
-    const maxX = width - padding;
-    const maxY = height - padding;
-    const minY = padding;
-    const count = data.series.length;
-    if (count === 1) {
-      const pct = Math.max(0, Math.min(100, data.series[0].pct));
-      const y = minY + (1 - pct / 100) * (maxY - minY);
-      const center = width / 2;
-      const offset = 12;
-      const left = Math.max(padding, center - offset);
-      const right = Math.min(maxX, center + offset);
-      return [
-        { x: left, y, isGhost: true },
-        { x: right, y, isGhost: false },
-      ];
-    }
-    return data.series.map((point, index) => {
-      const x = padding + (index / (count - 1)) * (maxX - padding);
-      const pct = Math.max(0, Math.min(100, point.pct));
-      const y = minY + (1 - pct / 100) * (maxY - minY);
-      return { x, y, isGhost: false };
+  useEffect(() => {
+    setHoverIndex(null);
+  }, [range, data?.series]);
+
+  const chart = {
+    width: 100,
+    height: 100,
+    paddingLeft: 4,
+    paddingRight: 4,
+    paddingTop: 8,
+    paddingBottom: 16,
+  } as const;
+
+  const timeline = useMemo(() => {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    return Array.from({ length: range }, (_, idx) => {
+      const d = new Date(today);
+      d.setUTCDate(d.getUTCDate() - (range - 1 - idx));
+      return d.toISOString().slice(0, 10);
     });
-  }, [data]);
+  }, [range]);
 
-  const path = useMemo(() => {
-    if (points.length === 0) return "";
-    return points
-      .map((point, index) => `${index === 0 ? "M" : "Q" } ${point.x} ${point.y}`)
-      .join(" ");
-  }, [points]);
+  const plotPoints = useMemo<PlotPoint[]>(() => {
+    const map = new Map(data?.series?.map((p) => [p.date, p.pct]) || []);
+    const spanX = chart.width - chart.paddingLeft - chart.paddingRight;
+    const spanY = chart.height - chart.paddingTop - chart.paddingBottom;
 
-  const smoothPath = useMemo(() => {
-    if (points.length < 2) return path;
-    let smoothedPath = `M ${points[0].x} ${points[0].y}`;
-    for (let i = 1; i < points.length; i++) {
-      const xMid = (points[i - 1].x + points[i].x) / 2;
-      const yMid = (points[i - 1].y + points[i].y) / 2;
-      smoothedPath += ` Q ${points[i - 1].x} ${points[i - 1].y} ${xMid} ${yMid}`;
+    return timeline.map((date, idx) => {
+      const pct = map.get(date);
+      const clamped = pct === undefined || pct === null ? null : Math.max(0, Math.min(100, pct));
+      const x = chart.paddingLeft + (idx / Math.max(1, timeline.length - 1)) * spanX;
+      const y = clamped === null ? chart.paddingTop + spanY : chart.paddingTop + (1 - clamped / 100) * spanY;
+      return { x, y, value: clamped, date, submitted: clamped !== null };
+    });
+  }, [chart.height, chart.paddingBottom, chart.paddingLeft, chart.paddingRight, chart.paddingTop, chart.width, data?.series, timeline]);
+
+  const segments = useMemo(() => {
+    const acc: PlotPoint[][] = [];
+    let current: PlotPoint[] = [];
+    plotPoints.forEach((pt) => {
+      if (pt.submitted) {
+        current.push(pt);
+      } else if (current.length) {
+        acc.push(current);
+        current = [];
+      }
+    });
+    if (current.length) acc.push(current);
+    return acc;
+  }, [plotPoints]);
+
+  const buildSmoothPath = (pts: { x: number; y: number }[]) => {
+    if (!pts.length) return "";
+    if (pts.length === 1) return `M ${pts[0].x} ${pts[0].y}`;
+    let smoothedPath = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 1; i < pts.length; i++) {
+      const xMid = (pts[i - 1].x + pts[i].x) / 2;
+      const yMid = (pts[i - 1].y + pts[i].y) / 2;
+      smoothedPath += ` Q ${pts[i - 1].x} ${pts[i - 1].y} ${xMid} ${yMid}`;
     }
-    smoothedPath += ` T ${points[points.length - 1].x} ${points[points.length - 1].y}`;
+    smoothedPath += ` T ${pts[pts.length - 1].x} ${pts[pts.length - 1].y}`;
     return smoothedPath;
-  }, [points, path]);
+  };
 
-  const winLine = useMemo(() => {
-    const height = 100;
-    const padding = 10;
-    const minY = padding;
-    const maxY = height - padding;
-    return minY + (1 - 0.6) * (maxY - minY);
-  }, []);
+  const linePath = useMemo(() => segments.map((seg) => buildSmoothPath(seg)).join(" "), [segments]);
 
-  // Generate weekday labels
-  const weekdayLabels = useMemo(() => {
-    if (!data?.series?.length) return [];
-    const labels = ["S", "M", "T", "W", "T", "F", "S"];
-    const result = [];
-    for (let i = 0; i < data.series.length; i++) {
-      const date = new Date(data.series[i].date);
-      const dayIndex = date.getDay();
-      result.push({
-        index: i,
-        label: labels[dayIndex],
-        date: data.series[i].date,
-      });
-    }
-    // Show every Nth label based on range to avoid crowding
-    const step = range === 90 ? Math.ceil(result.length / 6) : Math.ceil(result.length / 8);
-    return result.filter((_, i) => i % step === 0 || i === result.length - 1);
-  }, [data, range]);
+  const areaPath = useMemo(() => {
+    const baseY = chart.height - chart.paddingBottom;
+    return segments
+      .map((seg) => {
+        if (!seg.length) return "";
+        const path = buildSmoothPath(seg);
+        const first = seg[0];
+        const last = seg[seg.length - 1];
+        return `${path} L ${last.x} ${baseY} L ${first.x} ${baseY} Z`;
+      })
+      .join(" ");
+  }, [chart.height, chart.paddingBottom, segments]);
+
+  const yTicks = useMemo(() => [0, 25, 50, 75, 100], []);
+
+  const xTicks = useMemo(() => {
+    if (!timeline.length) return [];
+    const pick = [0, Math.floor((timeline.length - 1) / 2), timeline.length - 1];
+    const unique = Array.from(new Set(pick));
+    return unique.map((idx) => {
+      const date = new Date(`${timeline[idx]}T00:00:00Z`);
+      const label = `${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
+      return { idx, label };
+    });
+  }, [timeline]);
+
+  const hoveredPoint = hoverIndex !== null ? plotPoints[hoverIndex] : null;
 
   return (
     <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-white/40">
             Your journey
           </p>
           <h2 className="text-2xl font-semibold mt-1">You're showing up.</h2>
         </div>
-        <div className="inline-flex rounded-xl border border-white/15 bg-white/[0.02] p-1">
+        <div className="inline-flex w-fit gap-1 rounded-xl border border-white/15 bg-white/[0.02] p-1 mx-auto sm:mx-0">
           {RANGE_OPTIONS.map((value) => (
             <button
               key={value}
@@ -186,88 +214,177 @@ export function ClientProgressAnalytics({
             </p>
           ) : (
             <div className="space-y-6">
-              {/* Main SVG Graph */}
-              <div className="relative">
+              <div className="relative select-none w-full px-0">
                 <svg
                   viewBox="0 0 100 100"
-                  className="w-full h-48 transform-gpu"
-                  style={{ perspective: "1000px" }}
+                  className="w-full h-56 sm:h-60"
+                  role="img"
+                  aria-label="Completion over time"
                 >
-                  {/* Horizontal guideline (60% threshold) */}
+                  <defs>
+                    <linearGradient id="progress-gradient" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stopColor="rgba(255,255,255,0.24)" />
+                      <stop offset="90%" stopColor="rgba(255,255,255,0.02)" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Grid + axes */}
+                  {yTicks.map((tick) => {
+                    const y = chart.paddingTop + (1 - tick / 100) * (chart.height - chart.paddingTop - chart.paddingBottom);
+                    return (
+                      <g key={`y-${tick}`}>
+                        <line
+                          x1={chart.paddingLeft}
+                          x2={chart.width - chart.paddingRight}
+                          y1={y}
+                          y2={y}
+                          stroke="rgba(255,255,255,0.06)"
+                          strokeWidth="0.5"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                        <text
+                          x={chart.paddingLeft - 2}
+                          y={y + 1.5}
+                          textAnchor="end"
+                          fontSize="4"
+                          fill="rgba(255,255,255,0.45)"
+                        >
+                          {tick}%
+                        </text>
+                      </g>
+                    );
+                  })}
                   <line
-                    x1="8"
-                    x2="92"
-                    y1={winLine}
-                    y2={winLine}
-                    stroke="rgba(255,255,255,0.08)"
-                    strokeWidth="1"
+                    x1={chart.paddingLeft}
+                    x2={chart.width - chart.paddingRight}
+                    y1={chart.height - chart.paddingBottom}
+                    y2={chart.height - chart.paddingBottom}
+                    stroke="rgba(255,255,255,0.1)"
+                    strokeWidth="0.75"
                     vectorEffect="non-scaling-stroke"
                   />
 
-                  {/* Subtle top guideline */}
-                  <line
-                    x1="8"
-                    x2="92"
-                    y1="10"
-                    y2="10"
-                    stroke="rgba(255,255,255,0.04)"
-                    strokeWidth="1"
-                    vectorEffect="non-scaling-stroke"
-                  />
+                  {xTicks.map(({ idx, label }) => {
+                    const pt = plotPoints[idx];
+                    if (!pt) return null;
+                    return (
+                      <g key={`x-${idx}`}>
+                        <line
+                          x1={pt.x}
+                          x2={pt.x}
+                          y1={chart.height - chart.paddingBottom}
+                          y2={chart.height - chart.paddingBottom + 2}
+                          stroke="rgba(255,255,255,0.25)"
+                          strokeWidth="0.6"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                        <text
+                          x={pt.x}
+                          y={chart.height - chart.paddingBottom + 6}
+                          fontSize="4"
+                          textAnchor="middle"
+                          fill="rgba(255,255,255,0.55)"
+                        >
+                          {label}
+                        </text>
+                      </g>
+                    );
+                  })}
 
-                  {/* Main data line with animation */}
+                  {/* Area fill */}
                   <path
-                    d={smoothPath}
+                    d={areaPath}
+                    fill="url(#progress-gradient)"
+                    opacity={hoverIndex !== null ? 0.65 : 0.85}
+                  />
+
+                  {/* Main data line */}
+                  <path
+                    d={linePath}
                     fill="none"
-                    stroke="rgba(255,255,255,0.85)"
+                    stroke="rgba(255,255,255,0.9)"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     vectorEffect="non-scaling-stroke"
                     style={{
                       opacity: animated ? 1 : 0,
-                      transition: "opacity 600ms ease-out",
-                      strokeDasharray: animated ? "0" : "1000",
-                      strokeDashoffset: animated ? "0" : "1000",
-                      transitionProperty: "stroke-dashoffset, opacity",
-                      transitionDuration: "700ms, 600ms",
-                      transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1), ease-out",
+                      transition: "opacity 500ms ease-out",
                     }}
                   />
 
                   {/* Points */}
-                  {points.map((point, idx) => (
-                    <circle
-                      key={`point-${idx}`}
-                      cx={point.x}
-                      cy={point.y}
-                      r="2.5"
-                      fill={point.isGhost ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.9)"}
-                      style={{
-                        opacity: animated ? 1 : 0,
-                        transition: `opacity 600ms ease-out ${animated ? 200 + idx * 20 : 0}ms`,
-                        filter: "drop-shadow(0 0 1px rgba(255,255,255,0.4))",
-                      }}
+                  {plotPoints.map((point, idx) => {
+                    if (!point.submitted) return null;
+                    const active = hoverIndex === idx;
+                    return (
+                      <circle
+                        key={`point-${idx}`}
+                        cx={point.x}
+                        cy={point.y}
+                        r={active ? 3.8 : 2.6}
+                        fill={active ? "#fff" : "rgba(255,255,255,0.9)"}
+                        stroke={active ? "rgba(0,0,0,0.35)" : "transparent"}
+                        strokeWidth={active ? 0.6 : 0}
+                        style={{
+                          opacity: animated ? 1 : 0,
+                          transition: `transform 150ms ease, opacity 400ms ease-out ${animated ? 180 + idx * 16 : 0}ms`,
+                          transformOrigin: "center",
+                        }}
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    );
+                  })}
+
+                  {/* Hover line */}
+                  {hoveredPoint && (
+                    <line
+                      x1={hoveredPoint.x}
+                      x2={hoveredPoint.x}
+                      y1={chart.paddingTop}
+                      y2={chart.height - chart.paddingBottom}
+                      stroke="rgba(255,255,255,0.18)"
+                      strokeWidth="0.8"
+                      strokeDasharray="2 2"
                       vectorEffect="non-scaling-stroke"
                     />
-                  ))}
+                  )}
                 </svg>
+
+                {/* Interaction layer */}
+                <div
+                  className="absolute inset-0"
+                  onMouseMove={(event) => {
+                    const rect = event.currentTarget.getBoundingClientRect();
+                    const ratio = (event.clientX - rect.left) / rect.width;
+                    const idx = Math.round(Math.max(0, Math.min(1, ratio)) * (timeline.length - 1));
+                    setHoverIndex(idx);
+                  }}
+                  onMouseLeave={() => setHoverIndex(null)}
+                />
+
+                {/* Tooltip */}
+                {hoveredPoint && (
+                  <div
+                    className="pointer-events-none absolute"
+                    style={{
+                      left: `${(hoveredPoint.x / chart.width) * 100}%`,
+                      top: `${(hoveredPoint.y / chart.height) * 100}%`,
+                      transform: "translate(-50%, -120%)",
+                    }}
+                  >
+                    <div className="rounded-lg bg-black/80 px-3 py-2 text-xs text-white shadow-lg border border-white/10">
+                      <p className="font-semibold">{hoveredPoint.date}</p>
+                      <p className="mt-1">{hoveredPoint.submitted ? `${hoveredPoint.value}%` : "No entry"}</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* X-Axis Labels (Weekdays) */}
-              <div className="flex justify-between px-2 text-xs text-white/30 font-medium tracking-wider">
-                {weekdayLabels.map((label, idx) => (
-                  <span key={`label-${idx}`} className="opacity-60">
-                    {label.label}
-                  </span>
-                ))}
-              </div>
-
-              {/* Metrics Summary */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="text-center py-2">
-                  <p className="text-xs text-white/40 uppercase tracking-wider">Win days</p>
-                  <p className="text-2xl font-semibold mt-1">{data.summary.winDays}</p>
+                  <p className="text-xs text-white/40 uppercase tracking-wider">Avg</p>
+                  <p className="text-2xl font-semibold mt-1">{data.summary.avgPct}%</p>
                 </div>
                 <div className="text-center py-2">
                   <p className="text-xs text-white/40 uppercase tracking-wider">Submitted</p>
