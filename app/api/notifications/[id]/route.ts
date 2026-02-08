@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminSession, getClientSession, getHQSession } from "@/lib/auth";
 import { markNotificationRead } from "@/lib/notifications";
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   if (!id) return NextResponse.json({ message: "Notification id required" }, { status: 400 });
 
   try {
