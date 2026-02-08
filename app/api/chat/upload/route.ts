@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
-import crypto from "crypto";
 import { resolveChatAccess } from "@/lib/chat";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -26,19 +24,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "File too large. Max 5MB." }, { status: 413 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const fileName = `${Date.now()}-${file.name}`;
 
-    const ext = file.type.split("/")[1] || "bin";
-    const filename = `${Date.now()}-${crypto.randomBytes(8).toString("hex")}.${ext}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "chat");
-    await fs.mkdir(uploadDir, { recursive: true });
+    const { error: uploadError } = await supabaseAdmin.storage
+      .from("chat-images")
+      .upload(`chat/${fileName}`, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
 
-    const filePath = path.join(uploadDir, filename);
-    await fs.writeFile(filePath, buffer);
+    if (uploadError) {
+      throw uploadError;
+    }
 
-    const url = `/uploads/chat/${filename}`;
-    return NextResponse.json({ ok: true, url });
+    const { data: publicUrl } = supabaseAdmin.storage
+      .from("chat-images")
+      .getPublicUrl(`chat/${fileName}`);
+
+    return NextResponse.json({ ok: true, url: publicUrl.publicUrl });
   } catch (error: any) {
     console.error(error);
     const message = error?.message || "Unable to upload file.";
