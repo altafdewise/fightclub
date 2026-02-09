@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { supabaseClient } from "@/lib/supabaseClient";
 import { cn } from "@/utils/cn";
 
 type ChatRole = "client" | "trainer" | "hq";
@@ -64,6 +65,7 @@ export function ChatWindow({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const isHQ = viewerRole === "hq";
+  const supabase = supabaseClient;
 
   useEffect(() => {
     const loadMe = async () => {
@@ -99,6 +101,36 @@ export function ChatWindow({
     return next;
   };
 
+  const normalizeMessage = useCallback((incoming: any): Message => {
+    return {
+      id: incoming.id,
+      sender_id: incoming.sender_id,
+      sender_role: incoming.sender_role ?? incoming.sender_type ?? "client",
+      sender_type: incoming.sender_type ?? incoming.sender_role ?? "client",
+      client_temp_id: incoming.client_temp_id ?? null,
+      client_id: incoming.client_id ?? null,
+      trainer_id: incoming.trainer_id ?? null,
+      message_text: incoming.message_text ?? incoming.content ?? null,
+      image_url: incoming.image_url ?? null,
+      is_read: incoming.is_read ?? Boolean(incoming.read_at),
+      read_at: incoming.read_at ?? null,
+      created_at: incoming.created_at ?? new Date().toISOString(),
+      pending: false,
+    };
+  }, []);
+
+  const isMine = useCallback(
+    (msg: Message) => {
+      const effectiveRole = me?.role ?? viewerRole;
+      const senderRole = (msg.sender_type ?? msg.sender_role) as "client" | "trainer";
+      return (
+        (effectiveRole === "trainer" && senderRole === "trainer") ||
+        (effectiveRole === "client" && senderRole === "client")
+      );
+    },
+    [me?.role, viewerRole]
+  );
+
   const sortedMessages = useMemo(() => {
     return [...messages].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
   }, [messages]);
@@ -109,6 +141,42 @@ export function ChatWindow({
       markAsRead();
     }
   }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel(`conversation-${conversationId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${conversationId}` },
+        (payload) => {
+          const newMsg = normalizeMessage(payload.new);
+          setMessages((prev) => reconcileMessages(prev, [newMsg]));
+          scrollToBottom(true);
+          if (!isMine(newMsg)) {
+            markAsRead();
+          }
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "messages", filter: `conversation_id=eq.${conversationId}` },
+        (payload) => {
+          const updated = normalizeMessage(payload.new);
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === updated.id
+                ? { ...m, is_read: updated.is_read, read_at: updated.read_at, pending: false }
+                : m
+            )
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [conversationId, isMine, normalizeMessage, supabase]);
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -110,6 +110,27 @@ alter table messages add column if not exists client_temp_id text null;
 create index if not exists messages_conversation_created_idx
   on messages (conversation_id, created_at);
 
+-- Realtime and RLS for messages
+alter publication supabase_realtime add table messages;
+alter table if exists messages enable row level security;
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies where schemaname = 'public' and tablename = 'messages' and policyname = 'messages_select_participants'
+  ) then
+    create policy messages_select_participants on messages
+      for select
+      using (
+        exists (
+          select 1
+          from conversations c
+          where c.id = messages.conversation_id
+            and (c.client_id = auth.uid() or c.trainer_id = auth.uid())
+        )
+      );
+  end if;
+end$$;
+
 create table if not exists client_undertakings (
   id uuid primary key default gen_random_uuid(),
   client_id uuid not null unique references clients(id) on delete cascade,
