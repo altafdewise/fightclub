@@ -1,5 +1,10 @@
 {
-  "/api/portal/calendar/route": "app/api/portal/calendar/route.js",
+  "/api/me/route": "app/api/me/route.js",
+  "/api/chat/read/route": "app/api/chat/read/route.js",
+  "/api/chat/messages/route": "app/api/chat/messages/route.js",
+  "/api/chat/send/route": "app/api/chat/send/route.js",
+  "/page": "app/page.js",
   "/portal/page": "app/portal/page.js",
-  "/page": "app/page.js"
+  "/portal/messages/page": "app/portal/messages/page.js",
+  "/portal/history/page": "app/portal/history/page.js"
 }

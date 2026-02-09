@@ -6,6 +6,7 @@ import { cn } from "@/utils/cn";
 import { WeeklyCheckinCard } from "@/components/portal/WeeklyCheckinCard";
 import ProgressAnalyticsChart from "@/components/charts/ProgressAnalyticsChart";
 import { isSafeHttpUrl } from "@/utils/url";
+import { MessageCircle } from "lucide-react";
 
 type ChecklistItem = {
   id: string;
@@ -46,6 +47,7 @@ type ClientTodayProps = {
   isResetDetected?: boolean;
   weeklyStatus: WeeklyStatus;
   progressData?: { date: string; completion: number }[];
+  unreadMessages?: number;
 };
 
 type CalendarDay = {
@@ -82,6 +84,7 @@ export function ClientToday({
   isResetDetected,
   weeklyStatus,
   progressData,
+  unreadMessages = 0,
 }: ClientTodayProps) {
   const router = useRouter();
   const [items, setItems] = useState<ChecklistItem[]>(initialItems);
@@ -276,6 +279,18 @@ export function ClientToday({
           <p className="text-xs text-white/50 mt-2">{date}</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => router.push("/portal/messages")}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-400/30 bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition duration-150 hover:bg-white/[0.12] hover:border-amber-300/60 hover:shadow-[0_0_25px_rgba(255,200,120,0.35)]"
+          >
+            <span className="relative flex items-center justify-center">
+              <MessageCircle className="h-[18px] w-[18px] text-white" />
+              {unreadMessages > 0 && (
+                <span className="absolute -right-2 -top-2 h-3 w-3 rounded-full bg-red-500 animate-pulse" />
+              )}
+            </span>
+            <span>Messages</span>
+          </button>
           <button
             onClick={() => router.push("/portal/history")}
             className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.02] px-4 py-2.5 text-sm font-medium text-white/80 transition hover:bg-white/[0.06]"
