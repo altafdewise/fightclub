@@ -180,14 +180,6 @@ export function ChatWindow({
   }, [conversationId, isMine, normalizeMessage, supabase]);
 
   useEffect(() => {
-    fetchLatest();
-    const interval = setInterval(() => {
-      fetchLatest();
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [fetchLatest]);
-
-  useEffect(() => {
     if (!hasMounted) {
       scrollToBottom(false);
       setHasMounted(true);
@@ -243,6 +235,14 @@ export function ChatWindow({
       console.error(error);
     }
   }, [clientId, isNearBottom, reconcileMessages, trainerId, viewerRole]);
+
+  useEffect(() => {
+    fetchLatest();
+    const interval = setInterval(() => {
+      fetchLatest();
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [fetchLatest]);
 
   const loadOlder = async () => {
     if (!hasMore || loadingMore || sortedMessages.length === 0) return;
