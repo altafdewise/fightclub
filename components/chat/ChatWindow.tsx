@@ -148,7 +148,7 @@ export function ChatWindow({
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${conversationId}` },
-        (payload) => {
+        (payload: { new: any }) => {
           const newMsg = normalizeMessage(payload.new);
           setMessages((prev) => reconcileMessages(prev, [newMsg]));
           scrollToBottom(true);
@@ -160,7 +160,7 @@ export function ChatWindow({
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "messages", filter: `conversation_id=eq.${conversationId}` },
-        (payload) => {
+        (payload: { new: any }) => {
           const updated = normalizeMessage(payload.new);
           setMessages((prev) =>
             prev.map((m) =>
