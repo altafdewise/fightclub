@@ -64,6 +64,7 @@ export function ChatWindow({
   const [me, setMe] = useState<Me | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
   const isHQ = viewerRole === "hq";
   const supabase = supabaseClient;
 
@@ -84,7 +85,7 @@ export function ChatWindow({
     loadMe();
   }, [viewerRole]);
 
-  const reconcileMessages = (prev: Message[], incoming: Message[]) => {
+  const reconcileMessages = useCallback((prev: Message[], incoming: Message[]) => {
     if (!incoming.length) return prev;
     const next = [...prev];
     incoming.forEach((msg) => {
@@ -99,7 +100,7 @@ export function ChatWindow({
       }
     });
     return next;
-  };
+  }, []);
 
   const normalizeMessage = useCallback((incoming: any): Message => {
     return {
@@ -179,11 +180,12 @@ export function ChatWindow({
   }, [conversationId, isMine, normalizeMessage, supabase]);
 
   useEffect(() => {
+    fetchLatest();
     const interval = setInterval(() => {
       fetchLatest();
-    }, 4000);
+    }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchLatest]);
 
   useEffect(() => {
     if (!hasMounted) {
@@ -202,8 +204,16 @@ export function ChatWindow({
     if (!el) return;
     requestAnimationFrame(() => {
       el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "auto" });
+      bottomRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
     });
   };
+
+  const isNearBottom = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return true;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    return distanceFromBottom < 120;
+  }, []);
 
   const markAsRead = async () => {
     try {
@@ -218,22 +228,21 @@ export function ChatWindow({
     }
   };
 
-  const fetchLatest = async () => {
+  const fetchLatest = useCallback(async () => {
     try {
-      const res = await fetch(`/api/chat/messages?conversation_id=${conversationId}`, { cache: "no-store" });
+      const res = await fetch(`/api/messages/list?userId=${viewerRole === "trainer" ? clientId : trainerId}`, {
+        cache: "no-store",
+      });
       if (!res.ok) return;
       const data = await res.json();
-      if (data?.messages) {
-        setMessages((prev) => reconcileMessages(prev, data.messages));
-        setHasMore(data.hasMore);
-        setUnreadCount(data.unreadCount ?? 0);
-        setErrorMsg(null);
-        setShowScrollArrow(!userNearBottom);
+      if (Array.isArray(data)) {
+        setMessages((prev) => reconcileMessages(prev, data));
+        setShowScrollArrow(!isNearBottom());
       }
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [clientId, isNearBottom, reconcileMessages, trainerId, viewerRole]);
 
   const loadOlder = async () => {
     if (!hasMore || loadingMore || sortedMessages.length === 0) return;
@@ -266,8 +275,7 @@ export function ChatWindow({
       loadOlder();
     }
 
-    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-    const nearBottom = distanceFromBottom < 120;
+    const nearBottom = isNearBottom();
     setUserNearBottom(nearBottom);
     setShowScrollArrow(!nearBottom);
   };
@@ -515,6 +523,7 @@ export function ChatWindow({
                     </div>
                   );
                 })}
+                <div ref={bottomRef} className="h-1" />
               </div>
             </div>
 
