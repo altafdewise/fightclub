@@ -359,3 +359,27 @@ export async function listAssignedClientsWithUnread(trainerId: string) {
   );
   return rows.rows;
 }
+
+export async function getTotalUnreadForUser(params: { role: "client" | "trainer" | "hq"; userId: string }) {
+  if (params.role === "hq") return 0;
+
+  if (params.role === "client") {
+    const result = await query<{ count: string }>(
+      `SELECT COUNT(*)::int AS count
+       FROM messages m
+       JOIN conversations c ON c.id = m.conversation_id
+       WHERE c.client_id = $1 AND m.sender_role <> 'client' AND m.is_read = false`,
+      [params.userId]
+    );
+    return parseInt(result.rows[0]?.count || "0", 10);
+  }
+
+  const result = await query<{ count: string }>(
+    `SELECT COUNT(*)::int AS count
+     FROM messages m
+     JOIN conversations c ON c.id = m.conversation_id
+     WHERE c.trainer_id = $1 AND m.sender_role <> 'trainer' AND m.is_read = false`,
+    [params.userId]
+  );
+  return parseInt(result.rows[0]?.count || "0", 10);
+}

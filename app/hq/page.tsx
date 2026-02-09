@@ -1,6 +1,7 @@
 import { requireHQ } from "@/lib/auth";
 import { getClientsWithStats, getTrainerCount, getTrainersWithStats } from "@/lib/admin";
 import { HQDashboard } from "@/components/admin/HQDashboard";
+import { FloatingChatButton } from "@/components/FloatingChatButton";
 
 export default async function HQPage() {
   await requireHQ();
@@ -9,12 +10,15 @@ export default async function HQPage() {
   const trainers = await getTrainersWithStats();
 
   return (
-    <section className="section-space py-16">
-      <HQDashboard
-        initialClients={clients}
-        initialTrainerCount={trainersCount}
-        initialTrainers={trainers}
-      />
-    </section>
+    <>
+      <section className="section-space py-16">
+        <HQDashboard
+          initialClients={clients}
+          initialTrainerCount={trainersCount}
+          initialTrainers={trainers}
+        />
+      </section>
+      <FloatingChatButton role="hq" />
+    </>
   );
 }
