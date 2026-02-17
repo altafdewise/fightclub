@@ -1,11 +1,24 @@
 import { NextResponse } from "next/server";
-import { getAdminSession } from "@/lib/auth";
+import { getAdminSession, getHQSession } from "@/lib/auth";
 import { query, transaction } from "@/lib/db";
+import { requireAdminOrHQ } from "@/lib/server/requireAdminOrHQ";
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getAdminSession();
-  if (!session?.admin) {
+  const auth = await requireAdminOrHQ();
+  if (!auth.authorized) {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+  }
+
+  if (auth.role === "admin") {
+    const adminSession = await getAdminSession();
+    if (!adminSession?.admin) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
+  } else {
+    const hqSession = await getHQSession();
+    if (!hqSession?.hq) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
   }
 
   const { id } = await params;
@@ -59,9 +72,21 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
 }
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getAdminSession();
-  if (!session?.admin) {
+  const auth = await requireAdminOrHQ();
+  if (!auth.authorized) {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+  }
+
+  if (auth.role === "admin") {
+    const adminSession = await getAdminSession();
+    if (!adminSession?.admin) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
+  } else {
+    const hqSession = await getHQSession();
+    if (!hqSession?.hq) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
   }
 
   try {
@@ -93,9 +118,21 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 }
 
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getAdminSession();
-  if (!session?.admin) {
+  const auth = await requireAdminOrHQ();
+  if (!auth.authorized) {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+  }
+
+  if (auth.role === "admin") {
+    const adminSession = await getAdminSession();
+    if (!adminSession?.admin) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
+  } else {
+    const hqSession = await getHQSession();
+    if (!hqSession?.hq) {
+      return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+    }
   }
 
   try {

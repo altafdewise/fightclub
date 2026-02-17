@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createSession, sessionCookieOptions } from "@/lib/session";
+import { cookies } from "next/headers";
+import { createSession } from "@/lib/session";
 
 const HQ_PASSCODE = "brutal.fit@hq";
 
@@ -17,9 +18,15 @@ export async function POST(req: Request) {
 
     const session = await createSession({ type: "hq" });
 
-    const response = NextResponse.json({ ok: true });
-    response.cookies.set("hq_session", session.sessionToken, sessionCookieOptions());
-    return response;
+    const cookieStore = await cookies();
+    cookieStore.set("hq_session", session.sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Unable to login." }, { status: 500 });

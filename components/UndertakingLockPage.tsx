@@ -22,6 +22,7 @@ export function UndertakingLockPage({ client }: UndertakingLockPageProps) {
         try {
           const response = await fetch("/api/portal/undertaking/submit", {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               checkboxes: {

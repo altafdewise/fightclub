@@ -22,7 +22,10 @@ export function FloatingChatButton({ role }: { role: Role }) {
   useEffect(() => {
     const fetchUnread = async () => {
       try {
-        const res = await fetch("/api/messages/unread-count", { cache: "no-store" });
+        const res = await fetch("/api/messages/unread-count", {
+          cache: "no-store",
+          credentials: "include",
+        });
         if (!res.ok) return;
         const data = await res.json();
         if (typeof data?.unread === "number") {

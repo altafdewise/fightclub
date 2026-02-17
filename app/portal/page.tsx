@@ -32,6 +32,7 @@ export default async function PortalPage() {
   return (
     <section className="section-space py-16 space-y-6">
       <ClientToday
+        clientId={client.id}
         name={client.name}
         note={payload.note}
         items={payload.items}

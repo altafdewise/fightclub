@@ -51,9 +51,9 @@ export function ClientProgressAnalytics({
       setError(null);
       setAnimated(false);
       try {
-        const res = await fetch(
-          `/api/portal/analytics?range=${range}`
-        );
+        const res = await fetch(`/api/portal/analytics?range=${range}`, {
+          credentials: "include",
+        });
         if (!res.ok) {
           const payload = await res.json().catch(() => ({}));
           throw new Error(payload?.message || "Unable to load analytics.");

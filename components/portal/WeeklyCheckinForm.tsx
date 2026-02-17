@@ -52,6 +52,7 @@ export function WeeklyCheckinForm({ lastDate }: { lastDate?: string | null }) {
     try {
       const res = await fetch("/api/checkin/submit", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           weight: payload.weight,

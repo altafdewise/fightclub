@@ -6,16 +6,6 @@ export const SESSION_MAX_AGE = SESSION_DAYS * 24 * 60 * 60;
 
 export type SessionType = "admin" | "client" | "hq";
 
-export function sessionCookieOptions() {
-  return {
-    httpOnly: true,
-    sameSite: "lax" as const,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: SESSION_MAX_AGE,
-  };
-}
-
 export function createSessionExpiry() {
   return new Date(Date.now() + SESSION_MAX_AGE * 1000);
 }

@@ -12,12 +12,7 @@ const COOKIE_NAMES = {
 type AdminRow = { id: string; username: string };
 type ClientRow = { id: string; name: string; username: string; email?: string | null };
 
-async function getSessionByType(type: SessionType) {
-  const cookieName = type === "admin" ? COOKIE_NAMES.admin : type === "client" ? COOKIE_NAMES.client : COOKIE_NAMES.hq;
-  const cookieStore = await cookies();
-  const sessionToken = cookieStore.get(cookieName)?.value;
-  if (!sessionToken) return null;
-
+async function validateSession(sessionToken: string, type: SessionType) {
   const session = await query<{
     session_token: string;
     type: SessionType;
@@ -60,31 +55,40 @@ async function getSessionByType(type: SessionType) {
 }
 
 export async function requireAdmin() {
-  const session = await getSessionByType("admin");
+  const session = await getAdminSession();
   if (!session?.admin) redirect("/admin/login");
   return session.admin;
 }
 
 export async function requireClient() {
-  const session = await getSessionByType("client");
+  const session = await getClientSession();
   if (!session?.client) redirect("/portal/login");
   return session.client;
 }
 
 export async function requireHQ() {
-  const session = await getSessionByType("hq");
+  const session = await getHQSession();
   if (!session?.hq) redirect("/hq/login");
   return true;
 }
 
 export async function getAdminSession() {
-  return getSessionByType("admin");
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAMES.admin)?.value;
+  if (!token) return null;
+  return validateSession(token, "admin");
 }
 
 export async function getClientSession() {
-  return getSessionByType("client");
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAMES.client)?.value;
+  if (!token) return null;
+  return validateSession(token, "client");
 }
 
 export async function getHQSession() {
-  return getSessionByType("hq");
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAMES.hq)?.value;
+  if (!token) return null;
+  return validateSession(token, "hq");
 }

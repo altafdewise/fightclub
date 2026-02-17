@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { createSession, sessionCookieOptions } from "@/lib/session";
+import { createSession } from "@/lib/session";
 import { query } from "@/lib/db";
 
 export async function POST(req: Request) {
@@ -27,9 +28,15 @@ export async function POST(req: Request) {
 
     const session = await createSession({ type: "admin", adminId: admin.id });
 
-    const response = NextResponse.json({ ok: true });
-    response.cookies.set("admin_session", session.sessionToken, sessionCookieOptions());
-    return response;
+    const cookieStore = await cookies();
+    cookieStore.set("admin_session", session.sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Unable to login." }, { status: 500 });

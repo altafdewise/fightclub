@@ -70,7 +70,10 @@ export function ClientCheckinHistory({ clientId, isHQ = false }: ClientCheckinHi
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/admin/clients/${clientId}/checkins`, { cache: "no-store" });
+        const res = await fetch(`/api/admin/clients/${clientId}/checkins`, {
+          cache: "no-store",
+          credentials: "include",
+        });
         if (!res.ok) {
           const payload = await res.json().catch(() => ({}));
           throw new Error(payload?.message || "Unable to load check-ins");
@@ -94,6 +97,7 @@ export function ClientCheckinHistory({ clientId, isHQ = false }: ClientCheckinHi
     try {
       const res = await fetch(`/api/admin/checkins/${checkinId}/reply`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ feedback: draft }),
       });

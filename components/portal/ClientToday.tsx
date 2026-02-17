@@ -7,6 +7,8 @@ import { WeeklyCheckinCard } from "@/components/portal/WeeklyCheckinCard";
 import ProgressAnalyticsChart from "@/components/charts/ProgressAnalyticsChart";
 import { isSafeHttpUrl } from "@/utils/url";
 import { MessageCircle } from "lucide-react";
+import { renderTrainerNote } from "@/lib/notesRenderer";
+import { supabaseClient } from "@/lib/supabaseClient";
 
 type ChecklistItem = {
   id: string;
@@ -38,6 +40,7 @@ type WeeklyStatus = {
 type RangeOption = "7D" | "30D" | "90D";
 
 type ClientTodayProps = {
+  clientId: string;
   name: string;
   note: string;
   items: ChecklistItem[];
@@ -75,18 +78,19 @@ const MONTHS = [
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function ClientToday({
+  clientId,
   name,
   note,
   items: initialItems,
   date,
   summary: initialSummary,
   streaks: initialStreaks,
-  isResetDetected,
   weeklyStatus,
   progressData,
   unreadMessages = 0,
 }: ClientTodayProps) {
   const router = useRouter();
+  const [trainerNote, setTrainerNote] = useState(note);
   const [items, setItems] = useState<ChecklistItem[]>(initialItems);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [summary, setSummary] = useState<DaySummary>(initialSummary);
@@ -148,19 +152,38 @@ export function ClientToday({
     return { average, submitted, best };
   }, [displayedProgressData]);
 
-  // Detect if daily reset occurred (data is stale)
   useEffect(() => {
-    if (isResetDetected) {
-      console.log("[RESET DETECTED] Daily reset occurred, reloading page...");
-      window.location.reload();
-    }
-  }, [isResetDetected]);
+    const supabase = supabaseClient;
+    const channel = supabase
+      .channel(`trainer-notes-${clientId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "trainer_notes", filter: `client_id=eq.${clientId}` },
+        (payload: any) => {
+          setTrainerNote(payload.new?.note ?? "");
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "trainer_notes", filter: `client_id=eq.${clientId}` },
+        (payload: any) => {
+          setTrainerNote(payload.new?.note ?? "");
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [clientId]);
 
   useEffect(() => {
     let alive = true;
     const loadCalendar = async () => {
       try {
-        const res = await fetch(`/api/portal/calendar?month=${calendarMonth}`);
+        const res = await fetch(`/api/portal/calendar?month=${calendarMonth}`, {
+          credentials: "include",
+        });
         if (!res.ok) return;
         const data = await res.json();
         if (!alive) return;
@@ -209,6 +232,7 @@ export function ClientToday({
     try {
       const res = await fetch("/api/portal/today/check", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itemId: item.id, checked: nextChecked }),
       });
@@ -226,7 +250,7 @@ export function ClientToday({
   };
 
   const handleLogout = async () => {
-    await fetch("/api/portal/logout", { method: "POST" });
+    await fetch("/api/portal/logout", { method: "POST", credentials: "include" });
     router.push("/portal/login");
   };
 
@@ -234,7 +258,10 @@ export function ClientToday({
     if (summary.isSubmitted || submitting) return;
     setSubmitting(true);
     try {
-      const res = await fetch("/api/portal/submit-day", { method: "POST" });
+      const res = await fetch("/api/portal/submit-day", {
+        method: "POST",
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Unable to submit.");
       }
@@ -325,9 +352,16 @@ export function ClientToday({
 
       <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-4">
         <h2 className="text-xl font-semibold">Trainer Note</h2>
-        <p className="text-sm text-white/70 leading-relaxed">
-          {note ? note : "No note added yet. Check back soon for your updated guidance."}
-        </p>
+        {trainerNote ? (
+          <div
+            className="prose prose-invert max-w-none trainer-note"
+            dangerouslySetInnerHTML={{ __html: renderTrainerNote(trainerNote) }}
+          />
+        ) : (
+          <p className="text-sm text-white/70 leading-relaxed">
+            No note added yet. Check back soon for your updated guidance.
+          </p>
+        )}
       </div>
 
       <div className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-xl p-6 md:p-8 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] space-y-5">

@@ -52,12 +52,13 @@ export async function POST(req: NextRequest) {
 
     // Notify trainer if available
     if (checkin.trainer_id) {
-      const trainer = await query<{ email?: string | null; username?: string | null }>(
-        `SELECT email, username FROM admins WHERE id = $1 LIMIT 1`,
+      // Admins table does not have an email column; fetch username only.
+      const trainer = await query<{ username?: string | null }>(
+        `SELECT username FROM admins WHERE id = $1 LIMIT 1`,
         [checkin.trainer_id]
       );
       const clientName = session.client.name || "Client";
-      const trainerEmail = trainer.rows[0]?.email;
+      const trainerEmail = null;
 
       // In-app notification
       await createNotification({
@@ -69,17 +70,7 @@ export async function POST(req: NextRequest) {
         link: `/trainer/checkins/${checkin.id}`,
       }).catch((err) => console.error("Failed to create trainer check-in notification", err));
 
-      // Email if possible
-      if (trainerEmail && process.env.RESEND_API_KEY && process.env.FROM_EMAIL) {
-        await resend.emails
-          .send({
-            from: process.env.FROM_EMAIL,
-            to: trainerEmail,
-            subject: `New weekly check-in submitted by ${clientName}`,
-            html: `<p>${clientName} submitted a new weekly check-in.</p><p><a href="${process.env.NEXT_PUBLIC_APP_URL || ""}/trainer/checkins/${checkin.id}">Review check-in</a></p>`,
-          })
-          .catch((err) => console.error("Failed to send trainer notification", err));
-      }
+      // Email notification skipped because admins table has no email column.
     }
 
     return NextResponse.json({ ok: true, checkin });

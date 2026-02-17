@@ -22,7 +22,7 @@ export function TrainerDashboard({ trainerName, initialClients }: TrainerDashboa
   const clients = initialClients;
 
   const handleLogout = async () => {
-    await fetch("/api/admin/logout", { method: "POST" });
+    await fetch("/api/admin/logout", { method: "POST", credentials: "include" });
     router.push("/admin/login");
   };
 

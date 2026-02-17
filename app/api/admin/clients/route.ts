@@ -1,24 +1,52 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { getAdminSession } from "@/lib/auth";
+import { getAdminSession, getHQSession } from "@/lib/auth";
 import { getClientsWithStats } from "@/lib/admin";
 import { query } from "@/lib/db";
 import { ensureConversation } from "@/lib/chat";
+import { requireAdminOrHQ } from "@/lib/server/requireAdminOrHQ";
 
 export async function GET() {
-  const session = await getAdminSession();
-  if (!session?.admin) {
-    return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+  const auth = await requireAdminOrHQ();
+  if (!auth.authorized) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  const clients = await getClientsWithStats(session.admin.id);
+  if (auth.role === "admin") {
+    const adminSession = await getAdminSession();
+    if (!adminSession?.admin) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const clients = await getClientsWithStats(adminSession.admin.id);
+    return NextResponse.json({ clients });
+  }
+
+  const hqSession = await getHQSession();
+  if (!hqSession?.hq) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const clients = await getClientsWithStats();
   return NextResponse.json({ clients });
 }
 
 export async function POST(req: Request) {
-  const session = await getAdminSession();
-  if (!session?.admin) {
-    return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
+  const auth = await requireAdminOrHQ();
+  if (!auth.authorized) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  if (auth.role === "admin") {
+    const adminSession = await getAdminSession();
+    if (!adminSession?.admin) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+  } else {
+    const hqSession = await getHQSession();
+    if (!hqSession?.hq) {
+      return new Response("Unauthorized", { status: 401 });
+    }
   }
 
   try {

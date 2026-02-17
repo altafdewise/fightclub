@@ -72,7 +72,7 @@ export function ChatWindow({
     const loadMe = async () => {
       try {
         const endpoint = viewerRole === "trainer" ? "/api/auth/me" : "/api/me";
-        const res = await fetch(endpoint, { cache: "no-store" });
+        const res = await fetch(endpoint, { cache: "no-store", credentials: "include" });
         if (!res.ok) return;
         const data = await res.json();
         if (data?.role && data?.id) {
@@ -211,6 +211,7 @@ export function ChatWindow({
     try {
       await fetch("/api/chat/read", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ conversation_id: conversationId }),
       });
@@ -224,6 +225,7 @@ export function ChatWindow({
     try {
       const res = await fetch(`/api/messages/list?userId=${viewerRole === "trainer" ? clientId : trainerId}`, {
         cache: "no-store",
+        credentials: "include",
       });
       if (!res.ok) return;
       const data = await res.json();
@@ -238,10 +240,6 @@ export function ChatWindow({
 
   useEffect(() => {
     fetchLatest();
-    const interval = setInterval(() => {
-      fetchLatest();
-    }, 2000);
-    return () => clearInterval(interval);
   }, [fetchLatest]);
 
   const loadOlder = async () => {
@@ -251,7 +249,7 @@ export function ChatWindow({
       const oldest = sortedMessages[0];
       const res = await fetch(
         `/api/chat/messages?conversation_id=${conversationId}&cursor=${encodeURIComponent(oldest.created_at)}`,
-        { cache: "no-store" }
+        { cache: "no-store", credentials: "include" }
       );
       if (res.ok) {
         const data = await res.json();
@@ -312,6 +310,7 @@ export function ChatWindow({
     try {
       const res = await fetch("/api/chat/send", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           conversation_id: conversationId,
@@ -352,6 +351,7 @@ export function ChatWindow({
       formData.append("file", file);
       const res = await fetch("/api/chat/upload", {
         method: "POST",
+        credentials: "include",
         body: formData,
       });
       if (!res.ok) {
@@ -361,6 +361,7 @@ export function ChatWindow({
       const data = await res.json();
       const resSend = await fetch("/api/chat/send", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           conversation_id: conversationId,

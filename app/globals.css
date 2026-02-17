@@ -195,3 +195,32 @@ select option:checked {
   }
 }
 
+.trainer-note h2 {
+  font-size: 16px;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  color: #d4af37;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.trainer-note ul {
+  padding-left: 18px;
+  margin-bottom: 14px;
+}
+
+.trainer-note li {
+  margin-bottom: 6px;
+  color: #d1d5db;
+}
+
+.trainer-note p {
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+.trainer-note strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+

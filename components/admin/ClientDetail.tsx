@@ -53,6 +53,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
     try {
       const res = await fetch(`/api/admin/clients/${client.id}/exercises`, {
         method: "PUT",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items: nextItems }),
       });
@@ -87,6 +88,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
     try {
       const res = await fetch(`/api/admin/clients/${client.id}`, {
         method: "PATCH",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ trainerDietNote: note }),
       });
@@ -109,7 +111,9 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
     setDownloadingUndertaking(true);
     setError(null);
     try {
-      const res = await fetch("/api/portal/undertaking/download");
+      const res = await fetch("/api/portal/undertaking/download", {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Failed to download undertaking.");
       }
@@ -161,12 +165,18 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
 
       <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-4">
         <h2 className="text-xl font-semibold">Trainer Note</h2>
+        <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-xs text-white/70 space-y-1">
+          <p className="font-semibold text-white/80">Formatting tips:</p>
+          <p>• ## Section Title</p>
+          <p>• - bullet point</p>
+          <p>• **bold text**</p>
+        </div>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
           rows={6}
           className="w-full rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
-          placeholder="Add a concise nutrition note for the client."
+          placeholder="Write instructions using:\n\nUse '-' for bullet points\nUse '##' for section titles\nExample:\n\nDiet\n\n3L water\n\n150g protein"
         />
         <button
           onClick={saveNote}

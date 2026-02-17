@@ -12,7 +12,9 @@ export function DownloadAgreement() {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/portal/undertaking/download");
+      const response = await fetch("/api/portal/undertaking/download", {
+        credentials: "include",
+      });
 
       if (!response.ok) {
         const data = await response.json();

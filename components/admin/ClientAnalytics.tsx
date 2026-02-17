@@ -112,7 +112,9 @@ export function ClientAnalytics({ clientId }: ClientAnalyticsProps) {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/admin/clients/${clientId}/analytics?range=${range}`);
+        const res = await fetch(`/api/admin/clients/${clientId}/analytics?range=${range}`, {
+          credentials: "include",
+        });
         if (!res.ok) {
           const payload = await res.json().catch(() => ({}));
           throw new Error(payload?.message || "Unable to load analytics.");

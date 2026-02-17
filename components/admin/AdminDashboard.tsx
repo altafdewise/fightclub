@@ -40,6 +40,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
     try {
       const res = await fetch("/api/admin/clients", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
@@ -59,7 +60,7 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
   };
 
   const handleLogout = async () => {
-    await fetch("/api/admin/logout", { method: "POST" });
+    await fetch("/api/admin/logout", { method: "POST", credentials: "include" });
     router.push("/admin/login");
   };
 
@@ -69,7 +70,10 @@ export function AdminDashboard({ adminName, initialClients }: AdminDashboardProp
     setError(null);
     setDeletingId(clientId);
     try {
-      const res = await fetch(`/api/admin/clients/${clientId}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/clients/${clientId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Unable to delete client.");

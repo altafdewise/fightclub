@@ -30,7 +30,7 @@ type HQDashboardProps = {
 export function HQDashboard({ initialClients, initialTrainerCount, initialTrainers }: HQDashboardProps) {
   const router = useRouter();
   const clients = initialClients;
-  const trainers = initialTrainers;
+  const [trainers, setTrainers] = useState(initialTrainers);
   const [trainerCount, setTrainerCount] = useState(initialTrainerCount);
 
   const [clientForm, setClientForm] = useState({
@@ -60,6 +60,7 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
     try {
       const res = await fetch("/api/admin/clients", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: clientForm.name,
@@ -92,17 +93,28 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
     try {
       const res = await fetch("/api/hq/trainers", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(trainerForm),
       });
 
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Unable to create trainer.");
       }
-
       setTrainerForm({ username: "", passcode: "" });
-      setTrainerCount(trainerCount + 1);
+      setTrainerCount((prev) => prev + 1);
+      if (data?.trainer?.id && data?.trainer?.username) {
+        setTrainers((prev) => [
+          ...prev,
+          {
+            id: data.trainer.id,
+            username: data.trainer.username,
+            joinedDate: new Date().toISOString(),
+          },
+        ]);
+      }
+      router.refresh();
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -111,7 +123,7 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
   };
 
   const handleLogout = async () => {
-    await fetch("/api/hq/logout", { method: "POST" });
+    await fetch("/api/hq/logout", { method: "POST", credentials: "include" });
     router.push("/hq/login");
   };
 
@@ -121,7 +133,10 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
     setError(null);
     setDeletingId(clientId);
     try {
-      const res = await fetch(`/api/admin/clients/${clientId}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/clients/${clientId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Unable to delete client.");
@@ -140,12 +155,16 @@ export function HQDashboard({ initialClients, initialTrainerCount, initialTraine
     setError(null);
     setDeletingId(trainerId);
     try {
-      const res = await fetch(`/api/hq/trainers/${trainerId}`, { method: "DELETE" });
+      const res = await fetch(`/api/hq/trainers/${trainerId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Unable to delete trainer.");
       }
-      setTrainerCount(trainerCount - 1);
+      setTrainerCount((prev) => Math.max(prev - 1, 0));
+      setTrainers((prev) => prev.filter((trainer) => trainer.id !== trainerId));
       router.refresh();
     } catch (err: any) {
       setError(err.message || "Something went wrong.");

@@ -1,6 +1,6 @@
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-let browserSupabase: ReturnType<typeof createBrowserClient> | null = null;
+let browserSupabase: SupabaseClient | null = null;
 
 export function getSupabaseClient() {
   if (!browserSupabase) {
@@ -8,10 +8,18 @@ export function getSupabaseClient() {
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!url || !anonKey) {
-      throw new Error("Supabase URL and anon key are required. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+      throw new Error(
+        "Supabase URL and anon key are required. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY."
+      );
     }
 
-    browserSupabase = createBrowserClient(url, anonKey);
+    browserSupabase = createClient(url, anonKey, {
+      realtime: {
+        params: {
+          eventsPerSecond: 5,
+        },
+      },
+    });
   }
   return browserSupabase;
 }

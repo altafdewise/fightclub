@@ -20,6 +20,7 @@ export function CheckinReply({ checkinId, disabled = false }: Props) {
     try {
       const res = await fetch("/api/checkin/reply", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ checkinId, feedback }),
       });

@@ -1,7 +1,6 @@
 import { requireHQ } from "@/lib/auth";
 import { getClientsWithStats, getTrainerCount, getTrainersWithStats } from "@/lib/admin";
 import { HQDashboard } from "@/components/admin/HQDashboard";
-import { FloatingChatButton } from "@/components/FloatingChatButton";
 
 export default async function HQPage() {
   await requireHQ();
@@ -18,7 +17,6 @@ export default async function HQPage() {
           initialTrainers={trainers}
         />
       </section>
-      <FloatingChatButton role="hq" />
     </>
   );
 }
