@@ -1,2 +1,28 @@
-[00:00:03.804] Server  LOG     ✓ Ready in 3.2s
-[00:00:13.305] Server  LOG     ○ Compiling /hq ...
+[00:00:04.177] Server  LOG     ✓ Ready in 3.5s
+[00:00:07.358] Server  LOG     ○ Compiling / ...
+[00:00:21.454] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:27.121] Server  LOG     ○ Compiling /hq ...
+[00:00:32.177] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:42.646] Server  LOG     ○ Compiling /hq/clients/[id] ...
+[00:00:50.678] Server  ERROR   ⨯ error: operator does not exist: text >= timestamp without time zone
+[00:00:50.873] Browser ERROR   uncaughtError: error: operator does not exist: text >= timestamp without time zone
+[00:01:22.915] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:26.545] Server  LOG     ○ Compiling /api/admin/clients/[id]/analytics ...
+[00:05:40.708] Server  LOG     ○ Compiling /api/admin/clients/[id]/analytics ...
+[00:13:44.954] Server  ERROR   ⨯ error: operator does not exist: text = date
+[00:13:49.316] Server  ERROR   ⨯ error: operator does not exist: text = date
+[00:14:04.706] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:08.033] Server  LOG     ○ Compiling /api/admin/clients/[id]/analytics ...
+[00:14:11.999] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:13.797] Server  ERROR   ⨯ error: operator does not exist: text = date
+[00:19:14.387] Browser ERROR   uncaughtError: Error: Objects are not valid as a React child (found: [object Date]). If you meant to render a collection of children, use an array instead.
+[00:19:18.020] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:19:19.551] Server  ERROR   ⨯ error: time zone "gmt+0530" not recognized
+[00:19:25.713] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:19:27.924] Browser ERROR   uncaughtError: Error: Objects are not valid as a React child (found: [object Date]). If you meant to render a collection of children, use an array instead.
+[00:19:29.278] Server  LOG     ○ Compiling /api/admin/clients/[id]/analytics ...
+[00:19:39.431] Server  ERROR   ⨯ error: time zone "gmt+0530" not recognized
+[00:19:40.970] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:20:22.126] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:20:26.928] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[00:20:47.236] Server  LOG     ○ Compiling /portal ...

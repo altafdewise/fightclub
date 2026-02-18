@@ -73,6 +73,24 @@ export async function getClientDetail(clientId: string) {
   );
 
   if (clientResult.rows.length === 0) return null;
+  
+  const history = await query<{
+    date: string | Date;
+    total: number;
+    checked: number;
+  }>(
+    `SELECT to_char(dc.date::date, 'YYYY-MM-DD') AS date,
+            COUNT(dci.id)::int AS total,
+            COALESCE(SUM(CASE WHEN dci.checked THEN 1 ELSE 0 END),0)::int AS checked
+     FROM daily_checklists dc
+     LEFT JOIN daily_checklist_items dci ON dci.daily_checklist_id = dc.id
+     WHERE dc.client_id = $1
+       AND dc.date <> 'template'
+       AND dc.date::date >= (CURRENT_DATE - INTERVAL '30 days')
+     GROUP BY dc.date::date
+     ORDER BY dc.date::date DESC`,
+    [clientId]
+  );
 
   const today = todayKey();
   const checklist = await query<{ id: string }>(
@@ -103,6 +121,15 @@ export async function getClientDetail(clientId: string) {
       sortOrder: row.sort_order,
       videoUrl: row.video_url ?? null,
     })),
+    checklistHistory: history.rows.map((row) => {
+      const dateStr = typeof row.date === "string"
+        ? row.date
+        : new Date(row.date as Date).toISOString().slice(0, 10);
+      const total = row.total || 0;
+      const checked = row.checked || 0;
+      const completion = total > 0 ? Math.round((checked / total) * 100) : 0;
+      return { date: dateStr, totalItems: total, completedItems: checked, completionPct: completion };
+    }),
   };
 }
 

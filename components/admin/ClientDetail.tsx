@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { ClientAnalytics } from "@/components/admin/ClientAnalytics";
 import { ClientCheckinHistory } from "@/components/admin/ClientCheckinHistory";
+import { useEffect } from "react";
 
 type ExerciseItem = {
   id: string;
@@ -20,6 +21,12 @@ type ClientDetailProps = {
     username: string;
     trainerDietNote: string | null;
     exerciseItems: ExerciseItem[];
+    checklistHistory?: {
+      date: string;
+      totalItems: number;
+      completedItems: number;
+      completionPct: number;
+    }[];
   };
   isHQ?: boolean;
 };
@@ -38,6 +45,13 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
   const [savingItems, setSavingItems] = useState(false);
   const [downloadingUndertaking, setDownloadingUndertaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const history = client.checklistHistory ?? [];
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyTitle, setHistoryTitle] = useState("");
+  const [historyItems, setHistoryItems] = useState<
+    { label: string; sortOrder: number; checked: boolean; videoUrl: string | null }[]
+  >([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   const moveItem = (index: number, direction: number) => {
     const nextIndex = index + direction;
@@ -80,6 +94,27 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
     if (!trimmed) return;
     setItems((prev) => [...prev, { label: trimmed, videoUrl: "" }]);
     setNewItem("");
+  };
+
+  const openHistoryDay = async (date: string) => {
+    setHistoryLoading(true);
+    setHistoryItems([]);
+    setHistoryTitle(date);
+    setHistoryOpen(true);
+    try {
+      const res = await fetch(`/api/admin/clients/${client.id}/history?date=${encodeURIComponent(date)}`);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.message || "Unable to load history");
+      }
+      const data = await res.json();
+      setHistoryItems(data.items || []);
+      setHistoryTitle(date);
+    } catch (err: any) {
+      setError(err.message || "Unable to load history");
+    } finally {
+      setHistoryLoading(false);
+    }
   };
 
   const saveNote = async () => {
@@ -191,6 +226,109 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
       </div>
 
       <ClientCheckinHistory clientId={client.id} isHQ={isHQ} />
+
+      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-5">
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted">History</p>
+            <h2 className="text-xl font-semibold">Past 30 days checklist</h2>
+          </div>
+          <span className="text-sm text-white/60">{history.length} days</span>
+        </div>
+        {history.length === 0 ? (
+          <p className="text-sm text-white/60">No checklist history found.</p>
+        ) : (
+          <div className="space-y-3">
+            {history.map((day) => {
+              const dateObj = new Date(day.date);
+              const label = dateObj.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              });
+              return (
+                <div
+                  key={day.date}
+                  className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 space-y-2"
+                >
+                  <div className="flex items-center justify-between text-sm text-white/80">
+                    <span className="font-semibold">{label}</span>
+                    <span className="text-white/60">
+                      {day.completedItems}/{day.totalItems} completed
+                    </span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      className="h-full bg-white transition-all"
+                      style={{ width: `${day.completionPct}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-white/60">
+                    <span>{day.completionPct}%</span>
+                    <button
+                      type="button"
+                      onClick={() => openHistoryDay(day.date)}
+                      className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-white transition hover:bg-white/[0.08]"
+                    >
+                      View
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {historyOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-xl rounded-2xl border border-white/15 bg-[#0b0e14] p-6 shadow-2xl">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.18em] text-white/50">Checklist</p>
+                <h3 className="text-lg font-semibold text-white">{historyTitle}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setHistoryOpen(false)}
+                className="rounded-lg border border-white/10 px-3 py-1.5 text-sm text-white/80 hover:bg-white/[0.06]"
+              >
+                Close
+              </button>
+            </div>
+            {historyLoading ? (
+              <p className="text-sm text-white/60">Loading...</p>
+            ) : historyItems.length === 0 ? (
+              <p className="text-sm text-white/60">No items for this day.</p>
+            ) : (
+              <div className="space-y-3">
+                {historyItems.map((item, idx) => (
+                  <div
+                    key={`${item.label}-${idx}`}
+                    className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
+                  >
+                    <div>
+                      <p className="text-sm text-white/90">{item.label}</p>
+                      {item.videoUrl && (
+                        <a
+                          className="text-xs text-amber-300 hover:underline"
+                          href={item.videoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Video
+                        </a>
+                      )}
+                    </div>
+                    <span className="text-xs px-2 py-1 rounded-full border border-white/10 text-white/70">
+                      {item.checked ? "Completed" : "Pending"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <ClientAnalytics clientId={client.id} />
 

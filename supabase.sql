@@ -1,5 +1,38 @@
 create extension if not exists pgcrypto;
 
+-- Daily exercise checklists
+create table if not exists daily_checklists (
+  id uuid primary key default gen_random_uuid(),
+  client_id uuid not null references clients(id) on delete cascade,
+  date text not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint daily_checklists_client_date_unique unique (client_id, date),
+  constraint daily_checklists_date_format check (
+    date = 'template' or date ~ '^\d{4}-\d{2}-\d{2}$'
+  )
+);
+
+create index if not exists daily_checklists_client_date_idx
+  on daily_checklists (client_id, date);
+
+create index if not exists daily_checklists_date_idx
+  on daily_checklists (date);
+
+create table if not exists daily_checklist_items (
+  id uuid primary key default gen_random_uuid(),
+  daily_checklist_id uuid not null references daily_checklists(id) on delete cascade,
+  label text not null,
+  sort_order int not null default 0,
+  checked boolean not null default false,
+  video_url text null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists daily_checklist_items_checklist_idx
+  on daily_checklist_items (daily_checklist_id);
+
 create table if not exists client_day_summaries (
   id uuid primary key default gen_random_uuid(),
   client_id uuid not null,
