@@ -28,35 +28,35 @@ export async function POST(req: Request) {
     const clientSession = await getClientSession();
     const hqSession = await getHQSession();
 
-    let senderRole: "client" | "trainer" | null = null;
-    let senderId: string | null = null;
+      let senderType: "client" | "trainer" | null = null;
+      let senderId: string | null = null;
 
     if (clientSession?.client && conversation.client_id === clientSession.client.id) {
-      senderRole = "client";
+        senderType = "client";
       senderId = clientSession.client.id;
     } else if (adminSession?.admin && conversation.trainer_id === adminSession.admin.id) {
-      senderRole = "trainer";
+        senderType = "trainer";
       senderId = adminSession.admin.id;
     } else if (hqSession?.hq) {
       return NextResponse.json({ message: "HQ cannot send messages." }, { status: 403 });
     }
 
-    if (!senderRole || !senderId) {
+      if (!senderType || !senderId) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const message = await insertMessage({
       conversationId,
       senderId,
-      senderRole,
+        senderType,
       clientId: conversation.client_id,
       clientTempId,
       trainerId: conversation.trainer_id,
-      messageText,
+        content: messageText,
       imageUrl,
     });
 
-    await markMessagesRead(conversationId, senderRole);
+      await markMessagesRead(conversationId, { type: senderType, id: senderId });
 
     // Notify the other party
     try {

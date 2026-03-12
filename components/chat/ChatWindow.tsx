@@ -8,13 +8,14 @@ type ChatRole = "client" | "trainer" | "hq";
 
 type Message = {
   id: string;
-  sender_id?: string;
-  sender_role: ChatRole;
-  sender_type?: "client" | "trainer";
+  sender_id: string | null;
+  sender_role?: ChatRole;
+  sender_type: "client" | "trainer";
+  content: string | null;
   client_temp_id?: string | null;
   client_id?: string | null;
   trainer_id?: string | null;
-  message_text: string | null;
+  message_text?: string | null;
   image_url: string | null;
   is_read: boolean;
   read_at?: string | null;
@@ -22,9 +23,9 @@ type Message = {
   pending?: boolean;
 };
 
-type Me = {
-  role: ChatRole;
+type CurrentUser = {
   id: string;
+  type: "client" | "trainer";
 };
 
 type ChatWindowProps = {
@@ -36,6 +37,7 @@ type ChatWindowProps = {
   initialMessages: Message[];
   initialUnreadCount: number;
   initialHasMore?: boolean;
+  initialCurrentUser: CurrentUser | null;
 };
 
 export function ChatWindow({
@@ -47,6 +49,7 @@ export function ChatWindow({
   initialMessages,
   initialUnreadCount,
   initialHasMore,
+  initialCurrentUser,
 }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [hasMore, setHasMore] = useState(initialHasMore ?? true);
@@ -61,29 +64,12 @@ export function ChatWindow({
   const [showScrollArrow, setShowScrollArrow] = useState(false);
   const [userNearBottom, setUserNearBottom] = useState(true);
   const [hasMounted, setHasMounted] = useState(false);
-  const [me, setMe] = useState<Me | null>(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(initialCurrentUser);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const isHQ = viewerRole === "hq";
   const supabase = supabaseClient;
-
-  useEffect(() => {
-    const loadMe = async () => {
-      try {
-        const endpoint = viewerRole === "trainer" ? "/api/auth/me" : "/api/me";
-        const res = await fetch(endpoint, { cache: "no-store", credentials: "include" });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data?.role && data?.id) {
-          setMe(data as Me);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    loadMe();
-  }, [viewerRole]);
 
   const reconcileMessages = useCallback((prev: Message[], incoming: Message[]) => {
     if (!incoming.length) return prev;
@@ -103,15 +89,24 @@ export function ChatWindow({
   }, []);
 
   const normalizeMessage = useCallback((incoming: any): Message => {
+    const senderType = (incoming.sender_type ?? incoming.sender_role ?? "client") as "client" | "trainer";
+    const senderId =
+      incoming.sender_id ??
+      (senderType === "client" ? incoming.client_id : incoming.trainer_id) ??
+      incoming.client_id ??
+      incoming.trainer_id ??
+      null;
+
     return {
       id: incoming.id,
-      sender_id: incoming.sender_id,
-      sender_role: incoming.sender_role ?? incoming.sender_type ?? "client",
-      sender_type: incoming.sender_type ?? incoming.sender_role ?? "client",
+      sender_id: senderId,
+      sender_role: incoming.sender_role ?? senderType,
+      sender_type: senderType,
+      content: incoming.content ?? incoming.message_text ?? incoming.message ?? incoming.text ?? null,
       client_temp_id: incoming.client_temp_id ?? null,
       client_id: incoming.client_id ?? null,
       trainer_id: incoming.trainer_id ?? null,
-      message_text: incoming.message_text ?? incoming.content ?? null,
+      message_text: incoming.message_text ?? null,
       image_url: incoming.image_url ?? null,
       is_read: incoming.is_read ?? Boolean(incoming.read_at),
       read_at: incoming.read_at ?? null,
@@ -122,14 +117,10 @@ export function ChatWindow({
 
   const isMine = useCallback(
     (msg: Message) => {
-      const effectiveRole = me?.role ?? viewerRole;
-      const senderRole = (msg.sender_type ?? msg.sender_role) as "client" | "trainer";
-      return (
-        (effectiveRole === "trainer" && senderRole === "trainer") ||
-        (effectiveRole === "client" && senderRole === "client")
-      );
+      if (!currentUser) return false;
+      return msg.sender_type === currentUser.type && msg.sender_id === currentUser.id;
     },
-    [me?.role, viewerRole]
+    [currentUser]
   );
 
   const sortedMessages = useMemo(() => {
@@ -208,6 +199,7 @@ export function ChatWindow({
   }, []);
 
   const markAsRead = async () => {
+    if (isHQ || !currentUser) return;
     try {
       await fetch("/api/chat/read", {
         method: "POST",
@@ -223,20 +215,30 @@ export function ChatWindow({
 
   const fetchLatest = useCallback(async () => {
     try {
-      const res = await fetch(`/api/messages/list?userId=${viewerRole === "trainer" ? clientId : trainerId}`, {
+      const res = await fetch(`/api/chat/messages?conversation_id=${conversationId}`, {
         cache: "no-store",
         credentials: "include",
       });
       if (!res.ok) return;
       const data = await res.json();
-      if (Array.isArray(data)) {
-        setMessages((prev) => reconcileMessages(prev, data));
-        setShowScrollArrow(!isNearBottom());
+      if (Array.isArray(data?.messages)) {
+        const normalized = data.messages.map((item: any) => normalizeMessage(item));
+        setMessages((prev) => reconcileMessages(prev, normalized));
       }
+      if (typeof data?.hasMore === "boolean") {
+        setHasMore(data.hasMore);
+      }
+      if (typeof data?.unreadCount === "number") {
+        setUnreadCount(data.unreadCount);
+      }
+      if (data?.currentUser) {
+        setCurrentUser(data.currentUser);
+      }
+      setShowScrollArrow(!isNearBottom());
     } catch (error) {
       console.error(error);
     }
-  }, [clientId, isNearBottom, reconcileMessages, trainerId, viewerRole]);
+  }, [conversationId, isNearBottom, normalizeMessage, reconcileMessages]);
 
   useEffect(() => {
     fetchLatest();
@@ -253,9 +255,13 @@ export function ChatWindow({
       );
       if (res.ok) {
         const data = await res.json();
-        if (data?.messages?.length) {
-          setMessages((prev) => reconcileMessages(prev, data.messages));
-          setHasMore(data.hasMore);
+        if (Array.isArray(data?.messages) && data.messages.length) {
+          const normalized = data.messages.map((item: any) => normalizeMessage(item));
+          setMessages((prev) => reconcileMessages(prev, normalized));
+          setHasMore(Boolean(data.hasMore));
+        }
+        if (data?.currentUser) {
+          setCurrentUser(data.currentUser);
         }
       }
     } catch (error) {
@@ -283,6 +289,10 @@ export function ChatWindow({
       setErrorMsg("HQ cannot send messages.");
       return;
     }
+    if (!currentUser) {
+      setErrorMsg("Unable to determine sender. Please refresh and try again.");
+      return;
+    }
     if (sending) return;
     const trimmed = messageText.trim();
     if (!trimmed) return;
@@ -290,12 +300,12 @@ export function ChatWindow({
     setSending(true);
     setErrorMsg(null);
     const tempId = crypto.randomUUID();
-    const senderType = me?.role === "trainer" ? "trainer" : "client";
     const optimistic: Message = {
       id: tempId,
-      sender_id: me?.id,
-      sender_role: viewerRole,
-      sender_type: senderType,
+      sender_id: currentUser.id,
+      sender_role: currentUser.type,
+      sender_type: currentUser.type,
+      content: trimmed,
       client_temp_id: tempId,
       message_text: trimmed,
       image_url: null,
@@ -341,6 +351,10 @@ export function ChatWindow({
   const handleUpload = async (file: File) => {
     if (isHQ) {
       setErrorMsg("HQ cannot send messages.");
+      return;
+    }
+    if (!currentUser) {
+      setErrorMsg("Unable to determine sender. Please refresh and try again.");
       return;
     }
     if (uploading) return;
@@ -435,17 +449,8 @@ export function ChatWindow({
                   <div className="text-center text-[11px] text-white/60">Loading earlier messages...</div>
                 )}
                 {sortedMessages.map((msg) => {
-                  const meRole = me?.role ?? viewerRole;
-                  const senderRole: "client" | "trainer" = (() => {
-                    if (msg.sender_id && msg.sender_id === clientId) return "client";
-                    if (msg.sender_id && msg.sender_id === trainerId) return "trainer";
-                    if (msg.client_id && msg.client_id === clientId) return "client";
-                    if (msg.trainer_id && msg.trainer_id === trainerId) return "trainer";
-                    return (msg.sender_type ?? msg.sender_role) as "client" | "trainer";
-                  })();
-                  const mine =
-                    (meRole === "trainer" && senderRole === "trainer") ||
-                    (meRole === "client" && senderRole === "client");
+                  const mine = isMine(msg);
+                  const textContent = msg.content ?? msg.message_text ?? null;
                   const bubbleBase =
                     "relative px-[22px] py-3.5 md:px-6 md:py-4 transition-transform duration-150 leading-[1.58]";
                   const receiverSurface =
@@ -476,14 +481,14 @@ export function ChatWindow({
                               : "before:absolute before:-left-[6px] before:bottom-3 before:h-3 before:w-3 before:rotate-45 before:rounded-[6px] before:bg-[#0b0d11] before:border-l before:border-b before:border-white/7"
                           )}
                         >
-                          {msg.message_text && (
+                          {textContent && (
                             <p
                               className={cn(
                                 "w-full text-[15px] leading-[1.58] whitespace-pre-wrap break-words break-normal",
                                 mine ? "text-[#0e1116]" : "text-white/90"
                               )}
                             >
-                              {msg.message_text}
+                              {textContent}
                             </p>
                           )}
                           {msg.image_url && (

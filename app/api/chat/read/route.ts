@@ -12,7 +12,9 @@ export async function POST(req: Request) {
 
     const access = await resolveChatAccess();
     await assertConversationAccess(access, conversationId);
-    await markMessagesRead(conversationId, access.role);
+    if (access.role !== "hq") {
+      await markMessagesRead(conversationId, { type: access.role, id: access.userId });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error: any) {

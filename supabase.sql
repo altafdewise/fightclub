@@ -104,6 +104,7 @@ create table if not exists messages (
   sender_type text not null check (sender_type in ('client','trainer')) default 'client',
   client_id uuid null references clients(id) on delete set null,
   trainer_id uuid null references admins(id) on delete set null,
+  content text null,
   message_text text null,
   image_url text null,
   client_temp_id text null,
@@ -133,12 +134,16 @@ alter table messages
   add column if not exists sender_type text;
 update messages set sender_type = sender_role where sender_type is null;
 alter table messages alter column sender_type set not null;
+alter table messages alter column sender_type drop default;
 alter table messages drop constraint if exists messages_sender_type_check;
 alter table messages add constraint messages_sender_type_check check (sender_type in ('client','trainer'));
+alter table messages alter column sender_id set not null;
 alter table messages add column if not exists client_id uuid null references clients(id) on delete set null;
 alter table messages add column if not exists trainer_id uuid null references admins(id) on delete set null;
 alter table messages add column if not exists read_at timestamptz null;
 alter table messages add column if not exists client_temp_id text null;
+alter table messages add column if not exists content text null;
+update messages set content = coalesce(content, message_text) where content is null;
 
 create index if not exists messages_conversation_created_idx
   on messages (conversation_id, created_at);
@@ -231,3 +236,24 @@ create index if not exists client_day_summaries_reset_at_idx
 -- Update sessions table to allow 'hq' session type
 alter table sessions drop constraint if exists sessions_type_check;
 alter table sessions add constraint sessions_type_check check (type in ('admin', 'client', 'hq'));
+
+create table if not exists pricing_leads (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  phone_number text not null,
+  email text not null,
+  country text not null,
+  currency text not null check (currency in ('USD', 'INR')),
+  plan_id text not null check (plan_id in ('1m', '3m', '6m')),
+  provider text not null check (provider in ('stripe', 'razorpay')),
+  fitness_goal text,
+  preferred_contact_method text,
+  training_experience text,
+  payment_link text,
+  admin_notified_at timestamptz,
+  notification_error text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists pricing_leads_created_at_idx
+  on pricing_leads (created_at desc);

@@ -19,13 +19,15 @@ export async function GET(req: NextRequest) {
     const access = await resolveChatAccess();
     await assertConversationAccess(access, conversationId);
 
+    const currentUser = access.role === "hq" ? null : { id: access.userId, type: access.role } as const;
+
     const { messages, hasMore } = await getMessagesForConversation(conversationId, {
       cursor,
       limit: 30,
     });
-    const unreadCount = await getUnreadCount(conversationId, access.role);
+    const unreadCount = await getUnreadCount(conversationId, currentUser ?? { type: "hq" });
 
-    return NextResponse.json({ messages, hasMore, unreadCount });
+    return NextResponse.json({ messages, hasMore, unreadCount, currentUser });
   } catch (error: any) {
     console.error(error);
     const message = error?.message || "Unable to load messages.";

@@ -1,0 +1,10 @@
+var R=require("../../../chunks/[turbopack]_runtime.js")("server/app/api/pricing-leads/route.js")
+R.c("server/chunks/[root-of-the-server]__d01e8999._.js")
+R.c("server/chunks/[root-of-the-server]__dc81d3cf._.js")
+R.c("server/chunks/brutal-fit_f7f2f545._.js")
+R.c("server/chunks/[root-of-the-server]__bbafc314._.js")
+R.c("server/chunks/[root-of-the-server]__213fafc8._.js")
+R.c("server/chunks/8eb6f_next_9e375823._.js")
+R.c("server/chunks/brutal-fit__next-internal_server_app_api_pricing-leads_route_actions_75fe7e0b.js")
+R.m(2541)
+module.exports=R.m(2541).exports

@@ -3,6 +3,9 @@ import { getClientSession, getAdminSession, getHQSession } from "./auth";
 
 export type ChatRole = "client" | "trainer" | "hq";
 
+export type ChatUser = { type: "client" | "trainer"; id: string };
+export type ChatViewer = ChatUser | { type: "hq"; id?: string };
+
 export type Conversation = {
   id: string;
   client_id: string;
@@ -16,6 +19,7 @@ type MessageRow = {
   sender_id: string;
   sender_role: ChatRole;
   sender_type: "client" | "trainer";
+  content: string | null;
   client_id: string | null;
   trainer_id: string | null;
   message_text: string | null;
@@ -122,6 +126,7 @@ export async function getMessagesForConversation(
     const result = await query<MessageRow>(
             `SELECT id, conversation_id, sender_id, sender_role,
               COALESCE(sender_type, sender_role)::text AS sender_type,
+              COALESCE(content, message_text) AS content,
               client_id, trainer_id, message_text, image_url, client_temp_id, is_read, read_at, created_at
        FROM messages
        WHERE conversation_id = $1 AND created_at < $2
@@ -137,6 +142,7 @@ export async function getMessagesForConversation(
   const latest = await query<MessageRow>(
         `SELECT id, conversation_id, sender_id, sender_role,
           COALESCE(sender_type, sender_role)::text AS sender_type,
+          COALESCE(content, message_text) AS content,
           client_id, trainer_id, message_text, image_url, client_temp_id, is_read, read_at, created_at
      FROM messages
      WHERE conversation_id = $1
@@ -152,36 +158,37 @@ export async function getMessagesForConversation(
 export async function insertMessage(params: {
   conversationId: string;
   senderId: string;
-  senderRole: ChatRole;
+  senderType: "client" | "trainer";
   clientId: string;
   clientTempId?: string | null;
   trainerId?: string | null;
-  messageText?: string | null;
+  content?: string | null;
   imageUrl?: string | null;
 }): Promise<MessageRow> {
-  const text = (params.messageText || "").trim();
+  const text = (params.content || "").trim();
   const imageUrl = params.imageUrl?.trim() || null;
   if (!text && !imageUrl) {
     throw new Error("Message text or image is required.");
   }
 
-  const sanitizedText = text.length ? text : null;
-
-  const senderType = params.senderRole === "trainer" ? "trainer" : "client";
+  const sanitizedContent = text.length ? text : null;
+  const senderType = params.senderType === "trainer" ? "trainer" : "client";
   const result = await query<MessageRow>(
-    `INSERT INTO messages (conversation_id, sender_id, sender_role, sender_type, client_id, trainer_id, message_text, image_url, client_temp_id, is_read)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, false)
+    `INSERT INTO messages (conversation_id, sender_id, sender_role, sender_type, client_id, trainer_id, content, message_text, image_url, client_temp_id, is_read)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, false)
      RETURNING id, conversation_id, sender_id, sender_role,
        COALESCE(sender_type, sender_role)::text AS sender_type,
+       COALESCE(content, message_text) AS content,
        client_id, trainer_id, message_text, image_url, client_temp_id, is_read, read_at, created_at`,
     [
       params.conversationId,
       params.senderId,
-      params.senderRole,
+      senderType,
       senderType,
       params.clientId,
       params.trainerId ?? null,
-      sanitizedText,
+      sanitizedContent,
+      sanitizedContent,
       imageUrl,
       params.clientTempId ?? null,
     ]
@@ -189,24 +196,24 @@ export async function insertMessage(params: {
   return result.rows[0];
 }
 
-export async function markMessagesRead(conversationId: string, viewerRole: ChatRole) {
-  if (viewerRole === "hq") return;
+export async function markMessagesRead(conversationId: string, viewer: ChatViewer) {
+  if (viewer.type === "hq") return;
   await query(
     `UPDATE messages
      SET is_read = true,
          read_at = COALESCE(read_at, NOW())
-     WHERE conversation_id = $1 AND sender_role <> $2 AND is_read = false`,
-    [conversationId, viewerRole]
+     WHERE conversation_id = $1 AND sender_type <> $2 AND is_read = false`,
+    [conversationId, viewer.type]
   );
 }
 
-export async function getUnreadCount(conversationId: string, viewerRole: ChatRole): Promise<number> {
-  if (viewerRole === "hq") return 0;
+export async function getUnreadCount(conversationId: string, viewer: ChatViewer): Promise<number> {
+  if (viewer.type === "hq") return 0;
   const result = await query<{ count: string }>(
     `SELECT COUNT(*)::int AS count
      FROM messages
-     WHERE conversation_id = $1 AND sender_role <> $2 AND is_read = false`,
-    [conversationId, viewerRole]
+     WHERE conversation_id = $1 AND sender_type <> $2 AND is_read = false`,
+    [conversationId, viewer.type]
   );
   return parseInt(result.rows[0]?.count || "0", 10);
 }
@@ -319,12 +326,12 @@ export async function listAllConversationsForHQ() {
      LEFT JOIN LATERAL (
        SELECT COUNT(*)::int as count
        FROM messages m
-       WHERE conv.id IS NOT NULL AND m.conversation_id = conv.id AND m.sender_role = 'client' AND m.is_read = false
+       WHERE conv.id IS NOT NULL AND m.conversation_id = conv.id AND m.sender_type = 'client' AND m.is_read = false
      ) unread_client ON true
      LEFT JOIN LATERAL (
        SELECT COUNT(*)::int as count
        FROM messages m
-       WHERE conv.id IS NOT NULL AND m.conversation_id = conv.id AND m.sender_role = 'trainer' AND m.is_read = false
+       WHERE conv.id IS NOT NULL AND m.conversation_id = conv.id AND m.sender_type = 'trainer' AND m.is_read = false
      ) unread_trainer ON true
      ORDER BY c.name`,
     []
@@ -350,7 +357,7 @@ export async function listAssignedClientsWithUnread(trainerId: string) {
        FROM messages m
        WHERE conv.id IS NOT NULL
          AND m.conversation_id = conv.id
-         AND m.sender_role <> 'trainer'
+         AND m.sender_type <> 'trainer'
          AND m.is_read = false
      ) unread ON true
      WHERE cta.trainer_id = $1
@@ -368,7 +375,7 @@ export async function getTotalUnreadForUser(params: { role: "client" | "trainer"
       `SELECT COUNT(*)::int AS count
        FROM messages m
        JOIN conversations c ON c.id = m.conversation_id
-       WHERE c.client_id = $1 AND m.sender_role <> 'client' AND m.is_read = false`,
+       WHERE c.client_id = $1 AND m.sender_type <> 'client' AND m.is_read = false`,
       [params.userId]
     );
     return parseInt(result.rows[0]?.count || "0", 10);
@@ -378,7 +385,7 @@ export async function getTotalUnreadForUser(params: { role: "client" | "trainer"
     `SELECT COUNT(*)::int AS count
      FROM messages m
      JOIN conversations c ON c.id = m.conversation_id
-     WHERE c.trainer_id = $1 AND m.sender_role <> 'trainer' AND m.is_read = false`,
+     WHERE c.trainer_id = $1 AND m.sender_type <> 'trainer' AND m.is_read = false`,
     [params.userId]
   );
   return parseInt(result.rows[0]?.count || "0", 10);

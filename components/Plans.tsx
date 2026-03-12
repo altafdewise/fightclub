@@ -1,140 +1,644 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Check, Zap } from 'lucide-react';
+import { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  Check,
+  LockKeyhole,
+  ShieldCheck,
+  Sparkles,
+  X,
+} from "lucide-react";
+import { Reveal } from "@/components/Reveal";
+import {
+  coachingPlans,
+  countryOptions,
+  currencyOptions,
+  DEFAULT_CURRENCY,
+  formatCurrency,
+  getCurrencyFromCountry,
+  getPaymentLink,
+  getPaymentProvider,
+  getPlanById,
+  getPriceForPlan,
+  getSavingsLabel,
+  preferredContactMethods,
+  trainingExperienceOptions,
+  type CurrencyCode,
+  type PlanId,
+} from "@/lib/pricing";
+import { cn } from "@/utils/cn";
 
-const Plans = () => {
-  const [planType, setPlanType] = useState<'3' | '6'>('3');
+type LeadFormState = {
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  country: string;
+  fitnessGoal: string;
+  preferredContactMethod: string;
+  trainingExperience: string;
+};
 
-  const handleWhatsApp = (plan: '3' | '6') => {
-    const message = plan === '3'
-      ? "Hi, I'm interested in the 3-month coaching plan."
-      : "Hi, I'm interested in the 6-month coaching plan.";
-    const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-    if (number) {
-      window.open(`https://wa.me/${number.replace('+', '')}?text=${encodeURIComponent(message)}`, '_blank');
+type LeadFormErrors = Partial<Record<keyof LeadFormState, string>>;
+
+const phonePattern = /[0-9]/g;
+
+function getDefaultCountry(currency: CurrencyCode) {
+  return currency === "INR" ? "India" : "United States";
+}
+
+function createDefaultForm(currency: CurrencyCode): LeadFormState {
+  return {
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+    country: getDefaultCountry(currency),
+    fitnessGoal: "",
+    preferredContactMethod: preferredContactMethods[0].value,
+    trainingExperience: trainingExperienceOptions[0].value,
+  };
+}
+
+function validateLeadForm(form: LeadFormState): LeadFormErrors {
+  const errors: LeadFormErrors = {};
+  const digits = (form.phoneNumber.match(phonePattern) || []).join("");
+
+  if (form.fullName.trim().length < 2) {
+    errors.fullName = "Enter your full name.";
+  }
+
+  if (digits.length < 8 || digits.length > 15) {
+    errors.phoneNumber = "Enter a valid phone number.";
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+    errors.email = "Enter a valid email.";
+  }
+
+  if (!form.country) {
+    errors.country = "Choose your country.";
+  }
+
+  return errors;
+}
+
+function getWhatsAppLink(planTitle: string) {
+  const number = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "").replace(/[^\d]/g, "");
+  if (!number) return "";
+  const message = encodeURIComponent(`I want help choosing the ${planTitle} option.`);
+  return `https://wa.me/${number}?text=${message}`;
+}
+
+export default function Plans() {
+  const [currency, setCurrency] = useState<CurrencyCode>(DEFAULT_CURRENCY);
+  const [selectedPlanId, setSelectedPlanId] = useState<PlanId | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [leadUnlocked, setLeadUnlocked] = useState(false);
+  const [leadId, setLeadId] = useState("");
+  const [form, setForm] = useState<LeadFormState>(() => createDefaultForm(DEFAULT_CURRENCY));
+  const [errors, setErrors] = useState<LeadFormErrors>({});
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [step, setStep] = useState<"form" | "details">("form");
+
+  const selectedPlan = selectedPlanId ? getPlanById(selectedPlanId) : null;
+  const selectedPrice = selectedPlanId ? getPriceForPlan(selectedPlanId, currency) : null;
+  const selectedProvider = selectedPlanId ? getPaymentProvider(form.country, currency) : null;
+  const paymentLink = selectedPlanId && selectedProvider ? getPaymentLink(selectedPlanId, selectedProvider) : "";
+  const coachLink = selectedPlan ? getWhatsAppLink(selectedPlan.title) : "";
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isOpen]);
+
+  const syncCurrency = (nextCurrency: CurrencyCode) => {
+    setCurrency(nextCurrency);
+    setForm((prev) => ({
+      ...prev,
+      country: getDefaultCountry(nextCurrency),
+    }));
+  };
+
+  const openPlan = (planId: PlanId) => {
+    setSelectedPlanId(planId);
+    setSubmitError("");
+    setErrors({});
+    setStep(leadUnlocked ? "details" : "form");
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setSubmitError("");
+    setErrors({});
+  };
+
+  const handleInputChange = (key: keyof LeadFormState, value: string) => {
+    setForm((prev) => {
+      if (key === "country") {
+        const nextCurrency = getCurrencyFromCountry(value);
+        setCurrency(nextCurrency);
+        return { ...prev, country: value };
+      }
+      return { ...prev, [key]: value };
+    });
+
+    if (errors[key]) {
+      setErrors((prev) => ({ ...prev, [key]: undefined }));
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!selectedPlanId) return;
+
+    const nextErrors = validateLeadForm(form);
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/pricing-leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          currency,
+          planId: selectedPlanId,
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Unable to unlock pricing right now.");
+      }
+
+      setLeadUnlocked(true);
+      setLeadId(data?.leadId || "");
+      setStep("details");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Unable to unlock pricing right now.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <section id="pricing" className="py-24 relative">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <p className="text-muted mb-1">Choose a coaching commitment.</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-text">Pricing & Commitments</h2>
-        </div>
-
-        {/* Mobile Toggle */}
-        <div className="flex justify-center mb-12 lg:hidden">
-          <div className="relative inline-flex bg-black/40 border border-white/10 rounded-full p-1 backdrop-blur-md">
-            {/* Sliding Indicator */}
-            <div
-              className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full bg-white/10 border border-accent/30 shadow-[0_0_15px_-3px_var(--accentSoft)] transition-transform duration-[250ms] ease-in-out ${
-                planType === '6' ? 'translate-x-full' : 'translate-x-0'
-              }`}
-            />
-
-            <button
-              onClick={() => setPlanType('3')}
-              className={`relative z-10 w-32 py-3 rounded-full text-sm font-medium transition-colors duration-[250ms] ${
-                planType === '3' ? 'text-white' : 'text-muted hover:text-text'
-              }`}
-            >
-              3 Months
-            </button>
-            <button
-              onClick={() => setPlanType('6')}
-              className={`relative z-10 w-32 py-3 rounded-full text-sm font-medium transition-colors duration-[250ms] ${
-                planType === '6' ? 'text-white' : 'text-muted hover:text-text'
-              }`}
-            >
-              6 Months
-            </button>
+      <div className="section-space">
+        <Reveal>
+          <div className="text-center mb-8 md:mb-10">
+            <p className="text-muted mb-1">Choose a coaching commitment.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-text">Pricing & Commitments</h2>
+            <p className="mt-4 text-sm text-white/55 max-w-2xl mx-auto leading-relaxed">
+              Serious clients start with context. Unlock plan details, pricing, and checkout after a short lead form.
+            </p>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* 3-Month Card */}
-          <div
-            className={`flex flex-col relative p-8 md:p-10 rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.07] via-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500
-              shadow-[0_0_60px_-10px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1)]
-              hover:shadow-[0_0_80px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)] hover:border-white/20 hover:bg-gradient-to-br hover:from-white/[0.1] hover:via-white/[0.05] group
-              ${planType === '3' ? 'block' : 'hidden lg:flex'}
-            `}
-          >
-            <div className="mb-8">
-              <h3 className="text-2xl md:text-3xl font-bold mb-3 text-text">3-Month Coaching</h3>
-              <p className="text-white/60 text-sm md:text-base">Built for structure and momentum.</p>
-            </div>
-
-            <div className="mb-8">
-              <button
-                onClick={() => handleWhatsApp('3')}
-                className="w-full py-4 rounded-xl bg-white/[0.08] border border-white/15 text-white font-semibold transition-all duration-300 hover:bg-white/[0.15] hover:border-white/30 hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.2)] group/btn"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  Request a Quote
-                  <Zap className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-                </span>
-              </button>
-            </div>
-
-            <div className="flex-grow">
-              <ul className="space-y-4">
-                {['Personalized training plan', 'Nutrition guidance', 'Weekly check-ins & adjustments', 'Progress tracking'].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 group/item">
-                    <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-accent/30 transition-colors">
-                      <Check className="w-3 h-3 text-accent" />
-                    </div>
-                    <span className="text-white/70 text-sm">{item}</span>
-                  </li>
+        <Reveal delay={80}>
+          <div className="mb-12 flex justify-center">
+            <div className="inline-flex flex-col gap-3 rounded-[24px] border border-white/10 bg-white/[0.03] p-2.5 backdrop-blur-xl shadow-[0_0_40px_-18px_rgba(255,255,255,0.08)] sm:flex-row sm:items-center">
+              <div className="px-3 pt-1 sm:pt-0">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">Billing Region</p>
+                <p className="text-sm text-white/65">Currency also determines checkout partner.</p>
+              </div>
+              <div className="flex rounded-[18px] border border-white/10 bg-black/30 p-1">
+                {currencyOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => syncCurrency(option.value)}
+                    className={cn(
+                      "min-w-[132px] rounded-[14px] px-4 py-3 text-left transition-all duration-300",
+                      currency === option.value
+                        ? "bg-white text-black shadow-[0_12px_24px_rgba(255,255,255,0.16)]"
+                        : "text-white/70 hover:text-white"
+                    )}
+                  >
+                    <span className="block text-sm font-semibold">{option.label}</span>
+                    <span className={cn("block text-xs", currency === option.value ? "text-black/65" : "text-white/45")}>
+                      {option.support}
+                    </span>
+                  </button>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
+        </Reveal>
 
-          {/* 6-Month Card */}
-          <div
-            className={`flex flex-col relative p-8 md:p-10 rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.07] via-white/[0.03] to-transparent backdrop-blur-xl transition-all duration-500
-              shadow-[0_0_60px_-10px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1)]
-              hover:shadow-[0_0_80px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)] hover:border-white/20 hover:bg-gradient-to-br hover:from-white/[0.1] hover:via-white/[0.05] group
-              ${planType === '6' ? 'block' : 'hidden lg:flex'}
-            `}
-          >
-            <div className="mb-8">
-              <h3 className="text-2xl md:text-3xl font-bold mb-3 text-text">6-Month Coaching</h3>
-              <p className="text-white/60 text-sm md:text-base">Built for long-term transformation.</p>
-            </div>
-
-            <div className="mb-8">
-              <button
-                onClick={() => handleWhatsApp('6')}
-                className="w-full py-4 rounded-xl bg-white/[0.08] border border-white/15 text-white font-semibold transition-all duration-300 hover:bg-white/[0.15] hover:border-white/30 hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.2)] group/btn"
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
+          {coachingPlans.map((plan, index) => (
+            <Reveal key={plan.id} delay={index * 90}>
+              <article
+                className={cn(
+                  "relative flex h-full flex-col overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.07] via-white/[0.03] to-transparent p-8 md:p-10 backdrop-blur-xl transition-all duration-500 shadow-[0_0_60px_-10px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-white/20 hover:from-white/[0.1] hover:via-white/[0.05] hover:shadow-[0_0_80px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)]",
+                  plan.featured && "border-[rgba(201,168,106,0.22)] shadow-[0_0_70px_-18px_rgba(201,168,106,0.22),inset_0_1px_0_rgba(255,255,255,0.12)]"
+                )}
               >
-                <span className="flex items-center justify-center gap-2">
-                  Request a Quote
-                  <Zap className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-                </span>
-              </button>
-            </div>
-
-            <div className="flex-grow">
-              <ul className="space-y-4">
-                {['Long-term personalized training', 'Advanced nutrition strategy', 'Weekly check-ins with deeper feedback', 'Lifestyle & recovery support'].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 group/item">
-                    <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:bg-accent/30 transition-colors">
-                      <Check className="w-3 h-3 text-accent" />
+                <div className="mb-8 flex items-start justify-between gap-4">
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {!plan.featured ? (
+                        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-white/55">
+                          {plan.eyebrow}
+                        </span>
+                      ) : null}
+                      {plan.featured ? (
+                        <span className="rounded-full border border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.1)] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-[var(--gold)]">
+                          Most Popular
+                        </span>
+                      ) : null}
                     </div>
-                    <span className="text-white/70 text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+                    <div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-text">{plan.title}</h3>
+                      <p className="mt-2 text-sm md:text-base text-white/60">{plan.support}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="mb-8 text-sm leading-relaxed text-white/62">{plan.description}</p>
+
+                <button
+                  type="button"
+                  onClick={() => openPlan(plan.id)}
+                  className="mb-8 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.08] px-5 py-4 text-sm font-semibold text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.15] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.2)]"
+                >
+                  <LockKeyhole className="h-4 w-4" />
+                  Unlock Pricing
+                </button>
+
+                <div className="mb-6 rounded-[18px] border border-white/8 bg-black/20 px-4 py-3 text-sm text-white/58">
+                  Complete the short form to reveal pricing and the correct checkout route.
+                </div>
+
+                <div className="flex-grow">
+                  <ul className="space-y-4">
+                    {plan.inclusions.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgba(201,168,106,0.16)]">
+                          <Check className="h-3 w-3 text-[var(--gold)]" />
+                        </div>
+                        <span className="text-sm text-white/72">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
+
+      {isOpen && selectedPlan && selectedPrice ? (
+        <div
+          className="fixed inset-0 z-[80] flex items-end justify-center bg-black/75 px-0 backdrop-blur-md md:items-center md:px-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pricing-modal-title"
+          onClick={closeModal}
+        >
+          <div
+            className="relative flex max-h-[92svh] w-full max-w-4xl flex-col overflow-hidden rounded-t-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,15,17,0.98),rgba(7,8,10,0.98))] shadow-[0_30px_90px_rgba(0,0,0,0.6)] md:rounded-[32px]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="absolute inset-x-0 top-0 mx-auto mt-3 h-1.5 w-14 rounded-full bg-white/15 md:hidden" />
+            <button
+              type="button"
+              onClick={closeModal}
+              className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/75 transition hover:border-white/20 hover:text-white"
+              aria-label="Close pricing modal"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="grid gap-0 overflow-y-auto md:grid-cols-[0.92fr_1.08fr]">
+              <div className="border-b border-white/8 bg-white/[0.02] p-6 md:border-b-0 md:border-r md:p-8">
+                <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/45">Pricing Access</p>
+                <h3 id="pricing-modal-title" className="text-2xl md:text-3xl font-semibold">
+                  {selectedPlan.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-white/62">{selectedPlan.description}</p>
+
+                <div className="mt-6 rounded-[22px] border border-white/10 bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent p-5">
+                  <p className="text-xs uppercase tracking-[0.16em] text-white/45">What this includes</p>
+                  <ul className="mt-4 space-y-3">
+                    {selectedPlan.inclusions.map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-sm text-white/74">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--gold)]" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-6 rounded-[22px] border border-[rgba(201,168,106,0.14)] bg-[rgba(201,168,106,0.07)] p-5">
+                  <div className="flex items-start gap-3">
+                    <Sparkles className="mt-0.5 h-5 w-5 text-[var(--gold)]" />
+                    <div>
+                      <p className="text-sm font-semibold text-white">Tailored coaching begins here.</p>
+                      <p className="mt-1 text-sm leading-relaxed text-white/62">
+                        Complete the short form to unlock plan details, pricing, and the correct payment route for your region.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 md:p-8">
+                {step === "form" ? (
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">Step 1</p>
+                      <h4 className="mt-2 text-2xl font-semibold text-white">Unlock plan details</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-white/58">
+                        Keep it brief. Phone number is required so we can follow up around enrollment and onboarding.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <label className="flex flex-col gap-2 text-sm text-white/80 md:col-span-2">
+                        Full Name *
+                        <input
+                          value={form.fullName}
+                          onChange={(event) => handleInputChange("fullName", event.target.value)}
+                          className={cn(
+                            "rounded-[14px] px-4 py-3.5",
+                            errors.fullName && "border-red-300/70 focus:border-red-300 focus:shadow-none"
+                          )}
+                          placeholder="Your full name"
+                        />
+                        {errors.fullName ? <span className="text-xs text-red-300">{errors.fullName}</span> : null}
+                      </label>
+
+                      <label className="flex flex-col gap-2 text-sm text-white/80">
+                        <span className="text-[var(--gold)]">Phone Number *</span>
+                        <input
+                          value={form.phoneNumber}
+                          onChange={(event) => handleInputChange("phoneNumber", event.target.value)}
+                          className={cn(
+                            "rounded-[14px] border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.06)] px-4 py-3.5",
+                            errors.phoneNumber && "border-red-300/70 focus:border-red-300 focus:shadow-none"
+                          )}
+                          placeholder="+1 555 123 4567"
+                        />
+                        {errors.phoneNumber ? <span className="text-xs text-red-300">{errors.phoneNumber}</span> : null}
+                      </label>
+
+                      <label className="flex flex-col gap-2 text-sm text-white/80">
+                        Email *
+                        <input
+                          value={form.email}
+                          onChange={(event) => handleInputChange("email", event.target.value)}
+                          type="email"
+                          className={cn(
+                            "rounded-[14px] px-4 py-3.5",
+                            errors.email && "border-red-300/70 focus:border-red-300 focus:shadow-none"
+                          )}
+                          placeholder="you@example.com"
+                        />
+                        {errors.email ? <span className="text-xs text-red-300">{errors.email}</span> : null}
+                      </label>
+
+                      <label className="flex flex-col gap-2 text-sm text-white/80">
+                        Country *
+                        <select
+                          value={form.country}
+                          onChange={(event) => handleInputChange("country", event.target.value)}
+                          className={cn(
+                            "rounded-[14px] px-4 py-3.5",
+                            errors.country && "border-red-300/70 focus:border-red-300 focus:shadow-none"
+                          )}
+                        >
+                          {countryOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.country ? <span className="text-xs text-red-300">{errors.country}</span> : null}
+                      </label>
+
+                      <label className="flex flex-col gap-2 text-sm text-white/80">
+                        Fitness Goal
+                        <input
+                          value={form.fitnessGoal}
+                          onChange={(event) => handleInputChange("fitnessGoal", event.target.value)}
+                          className="rounded-[14px] px-4 py-3.5"
+                          placeholder="Fat loss, strength, body recomposition"
+                        />
+                      </label>
+
+                      <label className="flex flex-col gap-2 text-sm text-white/80">
+                        Preferred Contact
+                        <select
+                          value={form.preferredContactMethod}
+                          onChange={(event) => handleInputChange("preferredContactMethod", event.target.value)}
+                          className="rounded-[14px] px-4 py-3.5"
+                        >
+                          {preferredContactMethods.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="flex flex-col gap-2 text-sm text-white/80 md:col-span-2">
+                        Current Training Experience
+                        <select
+                          value={form.trainingExperience}
+                          onChange={(event) => handleInputChange("trainingExperience", event.target.value)}
+                          className="rounded-[14px] px-4 py-3.5"
+                        >
+                          {trainingExperienceOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
+
+                    <div className="rounded-[18px] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-white/58">
+                      Viewing in <span className="font-semibold text-white">{currency}</span>. India routes to Razorpay. International billing routes to Stripe.
+                    </div>
+
+                    {submitError ? <p className="text-sm text-red-300">{submitError}</p> : null}
+
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className={cn(
+                          "inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/92 disabled:cursor-not-allowed disabled:opacity-70",
+                          submitting && "hover:bg-white"
+                        )}
+                      >
+                        {submitting ? "Unlocking..." : "Unlock Pricing"}
+                        <ArrowRight className="h-4 w-4" />
+                      </button>
+                      <p className="text-xs uppercase tracking-[0.15em] text-white/40">
+                        Serious clients only
+                      </p>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">Step 2</p>
+                      <h4 className="mt-2 text-2xl font-semibold text-white">Plan details unlocked</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-white/58">
+                        Your pricing is shown in {currency}. Checkout automatically routes through{" "}
+                        {selectedProvider === "razorpay" ? "Razorpay" : "Stripe"} based on your region.
+                      </p>
+                    </div>
+
+                    <div className="rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                      <div className="flex flex-wrap items-start justify-between gap-5">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.16em] text-white/45">{selectedPlan.support}</p>
+                          <h5 className="mt-2 text-2xl font-semibold text-white">{selectedPlan.title}</h5>
+                        </div>
+                        <div className="rounded-full border border-[rgba(201,168,106,0.24)] bg-[rgba(201,168,106,0.08)] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-[var(--gold)]">
+                          {selectedProvider === "razorpay" ? "Razorpay Checkout" : "Stripe Checkout"}
+                        </div>
+                      </div>
+
+                      <div className="mt-6">
+                        {selectedPrice.original ? (
+                          <div className="flex items-end gap-3">
+                            <span className="text-lg text-white/35 line-through">
+                              {formatCurrency(selectedPrice.original, currency)}
+                            </span>
+                            <span className="text-4xl font-bold text-white">
+                              {formatCurrency(selectedPrice.current, currency)}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="text-4xl font-bold text-white">
+                            {formatCurrency(selectedPrice.current, currency)}
+                          </div>
+                        )}
+
+                        {selectedPrice.original ? (
+                          <p className="mt-3 text-sm text-[var(--gold)]">
+                            Save {getSavingsLabel(selectedPlan.id, currency)} with this commitment.
+                          </p>
+                        ) : (
+                          <p className="mt-3 text-sm text-white/56">A focused reset without a longer lock-in.</p>
+                        )}
+                      </div>
+
+                      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                        <div className="rounded-[18px] border border-white/8 bg-black/20 px-4 py-3">
+                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/42">Currency</p>
+                          <p className="mt-2 text-sm font-semibold text-white">{currency}</p>
+                        </div>
+                        <div className="rounded-[18px] border border-white/8 bg-black/20 px-4 py-3">
+                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/42">Lead ID</p>
+                          <p className="mt-2 text-sm font-semibold text-white">{leadId || "Captured"}</p>
+                        </div>
+                        <div className="rounded-[18px] border border-white/8 bg-black/20 px-4 py-3">
+                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/42">Checkout</p>
+                          <p className="mt-2 text-sm font-semibold text-white">
+                            {selectedProvider === "razorpay" ? "Razorpay" : "Stripe"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[22px] border border-[rgba(201,168,106,0.14)] bg-[rgba(201,168,106,0.06)] p-5">
+                      <div className="flex items-start gap-3">
+                        <ShieldCheck className="mt-0.5 h-5 w-5 text-[var(--gold)]" />
+                        <div>
+                          <p className="text-sm font-semibold text-white">Secure checkout</p>
+                          <p className="mt-1 text-sm leading-relaxed text-white/58">
+                            Encrypted payment flow. Your coach receives your details after enrollment so onboarding can start quickly.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                      {paymentLink ? (
+                        <a
+                          href={paymentLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/92"
+                        >
+                          Continue with {selectedProvider === "razorpay" ? "Razorpay" : "Stripe"}
+                          <ArrowRight className="h-4 w-4" />
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled
+                          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.08] px-5 py-3.5 text-sm font-semibold text-white/45"
+                        >
+                          Checkout link pending configuration
+                        </button>
+                      )}
+
+                      {coachLink ? (
+                        <a
+                          href={coachLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-white/[0.07]"
+                        >
+                          Talk to Coach
+                        </a>
+                      ) : null}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-white/55">
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        className="transition hover:text-white"
+                      >
+                        Compare another plan
+                      </button>
+                      <span className="text-white/20">/</span>
+                      <button
+                        type="button"
+                        onClick={() => setStep("form")}
+                        className="transition hover:text-white"
+                      >
+                        Edit your details
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
-};
-
-export default Plans;
+}
