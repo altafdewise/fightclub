@@ -2,23 +2,20 @@
 
 import { useState } from "react";
 
-function daysUntilUnlock(lastDate?: string | null) {
-  if (!lastDate) return 0;
-  const now = new Date();
-  const then = new Date(lastDate);
-  const diff = (now.getTime() - then.getTime()) / (1000 * 60 * 60 * 24);
-  const remaining = 7 - diff;
-  return remaining > 0 ? Math.ceil(remaining) : 0;
-}
+type WeeklyStatus = {
+  canSubmit: boolean;
+  daysRemaining: number;
+  nextUnlockDate: Date | string | null;
+};
 
-export function WeeklyCheckinForm({ lastDate }: { lastDate?: string | null }) {
-  const locked = daysUntilUnlock(lastDate);
+export function WeeklyCheckinForm({ status }: { status: WeeklyStatus }) {
+  const locked = status.canSubmit ? 0 : status.daysRemaining;
   const [state, setState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
 
-  const nextUnlockLabel = (days: number) => {
-    const date = new Date();
-    date.setDate(date.getDate() + days);
+  const nextUnlockLabel = () => {
+    if (!status.nextUnlockDate) return null;
+    const date = typeof status.nextUnlockDate === "string" ? new Date(status.nextUnlockDate) : status.nextUnlockDate;
     return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
   };
 
@@ -79,7 +76,7 @@ export function WeeklyCheckinForm({ lastDate }: { lastDate?: string | null }) {
     return (
       <div className="space-y-3 rounded-2xl border border-white/10 bg-white/[0.05] p-8 text-center shadow-lg shadow-black/10">
         <p className="text-lg font-semibold">Your next check-in unlocks in {locked} day(s).</p>
-        <p className="text-sm text-white/70">You can send your next reflection on {nextUnlockLabel(locked)}.</p>
+        <p className="text-sm text-white/70">You can send your next reflection on {nextUnlockLabel()}.</p>
       </div>
     );
   }
@@ -89,7 +86,7 @@ export function WeeklyCheckinForm({ lastDate }: { lastDate?: string | null }) {
       <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.05] p-8 text-center shadow-lg shadow-black/10">
         <h2 className="text-2xl font-semibold">Check-in sent to your coach</h2>
         <p className="text-white/70">Your coach will review this and reply.</p>
-        <p className="text-sm text-white/60">Next check-in opens again on {nextUnlockLabel(7)}.</p>
+        <p className="text-sm text-white/60">This week is complete. Your next check-in opens next week.</p>
       </div>
     );
   }

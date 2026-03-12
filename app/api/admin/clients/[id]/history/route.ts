@@ -31,8 +31,17 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   const checklistId = checklist.rows[0].id;
 
-  const items = await query<{ label: string; sort_order: number; checked: boolean; video_url: string | null }>(
-    `SELECT label, sort_order, checked, video_url
+  const items = await query<{
+    label: string;
+    block_name: string | null;
+    exercise_name: string | null;
+    prescription: string | null;
+    exercise_notes: string | null;
+    sort_order: number;
+    checked: boolean;
+    video_url: string | null;
+  }>(
+    `SELECT label, block_name, exercise_name, prescription, exercise_notes, sort_order, checked, video_url
      FROM daily_checklist_items
      WHERE daily_checklist_id = $1
      ORDER BY sort_order ASC`,
@@ -43,6 +52,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     date,
     items: items.rows.map((item) => ({
       label: item.label,
+      blockName: item.block_name ?? "Workout",
+      exerciseName: item.exercise_name ?? item.label,
+      prescription: item.prescription ?? "",
+      notes: item.exercise_notes ?? "",
       sortOrder: item.sort_order,
       checked: item.checked,
       videoUrl: item.video_url,

@@ -1,5 +1,40 @@
 create extension if not exists pgcrypto;
 
+-- Base auth tables (must exist before FK references below)
+create table if not exists admins (
+  id uuid primary key default gen_random_uuid(),
+  username text not null unique,
+  passcode_hash text not null,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists clients (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  username text not null unique,
+  passcode_hash text not null,
+  email text null,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists sessions (
+  session_token text primary key,
+  type text not null check (type in ('admin', 'client', 'hq')),
+  admin_id uuid null references admins(id) on delete cascade,
+  client_id uuid null references clients(id) on delete cascade,
+  expires_at timestamptz not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists sessions_expires_at_idx
+  on sessions (expires_at);
+
+create index if not exists sessions_admin_id_idx
+  on sessions (admin_id);
+
+create index if not exists sessions_client_id_idx
+  on sessions (client_id);
+
 -- Daily exercise checklists
 create table if not exists daily_checklists (
   id uuid primary key default gen_random_uuid(),
@@ -23,6 +58,10 @@ create table if not exists daily_checklist_items (
   id uuid primary key default gen_random_uuid(),
   daily_checklist_id uuid not null references daily_checklists(id) on delete cascade,
   label text not null,
+  block_name text null,
+  exercise_name text null,
+  prescription text null,
+  exercise_notes text null,
   sort_order int not null default 0,
   checked boolean not null default false,
   video_url text null,
@@ -53,6 +92,22 @@ create index if not exists client_day_summaries_client_date_idx
 
 alter table daily_checklist_items
   add column if not exists video_url text;
+alter table daily_checklist_items
+  add column if not exists block_name text;
+alter table daily_checklist_items
+  add column if not exists exercise_name text;
+alter table daily_checklist_items
+  add column if not exists prescription text;
+alter table daily_checklist_items
+  add column if not exists exercise_notes text;
+
+update daily_checklist_items
+set block_name = coalesce(nullif(block_name, ''), 'Workout'),
+    exercise_name = coalesce(nullif(exercise_name, ''), label)
+where block_name is null
+   or block_name = ''
+   or exercise_name is null
+   or exercise_name = '';
 
 -- Weekly coaching check-ins
 create table if not exists weekly_checkins (
@@ -117,7 +172,7 @@ create table if not exists messages (
 create table if not exists notifications (
   id uuid primary key default gen_random_uuid(),
   user_type text not null check (user_type in ('client','trainer','hq')),
-  user_id uuid not null,
+  user_id text not null,
   title text not null,
   message text not null,
   type text not null,
@@ -125,6 +180,21 @@ create table if not exists notifications (
   is_read boolean not null default false,
   created_at timestamptz not null default now()
 );
+
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'notifications'
+      and column_name = 'user_id'
+      and data_type <> 'text'
+  ) then
+    alter table notifications
+      alter column user_id type text using user_id::text;
+  end if;
+end $$;
 
 create index if not exists notifications_user_idx on notifications (user_type, user_id, created_at desc);
 create index if not exists notifications_is_read_idx on notifications (is_read);
@@ -149,7 +219,22 @@ create index if not exists messages_conversation_created_idx
   on messages (conversation_id, created_at);
 
 -- Realtime and RLS for messages
-alter publication supabase_realtime add table messages;
+do $$
+begin
+  if exists (
+    select 1 from pg_publication where pubname = 'supabase_realtime'
+  ) and not exists (
+    select 1
+    from pg_publication_rel pr
+    join pg_class c on c.oid = pr.prrelid
+    join pg_publication p on p.oid = pr.prpubid
+    where p.pubname = 'supabase_realtime'
+      and c.relname = 'messages'
+  ) then
+    alter publication supabase_realtime add table messages;
+  end if;
+end $$;
+
 alter table if exists messages enable row level security;
 do $$
 begin
@@ -181,6 +266,17 @@ create table if not exists client_undertakings (
 
 create index if not exists client_undertakings_client_id_idx
   on client_undertakings (client_id);
+
+create table if not exists trainer_notes (
+  client_id uuid primary key references clients(id) on delete cascade,
+  note text,
+  note_html text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table trainer_notes
+  add column if not exists note_html text;
 
 -- Daily Reset Audit Logs Table
 create table if not exists reset_audit_logs (
@@ -250,10 +346,14 @@ create table if not exists pricing_leads (
   preferred_contact_method text,
   training_experience text,
   payment_link text,
+  status text not null default 'new',
   admin_notified_at timestamptz,
   notification_error text,
   created_at timestamptz not null default now()
 );
+
+alter table pricing_leads
+  add column if not exists status text not null default 'new';
 
 create index if not exists pricing_leads_created_at_idx
   on pricing_leads (created_at desc);

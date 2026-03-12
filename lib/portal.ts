@@ -1,4 +1,5 @@
 import { query, transaction } from "./db";
+import { getCurrentWeekCheckin, getDaysUntilNextWeek, getNextWeekStart } from "./checkins";
 import { todayKey, lastNDaysKeys, toDateKey } from "./date";
 
 type DayStats = {
@@ -190,16 +191,25 @@ export async function getTodayPayload(clientId: string) {
   await upsertDaySummary(clientId, date, stats);
   const summary = await getDaySummary(clientId, date);
 
-  const items = await query<{ id: string; label: string; checked: boolean; video_url: string | null }>(
-    `SELECT id, label, checked, video_url
+  const items = await query<{
+    id: string;
+    label: string;
+    block_name: string | null;
+    exercise_name: string | null;
+    prescription: string | null;
+    exercise_notes: string | null;
+    checked: boolean;
+    video_url: string | null;
+  }>(
+    `SELECT id, label, block_name, exercise_name, prescription, exercise_notes, checked, video_url
      FROM daily_checklist_items
      WHERE daily_checklist_id = $1
      ORDER BY sort_order ASC`,
     [checklistId]
   );
 
-  const note = await query<{ note: string | null }>(
-    "SELECT note FROM trainer_notes WHERE client_id = $1 LIMIT 1",
+  const note = await query<{ note: string | null; note_html: string | null }>(
+    "SELECT note, note_html FROM trainer_notes WHERE client_id = $1 LIMIT 1",
     [clientId]
   );
 
@@ -211,9 +221,14 @@ export async function getTodayPayload(clientId: string) {
   return {
     date,
     note: note.rows[0]?.note || "",
+    noteHtml: note.rows[0]?.note_html || "",
     items: items.rows.map((item) => ({
       id: item.id,
       label: item.label,
+      blockName: item.block_name ?? "Workout",
+      exerciseName: item.exercise_name ?? item.label,
+      prescription: item.prescription ?? "",
+      notes: item.exercise_notes ?? "",
       checked: item.checked,
       videoUrl: item.video_url ?? null,
     })),
@@ -324,18 +339,8 @@ export async function getUndertakingByClientId(clientId: string): Promise<{
 }
 
 export async function getClientCheckinStatus(clientId: string) {
-  const latest = await query<{ created_at: string }>(
-    `SELECT created_at
-     FROM weekly_checkins
-     WHERE client_id = $1
-     ORDER BY created_at DESC
-     LIMIT 1`,
-    [clientId]
-  );
-
-  const createdAt = latest.rows[0]?.created_at ? new Date(latest.rows[0].created_at) : null;
-
-  if (!createdAt) {
+  const currentWeekCheckin = await getCurrentWeekCheckin(clientId);
+  if (!currentWeekCheckin) {
     return {
       canSubmit: true,
       daysRemaining: 0,
@@ -343,25 +348,10 @@ export async function getClientCheckinStatus(clientId: string) {
     } as const;
   }
 
-  const now = new Date();
-  const daysSince = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
-  const unlockDate = new Date(createdAt);
-  unlockDate.setDate(unlockDate.getDate() + 7);
-
-  if (daysSince >= 7) {
-    return {
-      canSubmit: true,
-      daysRemaining: 0,
-      nextUnlockDate: unlockDate,
-    } as const;
-  }
-
-  const daysRemaining = Math.max(0, Math.ceil(7 - daysSince));
-
   return {
     canSubmit: false,
-    daysRemaining,
-    nextUnlockDate: unlockDate,
+    daysRemaining: getDaysUntilNextWeek(),
+    nextUnlockDate: getNextWeekStart(),
   } as const;
 }
 
@@ -396,4 +386,3 @@ export async function getClientProgressSeries(clientId: string, range: number = 
     completion: Number(row.completion_pct) || 0,
   }));
 }
-

@@ -1,4 +1,5 @@
 import { requireHQ } from "@/lib/auth";
+import { HQNavigation } from "@/components/admin/HQNavigation";
 import { getClientsWithStats, getTrainerCount, getTrainersWithStats } from "@/lib/admin";
 import { HQDashboard } from "@/components/admin/HQDashboard";
 
@@ -10,7 +11,8 @@ export default async function HQPage() {
 
   return (
     <>
-      <section className="section-space py-16">
+      <section className="section-space py-16 space-y-8">
+        <HQNavigation />
         <HQDashboard
           initialClients={clients}
           initialTrainerCount={trainersCount}

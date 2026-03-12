@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     // Notify the other party
     try {
-      if (senderRole === "client") {
+      if (senderType === "client") {
         await createNotification({
           userType: "trainer",
           userId: conversation.trainer_id,
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
           type: "new_message",
           link: `/trainer/messages/${conversation.client_id}`,
         });
-      } else if (senderRole === "trainer") {
+      } else if (senderType === "trainer") {
         await createNotification({
           userType: "client",
           userId: conversation.client_id,

@@ -225,7 +225,7 @@ function DashboardStub() {
         {/* Daily Training */}
         <div className="md:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">Today's Training</h2>
+            <h2 className="text-lg font-semibold text-white">Today&apos;s Training</h2>
             <span className="text-xs font-medium px-2 py-1 rounded bg-[var(--gold)]/10 text-[var(--gold)]">PHASE 1</span>
           </div>
           <div className="space-y-3">

@@ -1,15 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { ClientAnalytics } from "@/components/admin/ClientAnalytics";
 import { ClientCheckinHistory } from "@/components/admin/ClientCheckinHistory";
-import { useEffect } from "react";
+import { TrainerNoteEditor } from "@/components/admin/TrainerNoteEditor";
+import { WorkoutBuilder } from "@/components/admin/WorkoutBuilder";
+import { groupWorkoutBlocks } from "@/lib/workouts";
 
 type ExerciseItem = {
   id: string;
   label: string;
+  blockName?: string;
+  exerciseName?: string;
+  prescription?: string;
+  notes?: string;
   sortOrder: number;
   videoUrl?: string | null;
 };
@@ -20,6 +26,7 @@ type ClientDetailProps = {
     name: string;
     username: string;
     trainerDietNote: string | null;
+    trainerDietNoteHtml?: string | null;
     exerciseItems: ExerciseItem[];
     checklistHistory?: {
       date: string;
@@ -31,70 +38,31 @@ type ClientDetailProps = {
   isHQ?: boolean;
 };
 
+type HistoryItem = {
+  label: string;
+  blockName?: string;
+  exerciseName?: string;
+  prescription?: string;
+  notes?: string;
+  sortOrder: number;
+  checked: boolean;
+  videoUrl: string | null;
+};
+
+type ActiveView = "builder" | "notes" | "history";
+
 export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
   const router = useRouter();
-  const [note, setNote] = useState(client.trainerDietNote || "");
-  const [items, setItems] = useState(
-    client.exerciseItems.map((item) => ({
-      label: item.label,
-      videoUrl: item.videoUrl || "",
-    }))
-  );
-  const [newItem, setNewItem] = useState("");
-  const [savingNote, setSavingNote] = useState(false);
-  const [savingItems, setSavingItems] = useState(false);
   const [downloadingUndertaking, setDownloadingUndertaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const history = client.checklistHistory ?? [];
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyTitle, setHistoryTitle] = useState("");
-  const [historyItems, setHistoryItems] = useState<
-    { label: string; sortOrder: number; checked: boolean; videoUrl: string | null }[]
-  >([]);
+  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [activeView, setActiveView] = useState<ActiveView>("builder");
 
-  const moveItem = (index: number, direction: number) => {
-    const nextIndex = index + direction;
-    if (nextIndex < 0 || nextIndex >= items.length) return;
-    const next = [...items];
-    [next[index], next[nextIndex]] = [next[nextIndex], next[index]];
-    setItems(next);
-  };
-
-  const saveItems = async (nextItems: { label: string; videoUrl?: string }[]) => {
-    setSavingItems(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/admin/clients/${client.id}/exercises`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: nextItems }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.message || "Unable to save exercises.");
-      }
-      router.refresh();
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
-    } finally {
-      setSavingItems(false);
-    }
-  };
-
-  const removeItem = (index: number) => {
-    const next = items.filter((_, idx) => idx !== index);
-    setItems(next);
-    void saveItems(next);
-  };
-
-  const addItem = () => {
-    const trimmed = newItem.trim();
-    if (!trimmed) return;
-    setItems((prev) => [...prev, { label: trimmed, videoUrl: "" }]);
-    setNewItem("");
-  };
+  const historyBlocks = useMemo(() => groupWorkoutBlocks(historyItems), [historyItems]);
 
   const openHistoryDay = async (date: string) => {
     setHistoryLoading(true);
@@ -115,31 +83,6 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
     } finally {
       setHistoryLoading(false);
     }
-  };
-
-  const saveNote = async () => {
-    setSavingNote(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/admin/clients/${client.id}`, {
-        method: "PATCH",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ trainerDietNote: note }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.message || "Unable to save note.");
-      }
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
-    } finally {
-      setSavingNote(false);
-    }
-  };
-
-  const saveExercises = async () => {
-    await saveItems(items);
   };
 
   const downloadUndertaking = async () => {
@@ -168,16 +111,29 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
     }
   };
 
+  const navItems = [
+    { id: "clients", label: "Clients", onClick: () => router.push(isHQ ? "/hq" : "/admin") },
+    { id: "builder", label: "Workout Builder", onClick: () => setActiveView("builder") },
+    { id: "notes", label: "Trainer Notes", onClick: () => setActiveView("notes") },
+    { id: "history", label: "History / Logs", onClick: () => setActiveView("history") },
+  ] as const;
+
+  const summaryCards = [
+    { label: "Workout blocks", value: String(groupWorkoutBlocks(client.exerciseItems).length) },
+    { label: "Exercises", value: String(client.exerciseItems.length) },
+    { label: "History days", value: String(history.length) },
+  ];
+
   return (
     <div className="space-y-10 md:space-y-12">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Client</p>
-          <h1 className="text-3xl md:text-4xl font-semibold">{client.name}</h1>
+          <p className="text-xs uppercase tracking-[0.2em] text-muted">Trainer Dashboard</p>
+          <h1 className="text-3xl font-semibold md:text-4xl">{client.name}</h1>
           <p className="text-sm text-white/50">@{client.username}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {isHQ && (
+          {isHQ ? (
             <button
               onClick={downloadUndertaking}
               disabled={downloadingUndertaking}
@@ -188,7 +144,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
             >
               {downloadingUndertaking ? "Downloading..." : "Download Undertaking"}
             </button>
-          )}
+          ) : null}
           <button
             onClick={() => router.push(isHQ ? "/hq" : "/admin")}
             className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.02] px-4 py-2.5 text-sm font-medium text-white/80 transition hover:bg-white/[0.06]"
@@ -198,93 +154,120 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-4">
-        <h2 className="text-xl font-semibold">Trainer Note</h2>
-        <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-xs text-white/70 space-y-1">
-          <p className="font-semibold text-white/80">Formatting tips:</p>
-          <p>• ## Section Title</p>
-          <p>• - bullet point</p>
-          <p>• **bold text**</p>
-        </div>
-        <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          rows={6}
-          className="w-full rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
-          placeholder="Write instructions using:\n\nUse '-' for bullet points\nUse '##' for section titles\nExample:\n\nDiet\n\n3L water\n\n150g protein"
+      <div className="flex flex-wrap gap-2">
+        {navItems.map((item) => {
+          const isActive = item.id === activeView;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={item.onClick}
+              className={cn(
+                "inline-flex items-center justify-center rounded-2xl border px-4 py-2.5 text-sm font-medium transition",
+                isActive
+                  ? "border-amber-300/50 bg-amber-300/10 text-amber-100 shadow-[0_0_24px_rgba(255,214,102,0.12)]"
+                  : "border-white/12 bg-white/[0.03] text-white/75 hover:bg-white/[0.06]"
+              )}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        {summaryCards.map((card) => (
+          <div
+            key={card.label}
+            className="rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-5 backdrop-blur-xl shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)]"
+          >
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-white/45">{card.label}</p>
+            <p className="mt-3 text-3xl font-semibold text-white">{card.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {activeView === "builder" ? (
+        <WorkoutBuilder clientId={client.id} initialItems={client.exerciseItems} />
+      ) : null}
+
+      {activeView === "notes" ? (
+        <TrainerNoteEditor
+          clientId={client.id}
+          initialNote={client.trainerDietNote}
+          initialNoteHtml={client.trainerDietNoteHtml}
         />
-        <button
-          onClick={saveNote}
-          disabled={savingNote}
-          className={cn(
-            "inline-flex items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60",
-            savingNote && "hover:bg-white"
-          )}
-        >
-          {savingNote ? "Saving..." : "Save note"}
-        </button>
-      </div>
+      ) : null}
 
-      <ClientCheckinHistory clientId={client.id} isHQ={isHQ} />
+      {activeView === "history" ? (
+        <div className="space-y-8">
+          <ClientCheckinHistory clientId={client.id} isHQ={isHQ} />
 
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-5">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted">History</p>
-            <h2 className="text-xl font-semibold">Past 30 days checklist</h2>
-          </div>
-          <span className="text-sm text-white/60">{history.length} days</span>
-        </div>
-        {history.length === 0 ? (
-          <p className="text-sm text-white/60">No checklist history found.</p>
-        ) : (
-          <div className="space-y-3">
-            {history.map((day) => {
-              const dateObj = new Date(day.date);
-              const label = dateObj.toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              });
-              return (
-                <div
-                  key={day.date}
-                  className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 space-y-2"
-                >
-                  <div className="flex items-center justify-between text-sm text-white/80">
-                    <span className="font-semibold">{label}</span>
-                    <span className="text-white/60">
-                      {day.completedItems}/{day.totalItems} completed
-                    </span>
-                  </div>
-                  <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                    <div
-                      className="h-full bg-white transition-all"
-                      style={{ width: `${day.completionPct}%` }}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between text-xs text-white/60">
-                    <span>{day.completionPct}%</span>
-                    <button
-                      type="button"
-                      onClick={() => openHistoryDay(day.date)}
-                      className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-white transition hover:bg-white/[0.08]"
-                    >
-                      View
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {historyOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-4">
-          <div className="w-full max-w-xl rounded-2xl border border-white/15 bg-[#0b0e14] p-6 shadow-2xl">
-            <div className="flex items-center justify-between gap-3 mb-4">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm md:p-8">
+            <div className="flex items-center justify-between gap-2">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-white/50">Checklist</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted">Logs</p>
+                <h2 className="text-xl font-semibold">Past 30 days workout history</h2>
+              </div>
+              <span className="text-sm text-white/60">{history.length} days</span>
+            </div>
+
+            {history.length === 0 ? (
+              <p className="mt-5 text-sm text-white/60">No checklist history found.</p>
+            ) : (
+              <div className="mt-5 space-y-3">
+                {history.map((day) => {
+                  const dateObj = new Date(day.date);
+                  const label = dateObj.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  });
+                  return (
+                    <div
+                      key={day.date}
+                      className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3"
+                    >
+                      <div className="flex items-center justify-between text-sm text-white/80">
+                        <span className="font-semibold">{label}</span>
+                        <span className="text-white/60">
+                          {day.completedItems}/{day.totalItems} completed
+                        </span>
+                      </div>
+                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                        <div
+                          className="h-full bg-white transition-all"
+                          style={{ width: `${day.completionPct}%` }}
+                        />
+                      </div>
+                      <div className="mt-3 flex items-center justify-between text-xs text-white/60">
+                        <span>{day.completionPct}%</span>
+                        <button
+                          type="button"
+                          onClick={() => openHistoryDay(day.date)}
+                          className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-white transition hover:bg-white/[0.08]"
+                        >
+                          View
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <ClientAnalytics clientId={client.id} />
+        </div>
+      ) : null}
+
+      {error ? <p className="text-sm text-red-300">{error}</p> : null}
+
+      {historyOpen ? (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-3xl rounded-2xl border border-white/15 bg-[#0b0e14] p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.18em] text-white/50">Workout History</p>
                 <h3 className="text-lg font-semibold text-white">{historyTitle}</h3>
               </div>
               <button
@@ -300,127 +283,46 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
             ) : historyItems.length === 0 ? (
               <p className="text-sm text-white/60">No items for this day.</p>
             ) : (
-              <div className="space-y-3">
-                {historyItems.map((item, idx) => (
-                  <div
-                    key={`${item.label}-${idx}`}
-                    className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
-                  >
-                    <div>
-                      <p className="text-sm text-white/90">{item.label}</p>
-                      {item.videoUrl && (
-                        <a
-                          className="text-xs text-amber-300 hover:underline"
-                          href={item.videoUrl}
-                          target="_blank"
-                          rel="noreferrer"
+              <div className="space-y-5">
+                {historyBlocks.map((block) => (
+                  <div key={block.id} className="space-y-3">
+                    <h4 className="text-base font-semibold text-white">{block.name}</h4>
+                    <div className="space-y-3">
+                      {block.exercises.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-start justify-between gap-4 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
                         >
-                          Video
-                        </a>
-                      )}
+                          <div>
+                            <p className="text-sm text-white/90">
+                              {item.exerciseName || item.label}
+                              {item.prescription ? <span className="text-white/60"> — {item.prescription}</span> : null}
+                            </p>
+                            {item.notes ? <p className="mt-1 text-xs text-white/60">{item.notes}</p> : null}
+                            {item.videoUrl ? (
+                              <a
+                                className="mt-2 inline-block text-xs text-amber-300 hover:underline"
+                                href={item.videoUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Video
+                              </a>
+                            ) : null}
+                          </div>
+                          <span className="rounded-full border border-white/10 px-2 py-1 text-xs text-white/70">
+                            {item.checked ? "Completed" : "Pending"}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                    <span className="text-xs px-2 py-1 rounded-full border border-white/10 text-white/70">
-                      {item.checked ? "Completed" : "Pending"}
-                    </span>
                   </div>
                 ))}
               </div>
             )}
           </div>
         </div>
-      )}
-
-      <ClientAnalytics clientId={client.id} />
-
-      <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-8 backdrop-blur-sm space-y-5">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Daily Exercise Checklist</p>
-          <h2 className="text-xl font-semibold">Checklist items</h2>
-        </div>
-
-        <div className="space-y-3">
-          {items.length === 0 && (
-            <p className="text-sm text-white/50">No exercises yet. Add your first item below.</p>
-          )}
-          {items.map((item, index) => (
-            <div
-              key={`${item.label}-${index}`}
-              className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 md:flex-row md:items-center"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-white/50 w-6 text-center">{index + 1}</span>
-                <span className="flex-1 text-sm text-white/90">{item.label}</span>
-              </div>
-              <div className="flex-1">
-                <input
-                  value={item.videoUrl || ""}
-                  onChange={(e) =>
-                    setItems((prev) =>
-                      prev.map((entry, idx) =>
-                        idx === index ? { ...entry, videoUrl: e.target.value } : entry
-                      )
-                    )
-                  }
-                  aria-label="Video link (optional)"
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-xs text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
-                  placeholder="Video link (optional)"
-                />
-              </div>
-              <div className="flex flex-wrap items-center gap-2 md:ml-auto">
-                <button
-                  type="button"
-                  onClick={() => moveItem(index, -1)}
-                  className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.02] px-3 py-2 text-xs text-white/80 transition hover:bg-white/[0.06]"
-                >
-                  Up
-                </button>
-                <button
-                  type="button"
-                  onClick={() => moveItem(index, 1)}
-                  className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.02] px-3 py-2 text-xs text-white/80 transition hover:bg-white/[0.06]"
-                >
-                  Down
-                </button>
-                <button
-                  type="button"
-                  onClick={() => removeItem(index)}
-                  className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.02] px-3 py-2 text-xs text-white/80 transition hover:bg-white/[0.06]"
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            value={newItem}
-            onChange={(e) => setNewItem(e.target.value)}
-            className="flex-1 rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-white/10"
-            placeholder="Add new exercise item"
-          />
-          <button
-            type="button"
-            onClick={addItem}
-            className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.02] px-4 py-2.5 text-sm font-medium text-white/80 transition hover:bg-white/[0.06]"
-          >
-            Add item
-          </button>
-        </div>
-
-        {error && <p className="text-sm text-red-300">{error}</p>}
-        <button
-          onClick={saveExercises}
-          disabled={savingItems}
-          className={cn(
-            "inline-flex items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60",
-            savingItems && "hover:bg-white"
-          )}
-        >
-          {savingItems ? "Saving..." : "Save checklist"}
-        </button>
-      </div>
+      ) : null}
     </div>
   );
 }

@@ -64,8 +64,9 @@ export async function getClientDetail(clientId: string) {
     name: string;
     username: string;
     trainer_note: string | null;
+    trainer_note_html: string | null;
   }>(
-    `SELECT c.id, c.name, c.username, tn.note AS trainer_note
+    `SELECT c.id, c.name, c.username, tn.note AS trainer_note, tn.note_html AS trainer_note_html
      FROM clients c
      LEFT JOIN trainer_notes tn ON tn.client_id = c.id
      WHERE c.id = $1`,
@@ -101,23 +102,48 @@ export async function getClientDetail(clientId: string) {
   const checklistId = checklist.rows[0]?.id;
 
   const items = checklistId
-    ? await query<{ id: string; label: string; sort_order: number; video_url: string | null }>(
-        `SELECT id, label, sort_order, video_url
+    ? await query<{
+        id: string;
+        label: string;
+        block_name: string | null;
+        exercise_name: string | null;
+        prescription: string | null;
+        exercise_notes: string | null;
+        sort_order: number;
+        video_url: string | null;
+      }>(
+        `SELECT id, label, block_name, exercise_name, prescription, exercise_notes, sort_order, video_url
          FROM daily_checklist_items
          WHERE daily_checklist_id = $1
          ORDER BY sort_order ASC`,
         [checklistId]
       )
-    : { rows: [] as { id: string; label: string; sort_order: number; video_url: string | null }[] };
+    : {
+        rows: [] as {
+          id: string;
+          label: string;
+          block_name: string | null;
+          exercise_name: string | null;
+          prescription: string | null;
+          exercise_notes: string | null;
+          sort_order: number;
+          video_url: string | null;
+        }[],
+      };
 
   return {
     id: clientResult.rows[0].id,
     name: clientResult.rows[0].name,
     username: clientResult.rows[0].username,
     trainerDietNote: clientResult.rows[0].trainer_note,
+    trainerDietNoteHtml: clientResult.rows[0].trainer_note_html,
     exerciseItems: items.rows.map((row, index) => ({
       id: row.id || `${clientId}-${index}`,
       label: row.label,
+      blockName: row.block_name ?? "Workout",
+      exerciseName: row.exercise_name ?? row.label,
+      prescription: row.prescription ?? "",
+      notes: row.exercise_notes ?? "",
       sortOrder: row.sort_order,
       videoUrl: row.video_url ?? null,
     })),

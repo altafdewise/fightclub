@@ -10,7 +10,7 @@ export default async function PortalPage() {
   let unreadMessages = 0;
   try {
     const { conversation } = await getConversationMetaForClient(client.id);
-    unreadMessages = await getUnreadCount(conversation.id, "client");
+    unreadMessages = await getUnreadCount(conversation.id, { id: client.id, type: "client" });
   } catch (error) {
     unreadMessages = 0;
   }
@@ -35,6 +35,7 @@ export default async function PortalPage() {
         clientId={client.id}
         name={client.name}
         note={payload.note}
+        noteHtml={payload.noteHtml}
         items={payload.items}
         date={payload.date}
         summary={payload.summary}

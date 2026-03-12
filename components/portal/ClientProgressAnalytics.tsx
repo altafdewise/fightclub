@@ -180,7 +180,7 @@ export function ClientProgressAnalytics({
           <p className="text-xs uppercase tracking-[0.2em] text-white/40">
             Your journey
           </p>
-          <h2 className="text-2xl font-semibold mt-1">You're showing up.</h2>
+          <h2 className="text-2xl font-semibold mt-1">You&apos;re showing up.</h2>
         </div>
         <div className="inline-flex w-fit gap-1 rounded-xl border border-white/15 bg-white/[0.02] p-1 mx-auto sm:mx-0">
           {RANGE_OPTIONS.map((value) => (

@@ -38,7 +38,7 @@ export function TestimonialsMarquee() {
               >
                 <div className="flex flex-col gap-2">
                   <p className="text-[11px] uppercase tracking-[0.14em] text-muted">verified client</p>
-                  <p className="text-lg leading-relaxed text-white/90">"{item.quote}"</p>
+                  <p className="text-lg leading-relaxed text-white/90">&ldquo;{item.quote}&rdquo;</p>
                   <p className="text-sm font-semibold text-[var(--gold)]">{item.name}</p>
                 </div>
               </article>

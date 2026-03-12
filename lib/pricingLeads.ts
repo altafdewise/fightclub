@@ -7,11 +7,11 @@ import {
   getCountryOption,
   getCountryFromPhoneCode,
   getCurrencyFromCountry,
-  getCurrencyFromPhoneCode,
   getPaymentLink,
   getPaymentProvider,
   getPaymentProviderFromPhoneCode,
   getPlanById,
+  isSupportedDialCode,
 } from "@/lib/pricing";
 
 export type PricingLeadInput = {
@@ -31,6 +31,25 @@ export type StoredPricingLead = PricingLeadInput & {
   id: string;
   provider: PaymentProvider;
   paymentLink: string;
+};
+
+export type PricingLeadStatus = "new" | "contacted" | "paid";
+
+export type PricingLeadRecord = {
+  id: string;
+  full_name: string;
+  phone_number: string;
+  email: string;
+  country: string;
+  currency: CurrencyCode;
+  plan_id: PlanId;
+  provider: PaymentProvider;
+  fitness_goal: string | null;
+  preferred_contact_method: string | null;
+  training_experience: string | null;
+  payment_link: string | null;
+  status: PricingLeadStatus;
+  created_at: string;
 };
 
 const phoneDigits = /[0-9]/g;
@@ -55,7 +74,7 @@ export function validatePricingLead(input: Record<string, unknown>) {
     throw new Error("Enter your full name.");
   }
 
-  if (phoneCountryCode !== "+1" && phoneCountryCode !== "+91") {
+  if (!isSupportedDialCode(phoneCountryCode)) {
     throw new Error("Choose a valid country code.");
   }
 
@@ -79,7 +98,7 @@ export function validatePricingLead(input: Record<string, unknown>) {
   return {
     fullName,
     phoneCountryCode,
-    phoneNumber: `${phoneCountryCode} ${phoneNumber}`.trim(),
+    phoneNumber: `${phoneCountryCode}${numericPhone}`,
     email,
     country: normalizedCountry,
     currency: normalizedCurrency,
@@ -105,10 +124,16 @@ export async function ensurePricingLeadsTable() {
       preferred_contact_method text null,
       training_experience text null,
       payment_link text null,
+      status text not null default 'new',
       admin_notified_at timestamptz null,
       notification_error text null,
       created_at timestamptz not null default now()
     )
+  `);
+
+  await query(`
+    alter table pricing_leads
+      add column if not exists status text not null default 'new'
   `);
 
   await query(`
@@ -142,8 +167,9 @@ export async function createPricingLead(input: PricingLeadInput): Promise<Stored
       fitness_goal,
       preferred_contact_method,
       training_experience,
-      payment_link
-    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+      payment_link,
+      status
+    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
     returning id`,
     [
       input.fullName,
@@ -157,6 +183,7 @@ export async function createPricingLead(input: PricingLeadInput): Promise<Stored
       input.preferredContactMethod || null,
       input.trainingExperience || null,
       paymentLink || null,
+      "new",
     ]
   );
 
@@ -195,4 +222,58 @@ export function getPricingLeadSummary(lead: StoredPricingLead) {
     planTitle: plan?.title || lead.planId,
     providerName: lead.provider === "razorpay" ? "Razorpay" : "Stripe",
   };
+}
+
+export async function listPricingLeads(): Promise<PricingLeadRecord[]> {
+  await ensurePricingLeadsTable();
+
+  const result = await query<PricingLeadRecord>(
+    `select
+      id,
+      full_name,
+      phone_number,
+      email,
+      country,
+      currency,
+      plan_id,
+      provider,
+      fitness_goal,
+      preferred_contact_method,
+      training_experience,
+      payment_link,
+      status,
+      created_at
+     from pricing_leads
+     order by created_at desc`
+  );
+
+  return result.rows;
+}
+
+export async function updatePricingLeadStatus(leadId: string, status: PricingLeadStatus) {
+  await ensurePricingLeadsTable();
+
+  const result = await query<PricingLeadRecord>(
+    `update pricing_leads
+     set status = $2
+     where id = $1
+     returning
+       id,
+       full_name,
+       phone_number,
+       email,
+       country,
+       currency,
+       plan_id,
+       provider,
+       fitness_goal,
+       preferred_contact_method,
+       training_experience,
+       payment_link,
+       status,
+       created_at`,
+    [leadId, status]
+  );
+
+  return result.rows[0] || null;
 }

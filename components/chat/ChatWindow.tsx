@@ -127,12 +127,36 @@ export function ChatWindow({
     return [...messages].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
   }, [messages]);
 
+  const scrollToBottom = useCallback((smooth: boolean) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "auto" });
+      bottomRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
+    });
+  }, []);
+
+  const markAsRead = useCallback(async () => {
+    if (isHQ || !currentUser) return;
+    try {
+      await fetch("/api/chat/read", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ conversation_id: conversationId }),
+      });
+      setUnreadCount(0);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [conversationId, currentUser, isHQ]);
+
   useEffect(() => {
     scrollToBottom(false);
     if (messages.length) {
       markAsRead();
     }
-  }, []);
+  }, [markAsRead, messages.length, scrollToBottom]);
 
   useEffect(() => {
     const channel = supabase
@@ -168,7 +192,7 @@ export function ChatWindow({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [conversationId, isMine, normalizeMessage, supabase]);
+  }, [conversationId, isMine, markAsRead, normalizeMessage, reconcileMessages, scrollToBottom, supabase]);
 
   useEffect(() => {
     if (!hasMounted) {
@@ -180,16 +204,7 @@ export function ChatWindow({
     if (sortedMessages.length > 0) {
       setShowScrollArrow(!userNearBottom);
     }
-  }, [sortedMessages.length, userNearBottom, hasMounted]);
-
-  const scrollToBottom = (smooth: boolean) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    requestAnimationFrame(() => {
-      el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "auto" });
-      bottomRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
-    });
-  };
+  }, [hasMounted, scrollToBottom, sortedMessages.length, userNearBottom]);
 
   const isNearBottom = useCallback(() => {
     const el = scrollRef.current;
@@ -197,21 +212,6 @@ export function ChatWindow({
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
     return distanceFromBottom < 120;
   }, []);
-
-  const markAsRead = async () => {
-    if (isHQ || !currentUser) return;
-    try {
-      await fetch("/api/chat/read", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ conversation_id: conversationId }),
-      });
-      setUnreadCount(0);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const fetchLatest = useCallback(async () => {
     try {
@@ -601,7 +601,7 @@ export function ChatWindow({
                         handleSend();
                       }
                     }}
-                    placeholder="Write a message…"
+                    placeholder="Write a message..."
                     readOnly={isHQ}
                     className="w-full bg-transparent text-[15px] leading-relaxed text-white placeholder:text-white/30 caret-slate-200 focus:outline-none focus:ring-0 focus:border-none appearance-none border-none shadow-none resize-none px-1"
                     rows={1}

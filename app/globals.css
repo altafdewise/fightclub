@@ -13,6 +13,7 @@
   --muted: #9ea5b5;
   --gold: #c9a86a;
   --goldSoft: rgba(201, 168, 106, 0.25);
+  --font-accent: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
 }
 
 * {

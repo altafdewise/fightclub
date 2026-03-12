@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
+import { PricingCountryCodeSelect } from "@/components/PricingCountryCodeSelect";
 import { Reveal } from "@/components/Reveal";
 import {
   coachingPlans,
@@ -15,24 +16,25 @@ import {
   DEFAULT_CURRENCY,
   formatCurrency,
   getCountryFromPhoneCode,
+  getPhoneCountryOption,
+  getPhonePlaceholder,
   getCurrencyFromPhoneCode,
   getPaymentLink,
   getPaymentProviderFromPhoneCode,
   getPlanById,
   getPriceForPlan,
   getSavingsLabel,
-  phoneCountryCodeOptions,
   preferredContactMethods,
   trainingExperienceOptions,
-  type CountryCodeValue,
   type CurrencyCode,
+  type PhoneCountryKey,
   type PlanId,
 } from "@/lib/pricing";
 import { cn } from "@/utils/cn";
 
 type LeadFormState = {
   fullName: string;
-  phoneCountryCode: CountryCodeValue;
+  phoneCountryKey: PhoneCountryKey;
   phoneNumber: string;
   email: string;
   country: string;
@@ -45,23 +47,49 @@ type LeadFormErrors = Partial<Record<keyof LeadFormState, string>>;
 
 const phonePattern = /[0-9]/g;
 
-function getDefaultCountryCode(): CountryCodeValue {
-  if (typeof window === "undefined") return "+1";
+function getDefaultPhoneCountryKey(): PhoneCountryKey {
+  if (typeof window === "undefined") return "US";
 
   const language = window.navigator.language || "";
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-  const looksIndian = language.toLowerCase().includes("-in") || timeZone === "Asia/Kolkata";
+  const region = language.split("-")[1]?.toUpperCase();
 
-  return looksIndian ? "+91" : "+1";
+  const regionMap: Record<string, PhoneCountryKey> = {
+    AU: "AU",
+    BD: "BD",
+    CA: "CA",
+    DE: "DE",
+    ES: "ES",
+    FR: "FR",
+    GB: "GB",
+    IN: "IN",
+    IT: "IT",
+    LK: "LK",
+    MY: "MY",
+    NL: "NL",
+    NP: "NP",
+    NZ: "NZ",
+    PK: "PK",
+    SA: "SA",
+    SG: "SG",
+    ZA: "ZA",
+    AE: "AE",
+  };
+
+  if (region && regionMap[region]) return regionMap[region];
+  if (timeZone === "Asia/Kolkata") return "IN";
+  return "US";
 }
 
-function createDefaultForm(phoneCountryCode: CountryCodeValue): LeadFormState {
+function createDefaultForm(phoneCountryKey: PhoneCountryKey): LeadFormState {
+  const option = getPhoneCountryOption(phoneCountryKey);
+
   return {
     fullName: "",
-    phoneCountryCode,
+    phoneCountryKey,
     phoneNumber: "",
     email: "",
-    country: getCountryFromPhoneCode(phoneCountryCode),
+    country: option.country,
     fitnessGoal: "",
     preferredContactMethod: preferredContactMethods[0].value,
     trainingExperience: trainingExperienceOptions[0].value,
@@ -99,27 +127,28 @@ export default function Plans() {
   const [selectedPlanId, setSelectedPlanId] = useState<PlanId | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [leadUnlocked, setLeadUnlocked] = useState(false);
-  const [leadId, setLeadId] = useState("");
-  const [form, setForm] = useState<LeadFormState>(() => createDefaultForm("+1"));
+  const [form, setForm] = useState<LeadFormState>(() => createDefaultForm("US"));
   const [errors, setErrors] = useState<LeadFormErrors>({});
   const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<"form" | "details">("form");
 
+  const selectedPhoneOption = getPhoneCountryOption(form.phoneCountryKey);
   const selectedPlan = selectedPlanId ? getPlanById(selectedPlanId) : null;
   const selectedPrice = selectedPlanId ? getPriceForPlan(selectedPlanId, currency) : null;
-  const selectedProvider = selectedPlanId ? getPaymentProviderFromPhoneCode(form.phoneCountryCode) : null;
+  const selectedProvider = selectedPlanId ? getPaymentProviderFromPhoneCode(selectedPhoneOption.dialCode) : null;
   const paymentLink = selectedPlanId && selectedProvider ? getPaymentLink(selectedPlanId, selectedProvider) : "";
   const coachLink = selectedPlan ? getWhatsAppLink(selectedPlan.title) : "";
 
   useEffect(() => {
-    const detectedCode = getDefaultCountryCode();
+    const detectedKey = getDefaultPhoneCountryKey();
+    const detectedOption = getPhoneCountryOption(detectedKey);
     setForm((prev) => ({
       ...prev,
-      phoneCountryCode: detectedCode,
-      country: getCountryFromPhoneCode(detectedCode),
+      phoneCountryKey: detectedKey,
+      country: detectedOption.country,
     }));
-    setCurrency(getCurrencyFromPhoneCode(detectedCode));
+    setCurrency(detectedOption.currency);
   }, []);
 
   useEffect(() => {
@@ -158,25 +187,29 @@ export default function Plans() {
 
   const handleInputChange = (key: keyof LeadFormState, value: string) => {
     setForm((prev) => {
-      if (key === "phoneCountryCode") {
-        const nextCode = value as CountryCodeValue;
-        const inferredCountry = getCountryFromPhoneCode(nextCode);
-        const nextCurrency = getCurrencyFromPhoneCode(nextCode);
-        setCurrency(nextCurrency);
+      if (key === "phoneCountryKey") {
+        const currentOption = getPhoneCountryOption(prev.phoneCountryKey);
+        const nextOption = getPhoneCountryOption(value);
+        setCurrency(nextOption.currency);
         return {
           ...prev,
-          phoneCountryCode: nextCode,
+          phoneCountryKey: nextOption.key,
           country:
-            !prev.country || prev.country === "India" || prev.country === "United States"
-              ? inferredCountry
+            !prev.country || prev.country === currentOption.country
+              ? nextOption.country
               : prev.country,
         };
       }
       if (key === "country") {
         const nextCurrency =
-          value === "India" || prev.phoneCountryCode === "+91" ? "INR" : getCurrencyFromPhoneCode(prev.phoneCountryCode);
+          value === "India" || getPhoneCountryOption(prev.phoneCountryKey).dialCode === "+91"
+            ? "INR"
+            : getCurrencyFromPhoneCode(getPhoneCountryOption(prev.phoneCountryKey).dialCode);
         setCurrency(nextCurrency);
         return { ...prev, country: value };
+      }
+      if (key === "phoneNumber") {
+        return { ...prev, phoneNumber: value.replace(/\D/g, "") };
       }
       return { ...prev, [key]: value };
     });
@@ -206,6 +239,8 @@ export default function Plans() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          phoneCountryCode: selectedPhoneOption.dialCode,
+          country: form.country || selectedPhoneOption.country,
           currency,
           planId: selectedPlanId,
         }),
@@ -218,7 +253,6 @@ export default function Plans() {
       }
 
       setLeadUnlocked(true);
-      setLeadId(data?.leadId || "");
       setStep("details");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Unable to unlock pricing right now.");
@@ -370,27 +404,27 @@ export default function Plans() {
 
                       <label className="flex flex-col gap-2 text-sm text-white/80 md:col-span-2">
                         <span className="text-[var(--gold)]">Phone Number *</span>
-                        <div className="flex gap-2">
-                          <select
-                            value={form.phoneCountryCode}
-                            onChange={(event) => handleInputChange("phoneCountryCode", event.target.value)}
-                            className="w-[152px] rounded-[14px] border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.06)] px-3 py-3.5 text-sm sm:w-[190px]"
-                          >
-                            {phoneCountryCodeOptions.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
+                        <div
+                          className={cn(
+                            "relative z-20 flex items-stretch rounded-[16px] border bg-[rgba(201,168,106,0.06)] transition duration-300 focus-within:border-[rgba(201,168,106,0.42)] focus-within:shadow-[0_0_0_3px_rgba(201,168,106,0.14)]",
+                            errors.phoneNumber ? "border-red-300/70" : "border-[rgba(201,168,106,0.28)]"
+                          )}
+                        >
+                          <div className="w-[148px] shrink-0 border-r border-white/10 sm:w-[188px]">
+                            <PricingCountryCodeSelect
+                              value={form.phoneCountryKey}
+                              onChange={(nextValue) => handleInputChange("phoneCountryKey", nextValue)}
+                              invalid={!!errors.phoneNumber}
+                            />
+                          </div>
                           <input
                             value={form.phoneNumber}
                             onChange={(event) => handleInputChange("phoneNumber", event.target.value)}
                             inputMode="tel"
                             className={cn(
-                              "min-w-0 flex-1 rounded-[14px] border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.06)] px-4 py-3.5",
-                              errors.phoneNumber && "border-red-300/70 focus:border-red-300 focus:shadow-none"
+                              "min-w-0 flex-1 rounded-r-[14px] border-0 bg-transparent px-4 py-3.5 text-white placeholder:text-white/30 focus:border-0 focus:outline-none focus:ring-0 focus:shadow-none"
                             )}
-                            placeholder={form.phoneCountryCode === "+91" ? "9876543210" : "555 123 4567"}
+                            placeholder={getPhonePlaceholder(selectedPhoneOption.dialCode)}
                           />
                         </div>
                         {errors.phoneNumber ? <span className="text-xs text-red-300">{errors.phoneNumber}</span> : null}
@@ -528,23 +562,6 @@ export default function Plans() {
                         ) : (
                           <p className="mt-3 text-sm text-white/56">A focused reset without a longer lock-in.</p>
                         )}
-                      </div>
-
-                      <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                        <div className="rounded-[18px] border border-white/8 bg-black/20 px-4 py-3">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/42">Currency</p>
-                          <p className="mt-2 text-sm font-semibold text-white">{currency}</p>
-                        </div>
-                        <div className="rounded-[18px] border border-white/8 bg-black/20 px-4 py-3">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/42">Lead ID</p>
-                          <p className="mt-2 text-sm font-semibold text-white">{leadId || "Captured"}</p>
-                        </div>
-                        <div className="rounded-[18px] border border-white/8 bg-black/20 px-4 py-3">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/42">Checkout</p>
-                          <p className="mt-2 text-sm font-semibold text-white">
-                            {selectedProvider === "razorpay" ? "Razorpay" : "Stripe"}
-                          </p>
-                        </div>
                       </div>
                     </div>
 

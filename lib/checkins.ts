@@ -26,6 +26,31 @@ async function getAssignedTrainerId(clientId: string): Promise<string | null> {
   return res.rows[0]?.trainer_id || null;
 }
 
+function getCurrentWeekBounds() {
+  const now = new Date();
+  const start = new Date(now);
+  const day = start.getUTCDay();
+  const daysFromMonday = day === 0 ? 6 : day - 1;
+  start.setUTCDate(start.getUTCDate() - daysFromMonday);
+  start.setUTCHours(0, 0, 0, 0);
+
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 7);
+
+  return { start, end };
+}
+
+export function getNextWeekStart() {
+  return getCurrentWeekBounds().end;
+}
+
+export function getDaysUntilNextWeek() {
+  const nextWeekStart = getNextWeekStart();
+  const now = new Date();
+  const diff = nextWeekStart.getTime() - now.getTime();
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
+
 export async function getLastCheckin(clientId: string): Promise<WeeklyCheckin | null> {
   const res = await query<WeeklyCheckin>(
     `SELECT *
@@ -34,6 +59,21 @@ export async function getLastCheckin(clientId: string): Promise<WeeklyCheckin | 
      ORDER BY created_at DESC
      LIMIT 1`,
     [clientId]
+  );
+  return res.rows[0] || null;
+}
+
+export async function getCurrentWeekCheckin(clientId: string): Promise<WeeklyCheckin | null> {
+  const { start, end } = getCurrentWeekBounds();
+  const res = await query<WeeklyCheckin>(
+    `SELECT *
+     FROM weekly_checkins
+     WHERE client_id = $1
+       AND created_at >= $2
+       AND created_at < $3
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [clientId, start.toISOString(), end.toISOString()]
   );
   return res.rows[0] || null;
 }

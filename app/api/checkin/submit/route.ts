@@ -1,18 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getClientSession } from "@/lib/auth";
-import { createCheckin, getLastCheckin } from "@/lib/checkins";
+import { createCheckin, getCurrentWeekCheckin, getDaysUntilNextWeek } from "@/lib/checkins";
 import { query } from "@/lib/db";
 import { Resend } from "resend";
 import { createNotification } from "@/lib/notifications";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-function daysSince(dateString: string) {
-  const now = new Date();
-  const then = new Date(dateString);
-  const diff = now.getTime() - then.getTime();
-  return diff / (1000 * 60 * 60 * 24);
-}
 
 export async function POST(req: NextRequest) {
   const session = await getClientSession();
@@ -31,9 +24,9 @@ export async function POST(req: NextRequest) {
       notes,
     } = body || {};
 
-    const last = await getLastCheckin(session.client.id);
-    if (last && daysSince(last.created_at) < 7) {
-      const remaining = Math.ceil(7 - daysSince(last.created_at));
+    const currentWeekCheckin = await getCurrentWeekCheckin(session.client.id);
+    if (currentWeekCheckin) {
+      const remaining = getDaysUntilNextWeek();
       return NextResponse.json(
         { message: `Your next check-in unlocks in ${remaining} day(s).` },
         { status: 429 }

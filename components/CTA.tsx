@@ -13,7 +13,7 @@ export function CTA() {
               <div className="space-y-3">
                 <p className="text-sm text-muted">Next step</p>
                 <h3 className="text-3xl md:text-4xl font-semibold">
-                  Start with a consult. We’ll map the plan.
+                  Start with a consult. We&apos;ll map the plan.
                 </h3>
                 <p className="text-sm text-muted">
                   Across timezones. Led by certified professionals.
