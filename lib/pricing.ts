@@ -1,6 +1,7 @@
 export type CurrencyCode = "USD" | "INR";
 export type PaymentProvider = "stripe" | "razorpay";
 export type PlanId = "1m" | "3m" | "6m";
+export type CountryCodeValue = "+1" | "+91";
 
 type PricePoint = {
   current: number;
@@ -42,6 +43,7 @@ export const currencyOptions: { value: CurrencyCode; label: string; support: str
 ];
 
 export const countryOptions: CountryOption[] = [
+  { value: "", label: "Use country code", currency: "USD" },
   { value: "India", label: "India", currency: "INR" },
   { value: "United States", label: "United States", currency: "USD" },
   { value: "United Kingdom", label: "United Kingdom", currency: "USD" },
@@ -50,6 +52,11 @@ export const countryOptions: CountryOption[] = [
   { value: "Singapore", label: "Singapore", currency: "USD" },
   { value: "United Arab Emirates", label: "United Arab Emirates", currency: "USD" },
   { value: "Other International", label: "Other International", currency: "USD" },
+];
+
+export const phoneCountryCodeOptions: { value: CountryCodeValue; label: string }[] = [
+  { value: "+1", label: "+1 (United States / International)" },
+  { value: "+91", label: "+91 (India)" },
 ];
 
 export const preferredContactMethods: ContactMethod[] = [
@@ -123,7 +130,7 @@ export const coachingPlans: CoachingPlan[] = [
 ];
 
 export function getCountryOption(country: string) {
-  return countryOptions.find((option) => option.value === country) || countryOptions[1];
+  return countryOptions.find((option) => option.value === country) || countryOptions[2];
 }
 
 export function getPriceForPlan(planId: PlanId, currency: CurrencyCode) {
@@ -140,6 +147,18 @@ export function getCurrencyFromCountry(country: string): CurrencyCode {
 
 export function getPaymentProvider(country: string, currency: CurrencyCode): PaymentProvider {
   return country === "India" || currency === "INR" ? "razorpay" : "stripe";
+}
+
+export function getCountryFromPhoneCode(phoneCountryCode: CountryCodeValue) {
+  return phoneCountryCode === "+91" ? "India" : "United States";
+}
+
+export function getCurrencyFromPhoneCode(phoneCountryCode: CountryCodeValue): CurrencyCode {
+  return phoneCountryCode === "+91" ? "INR" : "USD";
+}
+
+export function getPaymentProviderFromPhoneCode(phoneCountryCode: CountryCodeValue): PaymentProvider {
+  return phoneCountryCode === "+91" ? "razorpay" : "stripe";
 }
 
 export function formatCurrency(amount: number, currency: CurrencyCode) {

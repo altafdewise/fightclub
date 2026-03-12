@@ -1,17 +1,22 @@
 import { query } from "@/lib/db";
 import {
+  type CountryCodeValue,
   type CurrencyCode,
   type PaymentProvider,
   type PlanId,
   getCountryOption,
+  getCountryFromPhoneCode,
   getCurrencyFromCountry,
+  getCurrencyFromPhoneCode,
   getPaymentLink,
   getPaymentProvider,
+  getPaymentProviderFromPhoneCode,
   getPlanById,
 } from "@/lib/pricing";
 
 export type PricingLeadInput = {
   fullName: string;
+  phoneCountryCode: CountryCodeValue;
   phoneNumber: string;
   email: string;
   country: string;
@@ -36,6 +41,7 @@ function cleanValue(value: unknown) {
 
 export function validatePricingLead(input: Record<string, unknown>) {
   const fullName = cleanValue(input.fullName);
+  const phoneCountryCode = cleanValue(input.phoneCountryCode) as CountryCodeValue;
   const phoneNumber = cleanValue(input.phoneNumber);
   const email = cleanValue(input.email).toLowerCase();
   const country = cleanValue(input.country);
@@ -47,6 +53,10 @@ export function validatePricingLead(input: Record<string, unknown>) {
 
   if (fullName.length < 2) {
     throw new Error("Enter your full name.");
+  }
+
+  if (phoneCountryCode !== "+1" && phoneCountryCode !== "+91") {
+    throw new Error("Choose a valid country code.");
   }
 
   const numericPhone = (phoneNumber.match(phoneDigits) || []).join("");
@@ -62,12 +72,14 @@ export function validatePricingLead(input: Record<string, unknown>) {
     throw new Error("Choose a valid coaching plan.");
   }
 
-  const normalizedCountry = getCountryOption(country).value;
-  const normalizedCurrency = requestedCurrency === "INR" || normalizedCountry === "India" ? "INR" : "USD";
+  const normalizedCountry = country ? getCountryOption(country).value : getCountryFromPhoneCode(phoneCountryCode);
+  const normalizedCurrency =
+    requestedCurrency === "INR" || normalizedCountry === "India" || phoneCountryCode === "+91" ? "INR" : "USD";
 
   return {
     fullName,
-    phoneNumber,
+    phoneCountryCode,
+    phoneNumber: `${phoneCountryCode} ${phoneNumber}`.trim(),
     email,
     country: normalizedCountry,
     currency: normalizedCurrency,
@@ -106,9 +118,14 @@ export async function ensurePricingLeadsTable() {
 }
 
 export async function createPricingLead(input: PricingLeadInput): Promise<StoredPricingLead> {
-  const derivedCurrency = input.country === "India" ? "INR" : getCurrencyFromCountry(input.country);
-  const currency = input.currency === "INR" || derivedCurrency === "INR" ? "INR" : "USD";
-  const provider = getPaymentProvider(input.country, currency);
+  const derivedCountry = input.country || getCountryFromPhoneCode(input.phoneCountryCode);
+  const derivedCurrency =
+    input.phoneCountryCode === "+91" ? "INR" : derivedCountry === "India" ? "INR" : getCurrencyFromCountry(derivedCountry);
+  const currency = input.currency === "INR" || derivedCurrency === "INR" ? "INR" : getCurrencyFromCountry(derivedCountry);
+  const provider =
+    input.phoneCountryCode === "+91"
+      ? getPaymentProviderFromPhoneCode(input.phoneCountryCode)
+      : getPaymentProvider(derivedCountry, currency);
   const paymentLink = getPaymentLink(input.planId, provider);
 
   const inserted = await query<{
@@ -132,7 +149,7 @@ export async function createPricingLead(input: PricingLeadInput): Promise<Stored
       input.fullName,
       input.phoneNumber,
       input.email,
-      input.country,
+      derivedCountry,
       currency,
       input.planId,
       provider,
@@ -145,6 +162,7 @@ export async function createPricingLead(input: PricingLeadInput): Promise<Stored
 
   return {
     ...input,
+    country: derivedCountry,
     currency,
     id: inserted.rows[0].id,
     provider,

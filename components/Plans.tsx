@@ -6,24 +6,25 @@ import {
   Check,
   LockKeyhole,
   ShieldCheck,
-  Sparkles,
   X,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import {
   coachingPlans,
   countryOptions,
-  currencyOptions,
   DEFAULT_CURRENCY,
   formatCurrency,
-  getCurrencyFromCountry,
+  getCountryFromPhoneCode,
+  getCurrencyFromPhoneCode,
   getPaymentLink,
-  getPaymentProvider,
+  getPaymentProviderFromPhoneCode,
   getPlanById,
   getPriceForPlan,
   getSavingsLabel,
+  phoneCountryCodeOptions,
   preferredContactMethods,
   trainingExperienceOptions,
+  type CountryCodeValue,
   type CurrencyCode,
   type PlanId,
 } from "@/lib/pricing";
@@ -31,6 +32,7 @@ import { cn } from "@/utils/cn";
 
 type LeadFormState = {
   fullName: string;
+  phoneCountryCode: CountryCodeValue;
   phoneNumber: string;
   email: string;
   country: string;
@@ -43,16 +45,23 @@ type LeadFormErrors = Partial<Record<keyof LeadFormState, string>>;
 
 const phonePattern = /[0-9]/g;
 
-function getDefaultCountry(currency: CurrencyCode) {
-  return currency === "INR" ? "India" : "United States";
+function getDefaultCountryCode(): CountryCodeValue {
+  if (typeof window === "undefined") return "+1";
+
+  const language = window.navigator.language || "";
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+  const looksIndian = language.toLowerCase().includes("-in") || timeZone === "Asia/Kolkata";
+
+  return looksIndian ? "+91" : "+1";
 }
 
-function createDefaultForm(currency: CurrencyCode): LeadFormState {
+function createDefaultForm(phoneCountryCode: CountryCodeValue): LeadFormState {
   return {
     fullName: "",
+    phoneCountryCode,
     phoneNumber: "",
     email: "",
-    country: getDefaultCountry(currency),
+    country: getCountryFromPhoneCode(phoneCountryCode),
     fitnessGoal: "",
     preferredContactMethod: preferredContactMethods[0].value,
     trainingExperience: trainingExperienceOptions[0].value,
@@ -75,10 +84,6 @@ function validateLeadForm(form: LeadFormState): LeadFormErrors {
     errors.email = "Enter a valid email.";
   }
 
-  if (!form.country) {
-    errors.country = "Choose your country.";
-  }
-
   return errors;
 }
 
@@ -95,7 +100,7 @@ export default function Plans() {
   const [isOpen, setIsOpen] = useState(false);
   const [leadUnlocked, setLeadUnlocked] = useState(false);
   const [leadId, setLeadId] = useState("");
-  const [form, setForm] = useState<LeadFormState>(() => createDefaultForm(DEFAULT_CURRENCY));
+  const [form, setForm] = useState<LeadFormState>(() => createDefaultForm("+1"));
   const [errors, setErrors] = useState<LeadFormErrors>({});
   const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -103,9 +108,19 @@ export default function Plans() {
 
   const selectedPlan = selectedPlanId ? getPlanById(selectedPlanId) : null;
   const selectedPrice = selectedPlanId ? getPriceForPlan(selectedPlanId, currency) : null;
-  const selectedProvider = selectedPlanId ? getPaymentProvider(form.country, currency) : null;
+  const selectedProvider = selectedPlanId ? getPaymentProviderFromPhoneCode(form.phoneCountryCode) : null;
   const paymentLink = selectedPlanId && selectedProvider ? getPaymentLink(selectedPlanId, selectedProvider) : "";
   const coachLink = selectedPlan ? getWhatsAppLink(selectedPlan.title) : "";
+
+  useEffect(() => {
+    const detectedCode = getDefaultCountryCode();
+    setForm((prev) => ({
+      ...prev,
+      phoneCountryCode: detectedCode,
+      country: getCountryFromPhoneCode(detectedCode),
+    }));
+    setCurrency(getCurrencyFromPhoneCode(detectedCode));
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -127,14 +142,6 @@ export default function Plans() {
     };
   }, [isOpen]);
 
-  const syncCurrency = (nextCurrency: CurrencyCode) => {
-    setCurrency(nextCurrency);
-    setForm((prev) => ({
-      ...prev,
-      country: getDefaultCountry(nextCurrency),
-    }));
-  };
-
   const openPlan = (planId: PlanId) => {
     setSelectedPlanId(planId);
     setSubmitError("");
@@ -151,8 +158,23 @@ export default function Plans() {
 
   const handleInputChange = (key: keyof LeadFormState, value: string) => {
     setForm((prev) => {
+      if (key === "phoneCountryCode") {
+        const nextCode = value as CountryCodeValue;
+        const inferredCountry = getCountryFromPhoneCode(nextCode);
+        const nextCurrency = getCurrencyFromPhoneCode(nextCode);
+        setCurrency(nextCurrency);
+        return {
+          ...prev,
+          phoneCountryCode: nextCode,
+          country:
+            !prev.country || prev.country === "India" || prev.country === "United States"
+              ? inferredCountry
+              : prev.country,
+        };
+      }
       if (key === "country") {
-        const nextCurrency = getCurrencyFromCountry(value);
+        const nextCurrency =
+          value === "India" || prev.phoneCountryCode === "+91" ? "INR" : getCurrencyFromPhoneCode(prev.phoneCountryCode);
         setCurrency(nextCurrency);
         return { ...prev, country: value };
       }
@@ -213,39 +235,8 @@ export default function Plans() {
             <p className="text-muted mb-1">Choose a coaching commitment.</p>
             <h2 className="text-3xl md:text-4xl font-bold text-text">Pricing & Commitments</h2>
             <p className="mt-4 text-sm text-white/55 max-w-2xl mx-auto leading-relaxed">
-              Serious clients start with context. Unlock plan details, pricing, and checkout after a short lead form.
+              Unlock plan details and pricing after a short form.
             </p>
-          </div>
-        </Reveal>
-
-        <Reveal delay={80}>
-          <div className="mb-12 flex justify-center">
-            <div className="inline-flex flex-col gap-3 rounded-[24px] border border-white/10 bg-white/[0.03] p-2.5 backdrop-blur-xl shadow-[0_0_40px_-18px_rgba(255,255,255,0.08)] sm:flex-row sm:items-center">
-              <div className="px-3 pt-1 sm:pt-0">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">Billing Region</p>
-                <p className="text-sm text-white/65">Currency also determines checkout partner.</p>
-              </div>
-              <div className="flex rounded-[18px] border border-white/10 bg-black/30 p-1">
-                {currencyOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => syncCurrency(option.value)}
-                    className={cn(
-                      "min-w-[132px] rounded-[14px] px-4 py-3 text-left transition-all duration-300",
-                      currency === option.value
-                        ? "bg-white text-black shadow-[0_12px_24px_rgba(255,255,255,0.16)]"
-                        : "text-white/70 hover:text-white"
-                    )}
-                  >
-                    <span className="block text-sm font-semibold">{option.label}</span>
-                    <span className={cn("block text-xs", currency === option.value ? "text-black/65" : "text-white/45")}>
-                      {option.support}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </Reveal>
 
@@ -289,10 +280,6 @@ export default function Plans() {
                   <LockKeyhole className="h-4 w-4" />
                   Unlock Pricing
                 </button>
-
-                <div className="mb-6 rounded-[18px] border border-white/8 bg-black/20 px-4 py-3 text-sm text-white/58">
-                  Complete the short form to reveal pricing and the correct checkout route.
-                </div>
 
                 <div className="flex-grow">
                   <ul className="space-y-4">
@@ -353,18 +340,6 @@ export default function Plans() {
                     ))}
                   </ul>
                 </div>
-
-                <div className="mt-6 rounded-[22px] border border-[rgba(201,168,106,0.14)] bg-[rgba(201,168,106,0.07)] p-5">
-                  <div className="flex items-start gap-3">
-                    <Sparkles className="mt-0.5 h-5 w-5 text-[var(--gold)]" />
-                    <div>
-                      <p className="text-sm font-semibold text-white">Tailored coaching begins here.</p>
-                      <p className="mt-1 text-sm leading-relaxed text-white/62">
-                        Complete the short form to unlock plan details, pricing, and the correct payment route for your region.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <div className="p-6 md:p-8">
@@ -374,7 +349,7 @@ export default function Plans() {
                       <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">Step 1</p>
                       <h4 className="mt-2 text-2xl font-semibold text-white">Unlock plan details</h4>
                       <p className="mt-2 text-sm leading-relaxed text-white/58">
-                        Keep it brief. Phone number is required so we can follow up around enrollment and onboarding.
+                        View plan details and pricing after a quick form.
                       </p>
                     </div>
 
@@ -393,17 +368,31 @@ export default function Plans() {
                         {errors.fullName ? <span className="text-xs text-red-300">{errors.fullName}</span> : null}
                       </label>
 
-                      <label className="flex flex-col gap-2 text-sm text-white/80">
+                      <label className="flex flex-col gap-2 text-sm text-white/80 md:col-span-2">
                         <span className="text-[var(--gold)]">Phone Number *</span>
-                        <input
-                          value={form.phoneNumber}
-                          onChange={(event) => handleInputChange("phoneNumber", event.target.value)}
-                          className={cn(
-                            "rounded-[14px] border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.06)] px-4 py-3.5",
-                            errors.phoneNumber && "border-red-300/70 focus:border-red-300 focus:shadow-none"
-                          )}
-                          placeholder="+1 555 123 4567"
-                        />
+                        <div className="flex gap-2">
+                          <select
+                            value={form.phoneCountryCode}
+                            onChange={(event) => handleInputChange("phoneCountryCode", event.target.value)}
+                            className="w-[152px] rounded-[14px] border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.06)] px-3 py-3.5 text-sm sm:w-[190px]"
+                          >
+                            {phoneCountryCodeOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            value={form.phoneNumber}
+                            onChange={(event) => handleInputChange("phoneNumber", event.target.value)}
+                            inputMode="tel"
+                            className={cn(
+                              "min-w-0 flex-1 rounded-[14px] border-[rgba(201,168,106,0.28)] bg-[rgba(201,168,106,0.06)] px-4 py-3.5",
+                              errors.phoneNumber && "border-red-300/70 focus:border-red-300 focus:shadow-none"
+                            )}
+                            placeholder={form.phoneCountryCode === "+91" ? "9876543210" : "555 123 4567"}
+                          />
+                        </div>
                         {errors.phoneNumber ? <span className="text-xs text-red-300">{errors.phoneNumber}</span> : null}
                       </label>
 
@@ -423,14 +412,11 @@ export default function Plans() {
                       </label>
 
                       <label className="flex flex-col gap-2 text-sm text-white/80">
-                        Country *
+                        Country
                         <select
                           value={form.country}
                           onChange={(event) => handleInputChange("country", event.target.value)}
-                          className={cn(
-                            "rounded-[14px] px-4 py-3.5",
-                            errors.country && "border-red-300/70 focus:border-red-300 focus:shadow-none"
-                          )}
+                          className="rounded-[14px] px-4 py-3.5"
                         >
                           {countryOptions.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -438,7 +424,6 @@ export default function Plans() {
                             </option>
                           ))}
                         </select>
-                        {errors.country ? <span className="text-xs text-red-300">{errors.country}</span> : null}
                       </label>
 
                       <label className="flex flex-col gap-2 text-sm text-white/80">
@@ -482,10 +467,6 @@ export default function Plans() {
                       </label>
                     </div>
 
-                    <div className="rounded-[18px] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-white/58">
-                      Viewing in <span className="font-semibold text-white">{currency}</span>. India routes to Razorpay. International billing routes to Stripe.
-                    </div>
-
                     {submitError ? <p className="text-sm text-red-300">{submitError}</p> : null}
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -500,9 +481,6 @@ export default function Plans() {
                         {submitting ? "Unlocking..." : "Unlock Pricing"}
                         <ArrowRight className="h-4 w-4" />
                       </button>
-                      <p className="text-xs uppercase tracking-[0.15em] text-white/40">
-                        Serious clients only
-                      </p>
                     </div>
                   </form>
                 ) : (
