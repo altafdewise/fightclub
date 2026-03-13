@@ -262,28 +262,28 @@ export default function Plans() {
   };
 
   return (
-    <section id="pricing" className="py-24 relative">
+    <section id="pricing" className="relative py-16 sm:py-20 md:py-24">
       <div className="section-space">
         <Reveal>
-          <div className="text-center mb-8 md:mb-10">
+          <div className="mb-8 text-center md:mb-10">
             <p className="text-muted mb-1">Choose a coaching commitment.</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-text">Pricing & Commitments</h2>
-            <p className="mt-4 text-sm text-white/55 max-w-2xl mx-auto leading-relaxed">
+            <h2 className="text-[clamp(1.95rem,7vw,2.5rem)] font-bold text-text md:text-4xl">Pricing & Commitments</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/55">
               Unlock plan details and pricing after a short form.
             </p>
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-3 xl:gap-8">
           {coachingPlans.map((plan, index) => (
             <Reveal key={plan.id} delay={index * 90}>
               <article
                 className={cn(
-                  "relative flex h-full flex-col overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.07] via-white/[0.03] to-transparent p-8 md:p-10 backdrop-blur-xl transition-all duration-500 shadow-[0_0_60px_-10px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-white/20 hover:from-white/[0.1] hover:via-white/[0.05] hover:shadow-[0_0_80px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)]",
+                  "relative flex h-full flex-col overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.07] via-white/[0.03] to-transparent p-6 backdrop-blur-xl transition-all duration-500 shadow-[0_0_60px_-10px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-white/20 hover:from-white/[0.1] hover:via-white/[0.05] hover:shadow-[0_0_80px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)] sm:p-8 md:p-10",
                   plan.featured && "border-[rgba(201,168,106,0.22)] shadow-[0_0_70px_-18px_rgba(201,168,106,0.22),inset_0_1px_0_rgba(255,255,255,0.12)]"
                 )}
               >
-                <div className="mb-8 flex items-start justify-between gap-4">
+                <div className="mb-6 flex items-start justify-between gap-4 sm:mb-8">
                   <div className="space-y-3">
                     <div className="flex flex-wrap items-center gap-2">
                       {!plan.featured ? (
@@ -298,18 +298,18 @@ export default function Plans() {
                       ) : null}
                     </div>
                     <div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-text">{plan.title}</h3>
+                      <h3 className="text-2xl font-bold text-text sm:text-[1.85rem] md:text-3xl">{plan.title}</h3>
                       <p className="mt-2 text-sm md:text-base text-white/60">{plan.support}</p>
                     </div>
                   </div>
                 </div>
 
-                <p className="mb-8 text-sm leading-relaxed text-white/62">{plan.description}</p>
+                <p className="mb-6 text-sm leading-relaxed text-white/62 sm:mb-8">{plan.description}</p>
 
                 <button
                   type="button"
                   onClick={() => openPlan(plan.id)}
-                  className="mb-8 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.08] px-5 py-4 text-sm font-semibold text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.15] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.2)]"
+                  className="mb-6 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.08] px-5 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.15] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.2)] sm:mb-8"
                 >
                   <LockKeyhole className="h-4 w-4" />
                   Unlock Pricing
@@ -335,14 +335,14 @@ export default function Plans() {
 
       {isOpen && selectedPlan && selectedPrice ? (
         <div
-          className="fixed inset-0 z-[80] flex items-end justify-center bg-black/75 px-0 backdrop-blur-md md:items-center md:px-6"
+          className="fixed inset-0 z-[80] flex items-end justify-center bg-black/75 px-0 backdrop-blur-md md:items-center md:px-4 lg:px-6"
           role="dialog"
           aria-modal="true"
           aria-labelledby="pricing-modal-title"
           onClick={closeModal}
         >
           <div
-            className="relative flex max-h-[92svh] w-full max-w-4xl flex-col overflow-hidden rounded-t-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,15,17,0.98),rgba(7,8,10,0.98))] shadow-[0_30px_90px_rgba(0,0,0,0.6)] md:rounded-[32px]"
+            className="relative flex max-h-[94svh] w-full max-w-4xl flex-col overflow-hidden rounded-t-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(14,15,17,0.98),rgba(7,8,10,0.98))] shadow-[0_30px_90px_rgba(0,0,0,0.6)] md:max-h-[92svh] md:rounded-[32px]"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="absolute inset-x-0 top-0 mx-auto mt-3 h-1.5 w-14 rounded-full bg-white/15 md:hidden" />
@@ -356,14 +356,14 @@ export default function Plans() {
             </button>
 
             <div className="grid gap-0 overflow-y-auto md:grid-cols-[0.92fr_1.08fr]">
-              <div className="border-b border-white/8 bg-white/[0.02] p-6 md:border-b-0 md:border-r md:p-8">
+              <div className="border-b border-white/8 bg-white/[0.02] p-5 sm:p-6 md:border-b-0 md:border-r md:p-8">
                 <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/45">Pricing Access</p>
                 <h3 id="pricing-modal-title" className="text-2xl md:text-3xl font-semibold">
                   {selectedPlan.title}
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-white/62">{selectedPlan.description}</p>
 
-                <div className="mt-6 rounded-[22px] border border-white/10 bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent p-5">
+                <div className="mt-6 rounded-[22px] border border-white/10 bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent p-4 sm:p-5">
                   <p className="text-xs uppercase tracking-[0.16em] text-white/45">What this includes</p>
                   <ul className="mt-4 space-y-3">
                     {selectedPlan.inclusions.map((item) => (
@@ -376,7 +376,7 @@ export default function Plans() {
                 </div>
               </div>
 
-              <div className="p-6 md:p-8">
+              <div className="p-5 sm:p-6 md:p-8">
                 {step === "form" ? (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
@@ -410,7 +410,7 @@ export default function Plans() {
                             errors.phoneNumber ? "border-red-300/70" : "border-[rgba(201,168,106,0.28)]"
                           )}
                         >
-                          <div className="w-[148px] shrink-0 border-r border-white/10 sm:w-[188px]">
+                          <div className="w-[124px] shrink-0 border-r border-white/10 min-[360px]:w-[142px] sm:w-[188px]">
                             <PricingCountryCodeSelect
                               value={form.phoneCountryKey}
                               onChange={(nextValue) => handleInputChange("phoneCountryKey", nextValue)}
@@ -508,7 +508,7 @@ export default function Plans() {
                         type="submit"
                         disabled={submitting}
                         className={cn(
-                          "inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/92 disabled:cursor-not-allowed disabled:opacity-70",
+                          "inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/92 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto",
                           submitting && "hover:bg-white"
                         )}
                       >
@@ -521,7 +521,7 @@ export default function Plans() {
                   <div className="space-y-6">
                     <div>
                       <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">Step 2</p>
-                      <h4 className="mt-2 text-2xl font-semibold text-white">Plan details unlocked</h4>
+                      <h4 className="mt-2 text-2xl font-semibold text-white sm:text-[1.9rem]">Plan details unlocked</h4>
                       <p className="mt-2 text-sm leading-relaxed text-white/58">
                         Your pricing is shown in {currency}. Checkout automatically routes through{" "}
                         {selectedProvider === "razorpay" ? "Razorpay" : "Stripe"} based on your region.
@@ -529,28 +529,28 @@ export default function Plans() {
                     </div>
 
                     <div className="rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-transparent p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-                      <div className="flex flex-wrap items-start justify-between gap-5">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-5">
                         <div>
                           <p className="text-xs uppercase tracking-[0.16em] text-white/45">{selectedPlan.support}</p>
                           <h5 className="mt-2 text-2xl font-semibold text-white">{selectedPlan.title}</h5>
                         </div>
-                        <div className="rounded-full border border-[rgba(201,168,106,0.24)] bg-[rgba(201,168,106,0.08)] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-[var(--gold)]">
+                        <div className="w-fit rounded-full border border-[rgba(201,168,106,0.24)] bg-[rgba(201,168,106,0.08)] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-[var(--gold)]">
                           {selectedProvider === "razorpay" ? "Razorpay Checkout" : "Stripe Checkout"}
                         </div>
                       </div>
 
                       <div className="mt-6">
                         {selectedPrice.original ? (
-                          <div className="flex items-end gap-3">
-                            <span className="text-lg text-white/35 line-through">
+                          <div className="flex flex-wrap items-end gap-2 sm:gap-3">
+                            <span className="text-base text-white/35 line-through sm:text-lg">
                               {formatCurrency(selectedPrice.original, currency)}
                             </span>
-                            <span className="text-4xl font-bold text-white">
+                            <span className="text-[2rem] font-bold text-white sm:text-4xl">
                               {formatCurrency(selectedPrice.current, currency)}
                             </span>
                           </div>
                         ) : (
-                          <div className="text-4xl font-bold text-white">
+                          <div className="text-[2rem] font-bold text-white sm:text-4xl">
                             {formatCurrency(selectedPrice.current, currency)}
                           </div>
                         )}
@@ -583,7 +583,7 @@ export default function Plans() {
                           href={paymentLink}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/92"
+                          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/92 sm:w-auto"
                         >
                           Continue with {selectedProvider === "razorpay" ? "Razorpay" : "Stripe"}
                           <ArrowRight className="h-4 w-4" />
@@ -603,7 +603,7 @@ export default function Plans() {
                           href={coachLink}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-white/[0.07]"
+                          className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-white/[0.07] sm:w-auto"
                         >
                           Talk to Coach
                         </a>

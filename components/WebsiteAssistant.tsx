@@ -98,12 +98,12 @@ export function WebsiteAssistant() {
 
   return (
     <>
-      <div className="fixed bottom-4 right-4 z-[70] sm:bottom-6 sm:right-6">
+      <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-3 z-[70] sm:bottom-6 sm:right-6">
         <button
           type="button"
           onClick={() => setOpen((current) => !current)}
           className={cn(
-            "inline-flex items-center gap-2 rounded-full border border-[rgba(201,168,106,0.22)] bg-[#0a0a0a]/92 px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl transition duration-200 hover:border-[rgba(201,168,106,0.42)] hover:bg-[#101010]/95 hover:shadow-[0_0_28px_rgba(201,168,106,0.18)]",
+            "inline-flex items-center gap-2 rounded-full border border-[rgba(201,168,106,0.22)] bg-[#0a0a0a]/92 px-3.5 py-3 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl transition duration-200 hover:border-[rgba(201,168,106,0.42)] hover:bg-[#101010]/95 hover:shadow-[0_0_28px_rgba(201,168,106,0.18)] sm:px-4",
             open && "border-[rgba(201,168,106,0.42)] bg-[#101010]/95"
           )}
           aria-expanded={open}
@@ -125,10 +125,8 @@ export function WebsiteAssistant() {
 
       <div
         className={cn(
-          "fixed bottom-[4.8rem] right-4 z-[75] flex w-[calc(100vw-2rem)] max-w-[390px] origin-bottom-right flex-col overflow-hidden rounded-[28px] border border-white/12 bg-[linear-gradient(180deg,rgba(14,15,17,0.98),rgba(7,8,10,0.98))] shadow-[0_30px_90px_rgba(0,0,0,0.55)] backdrop-blur-2xl transition duration-200 sm:bottom-[5.5rem] sm:right-6",
-          open
-            ? "translate-y-0 scale-100 opacity-100"
-            : "pointer-events-none translate-y-4 scale-[0.98] opacity-0"
+          "fixed bottom-[calc(4.7rem+env(safe-area-inset-bottom))] left-3 right-3 z-[75] flex origin-bottom flex-col overflow-hidden rounded-[24px] border border-white/12 bg-[linear-gradient(180deg,rgba(14,15,17,0.98),rgba(7,8,10,0.98))] shadow-[0_30px_90px_rgba(0,0,0,0.55)] backdrop-blur-2xl transition duration-200 sm:bottom-[5.5rem] sm:left-auto sm:right-6 sm:w-[calc(100vw-3rem)] sm:max-w-[390px] sm:origin-bottom-right sm:rounded-[28px]",
+          open ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-4 scale-[0.98] opacity-0"
         )}
       >
         <div className="border-b border-white/8 px-5 py-4">
@@ -138,9 +136,7 @@ export function WebsiteAssistant() {
                 <Sparkles className="h-4 w-4 text-[var(--gold)]" />
                 <p className="text-sm font-semibold text-white">brutal.fit Assistant</p>
               </div>
-              <p className="mt-1 text-xs text-white/55">
-                Plans, pricing, coaching, and getting started
-              </p>
+              <p className="mt-1 text-xs text-white/55">Plans, pricing, coaching, and getting started</p>
             </div>
             <button
               type="button"
@@ -153,7 +149,7 @@ export function WebsiteAssistant() {
           </div>
         </div>
 
-        <div ref={chatRef} className="max-h-[60vh] space-y-4 overflow-y-auto px-4 py-4 sm:max-h-[460px]">
+        <div ref={chatRef} className="max-h-[min(58vh,460px)] space-y-4 overflow-y-auto px-4 py-4 sm:max-h-[460px]">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -196,7 +192,7 @@ export function WebsiteAssistant() {
                   key={topic.id}
                   type="button"
                   onClick={() => askQuestion(topic.suggestion)}
-                  className="rounded-full border border-white/12 bg-white/[0.03] px-3 py-2 text-left text-xs text-white/75 transition hover:bg-white/[0.06] hover:text-white"
+                  className="rounded-full border border-white/12 bg-white/[0.03] px-3 py-2 text-left text-xs leading-snug text-white/75 transition hover:bg-white/[0.06] hover:text-white"
                 >
                   {topic.suggestion}
                 </button>
@@ -210,7 +206,7 @@ export function WebsiteAssistant() {
             <input
               value={input}
               onChange={(event) => setInput(event.target.value)}
-              className="min-w-0 flex-1 border-0 bg-transparent text-sm text-white outline-none ring-0 placeholder:text-white/32 placeholder:text-[13px] focus:border-0 focus:outline-none focus:ring-0 focus:shadow-none"
+              className="min-w-0 flex-1 border-0 bg-transparent text-sm text-white outline-none ring-0 placeholder:text-[13px] placeholder:text-white/32 focus:border-0 focus:outline-none focus:ring-0 focus:shadow-none"
               placeholder="Ask about plans or pricing"
             />
             <button

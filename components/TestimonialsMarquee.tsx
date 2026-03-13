@@ -19,13 +19,13 @@ export function TestimonialsMarquee() {
 
   return (
     <section id="testimonials" className="pb-16 md:pb-24">
-      <div className="section-space flex flex-col gap-6 mb-8 text-center items-center">
+      <div className="section-space mb-8 flex flex-col items-center gap-5 text-center">
         <Reveal>
           <p className="text-sm text-muted">Testimonials</p>
-          <h2 className="text-3xl md:text-4xl font-semibold">Quiet confidence from clients.</h2>
+          <h2 className="text-[clamp(1.9rem,7vw,2.5rem)] font-semibold md:text-4xl">Quiet confidence from clients.</h2>
         </Reveal>
       </div>
-      <div className="relative overflow-hidden rounded-3xl">
+      <div className="relative overflow-hidden rounded-[24px] sm:rounded-3xl">
         <div className="marquee">
           <div
             className="marquee-track gap-8 md:gap-10"
@@ -34,7 +34,7 @@ export function TestimonialsMarquee() {
             {doubled.map((item, idx) => (
               <article
                 key={idx}
-                className="min-w-[85vw] sm:min-w-[360px] md:min-w-[420px] max-w-[440px] px-2"
+                className="min-w-[88vw] max-w-[440px] px-2 sm:min-w-[340px] md:min-w-[420px]"
               >
                 <div className="flex flex-col gap-2">
                   <p className="text-[11px] uppercase tracking-[0.14em] text-muted">verified client</p>

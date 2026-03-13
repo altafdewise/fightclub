@@ -172,7 +172,7 @@ export function WorkoutBuilder({ clientId, initialItems }: WorkoutBuilderProps) 
   };
 
   return (
-    <div className="space-y-6 rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm md:p-8">
+    <div className="space-y-6 rounded-3xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm sm:p-6 md:p-8">
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">Workout Builder</p>
@@ -181,7 +181,7 @@ export function WorkoutBuilder({ clientId, initialItems }: WorkoutBuilderProps) 
             Build warm-ups, strength, core, conditioning, and cooldown work in a clean structure.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           <button
             type="button"
             onClick={addBlock}
@@ -207,7 +207,7 @@ export function WorkoutBuilder({ clientId, initialItems }: WorkoutBuilderProps) 
         {blocks.map((block, blockIndex) => (
           <div
             key={block.id}
-            className="space-y-4 rounded-[26px] border border-white/12 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-transparent p-5"
+            className="space-y-4 rounded-[26px] border border-white/12 bg-gradient-to-br from-white/[0.06] via-white/[0.03] to-transparent p-4 sm:p-5"
           >
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex-1">
@@ -222,7 +222,7 @@ export function WorkoutBuilder({ clientId, initialItems }: WorkoutBuilderProps) 
                 </label>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
                 <button
                   type="button"
                   onClick={() => moveBlock(blockIndex, -1)}
@@ -306,7 +306,7 @@ export function WorkoutBuilder({ clientId, initialItems }: WorkoutBuilderProps) 
                     />
                   </label>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
                     <button
                       type="button"
                       onClick={() => moveExercise(blockIndex, exerciseIndex, -1)}
@@ -336,7 +336,7 @@ export function WorkoutBuilder({ clientId, initialItems }: WorkoutBuilderProps) 
             <button
               type="button"
               onClick={() => addExercise(blockIndex)}
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-white/85 transition hover:bg-white/[0.06]"
+              className="inline-flex w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-white/85 transition hover:bg-white/[0.06] sm:w-auto"
             >
               Add Exercise
             </button>

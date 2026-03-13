@@ -422,12 +422,12 @@ export function ChatWindow({
   return (
     <div className="w-full">
       <div className="mx-auto w-full max-w-5xl">
-        <div className="rounded-[28px] border border-white/8 bg-white/[0.02] backdrop-blur-xl shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.01]">
+        <div className="overflow-hidden rounded-[24px] border border-white/8 bg-white/[0.02] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl sm:rounded-[28px]">
+          <div className="flex items-center justify-between gap-3 border-b border-white/5 bg-white/[0.01] px-4 py-4 sm:px-6">
             <div className="space-y-1">
               <p className="text-[11px] uppercase tracking-[0.24em] text-white/50">Conversation</p>
               <div className="flex items-center gap-2">
-                <h2 className="text-2xl font-semibold text-white leading-tight">{peerName}</h2>
+                <h2 className="text-lg font-semibold leading-tight text-white sm:text-2xl">{peerName}</h2>
                 {unreadCount > 0 && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-white/90 text-black px-2.5 py-1 text-[11px] font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.25)]">
                     <span className="h-2 w-2 rounded-full bg-black" />
@@ -442,7 +442,7 @@ export function ChatWindow({
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="h-[520px] overflow-y-auto px-4 py-5 sm:px-8 scroll-smooth chat-scroll"
+              className="h-[min(58svh,520px)] overflow-y-auto px-4 py-5 scroll-smooth chat-scroll sm:px-8"
             >
               <div className="flex w-full flex-col gap-3">
                 {loadingMore && (
@@ -470,7 +470,7 @@ export function ChatWindow({
                       <div className={cn("flex flex-col gap-1", mine ? "items-end" : "items-start")}>
                         <div
                           className={cn(
-                            "group block shrink-0 max-w-[85%] md:max-w-[65%] min-w-[110px] md:min-w-[140px]",
+                            "group block max-w-[88%] shrink-0 min-w-[96px] md:max-w-[65%] md:min-w-[140px]",
                             bubbleBase,
                             mine ? senderSurface : receiverSurface,
                             mine
@@ -632,7 +632,7 @@ export function ChatWindow({
 
       {selectedImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setSelectedImage(null)}>
-          <div className="relative max-h-[90vh] max-w-5xl p-4" role="dialog" aria-modal="true">
+          <div className="relative max-h-[90vh] w-full max-w-5xl p-4" role="dialog" aria-modal="true">
             <button
               className="absolute right-6 top-6 rounded-full bg-white/90 text-black px-3 py-1 text-xs font-semibold shadow"
               onClick={() => setSelectedImage(null)}

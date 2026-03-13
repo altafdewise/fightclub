@@ -5,7 +5,7 @@ import { WebsiteAssistant } from "@/components/WebsiteAssistant";
 
 export const metadata: Metadata = {
   title: "BRUTAL | Online coaching for all timezones",
-  description: "BRUTAL offers structured online coaching with certified professionals—anywhere, anytime.",
+  description: "BRUTAL offers structured online coaching with certified professionals - anywhere, anytime.",
 };
 
 export default function RootLayout({

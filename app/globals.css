@@ -22,6 +22,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -30,6 +31,8 @@ body {
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 
 a {
@@ -75,7 +78,25 @@ a {
 }
 
 .section-space {
-  @apply max-w-6xl mx-auto px-5 md:px-10;
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-5 lg:px-10;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
 }
 
 .reveal {
@@ -171,7 +192,7 @@ select option:checked {
 
 @media (max-width: 640px) {
   .section-space {
-    @apply px-5;
+    @apply px-4;
   }
   .marquee-track {
     gap: 8px;

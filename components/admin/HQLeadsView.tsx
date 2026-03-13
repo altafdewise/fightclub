@@ -236,9 +236,9 @@ export function HQLeadsView({ initialLeads }: HQLeadsViewProps) {
       )}
 
       {selectedLead ? (
-        <div className="fixed inset-0 z-[90] flex justify-end bg-black/70 backdrop-blur-sm" onClick={() => setSelectedLeadId(null)}>
+        <div className="fixed inset-0 z-[90] flex items-end justify-end bg-black/70 backdrop-blur-sm md:items-stretch" onClick={() => setSelectedLeadId(null)}>
           <div
-            className="h-full w-full max-w-xl overflow-y-auto border-l border-white/10 bg-[rgba(9,11,14,0.98)] p-6 shadow-[-20px_0_60px_rgba(0,0,0,0.45)]"
+            className="max-h-[92svh] w-full overflow-y-auto rounded-t-[24px] border border-white/10 bg-[rgba(9,11,14,0.98)] p-5 shadow-[-20px_0_60px_rgba(0,0,0,0.45)] sm:p-6 md:h-full md:max-h-none md:max-w-xl md:rounded-none md:border-l md:border-t-0"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">

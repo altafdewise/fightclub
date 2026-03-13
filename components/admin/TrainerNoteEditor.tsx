@@ -104,11 +104,11 @@ export function TrainerNoteEditor({
   };
 
   return (
-    <div className="space-y-5 rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm md:p-8">
-      <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+    <div className="space-y-5 rounded-3xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm sm:p-6 md:p-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">Trainer Notes</p>
-          <h2 className="text-xl font-semibold text-white">Coach guidance</h2>
+          <h2 className="text-xl font-semibold text-white sm:text-2xl">Coach guidance</h2>
           <p className="mt-2 text-sm text-white/60">
             Write a clean note with sections, bullets, emphasis, and simple line breaks.
           </p>
@@ -118,7 +118,7 @@ export function TrainerNoteEditor({
           onClick={saveNote}
           disabled={saving}
           className={cn(
-            "inline-flex items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60",
+            "inline-flex w-full items-center justify-center rounded-xl border border-white/20 bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto",
             saving && "hover:bg-white"
           )}
         >

@@ -129,10 +129,10 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-muted">Trainer Dashboard</p>
-          <h1 className="text-3xl font-semibold md:text-4xl">{client.name}</h1>
+          <h1 className="text-[clamp(2rem,8vw,2.8rem)] font-semibold md:text-4xl">{client.name}</h1>
           <p className="text-sm text-white/50">@{client.username}</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           {isHQ ? (
             <button
               onClick={downloadUndertaking}
@@ -154,7 +154,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="grid gap-2 sm:flex sm:flex-wrap">
         {navItems.map((item) => {
           const isActive = item.id === activeView;
           return (
@@ -175,7 +175,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
         })}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {summaryCards.map((card) => (
           <div
             key={card.label}
@@ -204,7 +204,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
           <ClientCheckinHistory clientId={client.id} isHQ={isHQ} />
 
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm md:p-8">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-muted">Logs</p>
                 <h2 className="text-xl font-semibold">Past 30 days workout history</h2>
@@ -227,7 +227,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
                       key={day.date}
                       className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3"
                     >
-                      <div className="flex items-center justify-between text-sm text-white/80">
+                      <div className="flex flex-col gap-1 text-sm text-white/80 sm:flex-row sm:items-center sm:justify-between">
                         <span className="font-semibold">{label}</span>
                         <span className="text-white/60">
                           {day.completedItems}/{day.totalItems} completed
@@ -239,7 +239,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
                           style={{ width: `${day.completionPct}%` }}
                         />
                       </div>
-                      <div className="mt-3 flex items-center justify-between text-xs text-white/60">
+                      <div className="mt-3 flex flex-col gap-2 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
                         <span>{day.completionPct}%</span>
                         <button
                           type="button"
@@ -263,12 +263,12 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
       {error ? <p className="text-sm text-red-300">{error}</p> : null}
 
       {historyOpen ? (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-4">
-          <div className="w-full max-w-3xl rounded-2xl border border-white/15 bg-[#0b0e14] p-6 shadow-2xl">
-            <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/60 px-0 md:items-center md:px-4">
+          <div className="max-h-[92svh] w-full overflow-y-auto rounded-t-[24px] border border-white/15 bg-[#0b0e14] p-4 shadow-2xl sm:p-5 md:max-h-[90vh] md:max-w-3xl md:rounded-2xl md:p-6">
+            <div className="mb-4 flex items-start justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-white/50">Workout History</p>
-                <h3 className="text-lg font-semibold text-white">{historyTitle}</h3>
+                <h3 className="text-lg font-semibold text-white sm:text-xl">{historyTitle}</h3>
               </div>
               <button
                 type="button"
@@ -294,7 +294,7 @@ export function ClientDetail({ client, isHQ = false }: ClientDetailProps) {
                           className="flex items-start justify-between gap-4 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
                         >
                           <div>
-                            <p className="text-sm text-white/90">
+                          <p className="text-sm leading-relaxed text-white/90 break-words">
                               {item.exerciseName || item.label}
                               {item.prescription ? <span className="text-white/60"> — {item.prescription}</span> : null}
                             </p>

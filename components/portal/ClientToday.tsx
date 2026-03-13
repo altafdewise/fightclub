@@ -85,7 +85,7 @@ const MONTHS = [
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const panelShellClassName =
-  "rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-6 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl";
+  "rounded-[24px] border border-white/15 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-5 shadow-[0_0_60px_-10px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl sm:p-6";
 
 export function ClientToday({
   clientId,
@@ -450,7 +450,7 @@ export function ClientToday({
                           </svg>
                         </span>
                         <div className="min-w-0 flex-1 space-y-1">
-                          <p className="truncate text-sm font-medium text-white/92">
+                          <p className="text-sm font-medium leading-relaxed text-white/92 break-words">
                             {item.exerciseName || item.label}
                             {item.prescription ? <span className="text-white/60"> — {item.prescription}</span> : null}
                           </p>
@@ -522,14 +522,14 @@ export function ClientToday({
   const renderProgressPanel = () => (
     <div className="space-y-6">
       {progressData && (
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl before:pointer-events-none before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/5 before:to-transparent before:content-['']">
-          <div className="relative z-10 mb-6 flex items-start justify-between gap-4">
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-5 backdrop-blur-xl before:pointer-events-none before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/5 before:to-transparent before:content-[''] sm:p-6">
+          <div className="relative z-10 mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-xs uppercase tracking-widest text-neutral-500">Progress</p>
-              <h2 className="text-2xl font-semibold text-white">Consistency trend</h2>
+              <h2 className="text-xl font-semibold text-white sm:text-2xl">Consistency trend</h2>
             </div>
 
-            <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+            <div className="flex w-full rounded-full border border-white/10 bg-white/5 p-1 sm:w-auto">
               {["7D", "30D", "90D"].map((range) => {
                 const isActive = range === selectedRange;
                 return (
@@ -537,7 +537,7 @@ export function ClientToday({
                     key={range}
                     type="button"
                     className={cn(
-                      "rounded-full px-4 py-1.5 text-sm transition",
+                      "flex-1 rounded-full px-4 py-1.5 text-sm transition sm:flex-none",
                       isActive ? "bg-white font-medium text-black shadow-md" : "text-neutral-400"
                     )}
                     aria-pressed={isActive}
@@ -554,7 +554,7 @@ export function ClientToday({
             <ProgressAnalyticsChart data={displayedProgressData} />
           </div>
 
-          <div className="relative z-10 mt-6 grid grid-cols-3 border-t border-white/10 pt-6 text-center">
+          <div className="relative z-10 mt-6 grid grid-cols-1 gap-4 border-t border-white/10 pt-6 text-center sm:grid-cols-3 sm:gap-0">
             <div>
               <p className="text-xs uppercase tracking-wide text-neutral-500">Avg</p>
               <p className="mt-1 text-2xl font-semibold text-white">{progressStats.average}%</p>
@@ -659,11 +659,11 @@ export function ClientToday({
           aria-label="Close panel"
           onClick={() => setActivePanel(null)}
         />
-        <div className="absolute inset-x-0 bottom-0 max-h-[88vh] rounded-t-[28px] border border-white/10 bg-[#070707]/95 p-5 shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[min(720px,100vw)] md:max-h-none md:rounded-none md:border-l md:border-t-0 md:p-7">
+        <div className="absolute inset-x-0 bottom-0 max-h-[88svh] rounded-t-[24px] border border-white/10 bg-[#070707]/95 p-4 shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:p-5 md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[min(720px,100vw)] md:max-h-none md:rounded-none md:border-l md:border-t-0 md:p-7">
           <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/45">Dashboard View</p>
-              <h2 className="mt-1 text-2xl font-semibold text-white">{panelTitle}</h2>
+              <h2 className="mt-1 text-xl font-semibold text-white sm:text-2xl">{panelTitle}</h2>
             </div>
             <button
               type="button"
@@ -674,7 +674,7 @@ export function ClientToday({
             </button>
           </div>
 
-          <div className="mt-5 max-h-[calc(88vh-96px)] space-y-6 overflow-y-auto pr-1 md:max-h-[calc(100vh-120px)]">
+          <div className="mt-5 max-h-[calc(88svh-92px)] space-y-6 overflow-y-auto pr-1 md:max-h-[calc(100vh-120px)]">
             {activePanel === "notes" && renderNotesPanel()}
             {activePanel === "workout" && renderWorkoutPanel()}
             {activePanel === "progress" && renderProgressPanel()}
@@ -690,7 +690,7 @@ export function ClientToday({
         <div className="space-y-3">
           <div className="space-y-2">
             <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">Client Dashboard</p>
-            <h1 className="text-3xl font-bold md:text-4xl">Welcome, {name}.</h1>
+            <h1 className="text-[clamp(2rem,8vw,2.8rem)] font-bold md:text-4xl">Welcome, {name}.</h1>
             <p className="text-sm text-white/55">{date}</p>
           </div>
           <p className="max-w-xl text-sm leading-relaxed text-white/68">
@@ -698,11 +698,11 @@ export function ClientToday({
           </p>
         </div>
 
-        <div className="relative self-start" ref={menuRef}>
+        <div className="relative self-start max-md:w-full" ref={menuRef}>
           <button
             type="button"
             onClick={() => setMenuOpen((current) => !current)}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-amber-400/30 bg-white/[0.05] px-4 py-3 text-sm font-semibold text-white transition duration-150 hover:border-amber-300/60 hover:bg-white/[0.10] hover:shadow-[0_0_25px_rgba(255,200,120,0.2)]"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-amber-400/30 bg-white/[0.05] px-4 py-3 text-sm font-semibold text-white transition duration-150 hover:border-amber-300/60 hover:bg-white/[0.10] hover:shadow-[0_0_25px_rgba(255,200,120,0.2)] md:w-auto"
             aria-expanded={menuOpen}
             aria-haspopup="menu"
           >
@@ -712,7 +712,7 @@ export function ClientToday({
 
           <div
             className={cn(
-              "absolute right-0 z-40 mt-3 hidden w-[18rem] overflow-hidden rounded-[24px] border border-white/12 bg-[#090909]/96 p-2 shadow-[0_18px_60px_rgba(0,0,0,0.5)] backdrop-blur-2xl transition duration-150 md:block",
+              "absolute right-0 z-40 mt-3 hidden w-[17rem] overflow-hidden rounded-[24px] border border-white/12 bg-[#090909]/96 p-2 shadow-[0_18px_60px_rgba(0,0,0,0.5)] backdrop-blur-2xl transition duration-150 md:block",
               menuOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
             )}
             role="menu"
@@ -792,7 +792,7 @@ export function ClientToday({
           aria-label="Close dashboard menu"
           onClick={() => setMenuOpen(false)}
         />
-        <div className="absolute inset-x-4 bottom-4 rounded-[28px] border border-white/12 bg-[#090909]/96 p-3 shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+        <div className="absolute inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] rounded-[24px] border border-white/12 bg-[#090909]/96 p-3 shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:inset-x-4 sm:bottom-4 sm:rounded-[28px]">
           <div className="mb-2 flex items-center justify-between px-2 py-2">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/45">Dashboard</p>
@@ -870,14 +870,14 @@ export function ClientToday({
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {summaryCards.map((card) => (
           <div
             key={card.label}
             className="rounded-[22px] border border-white/12 bg-gradient-to-br from-white/[0.06] via-white/[0.025] to-transparent p-5 shadow-[0_0_30px_-18px_rgba(255,255,255,0.18)] backdrop-blur-xl"
           >
             <p className="text-xs font-medium uppercase tracking-[0.14em] text-white/45">{card.label}</p>
-            <p className="mt-3 text-3xl font-semibold text-white">{card.value}</p>
+            <p className="mt-3 text-[2rem] font-semibold text-white sm:text-3xl">{card.value}</p>
             <p className="mt-2 text-xs text-white/50">{card.helper}</p>
           </div>
         ))}
@@ -896,26 +896,26 @@ export function ClientToday({
       >
         <div
           className={cn(
-            "rounded-2xl border border-white/10 bg-black/80 p-6 text-center shadow-xl transition-transform duration-300 md:p-8",
+            "mx-4 w-full max-w-sm rounded-2xl border border-white/10 bg-black/80 p-5 text-center shadow-xl transition-transform duration-300 md:max-w-md md:p-8",
             hoorahOpen ? "scale-100" : "scale-95"
           )}
           role="dialog"
           aria-modal="true"
         >
           <p className="text-xs uppercase tracking-[0.2em] text-white/50">Hoorah</p>
-          <h3 className="mt-2 text-2xl font-semibold">Day submitted.</h3>
+          <h3 className="mt-2 text-xl font-semibold sm:text-2xl">Day submitted.</h3>
           <p className="mt-2 text-sm text-white/70">
             Completion {hoorahCompletion}% {hoorahWin ? "win day." : "keep going."}
           </p>
 
-          <div className="mt-8 flex items-center justify-center gap-8">
+          <div className="mt-8 flex items-center justify-center gap-5 sm:gap-8">
             <div className="text-center">
-              <p className="text-6xl font-bold text-white">{streaks.current}</p>
+              <p className="text-5xl font-bold text-white sm:text-6xl">{streaks.current}</p>
               <p className="mt-2 text-xs uppercase tracking-wider text-white/50">Current</p>
             </div>
             <div className="h-16 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
             <div className="text-center">
-              <p className="text-6xl font-bold text-white">{streaks.best}</p>
+              <p className="text-5xl font-bold text-white sm:text-6xl">{streaks.best}</p>
               <p className="mt-2 text-xs uppercase tracking-wider text-white/50">Best</p>
             </div>
           </div>
@@ -924,3 +924,4 @@ export function ClientToday({
     </div>
   );
 }
+

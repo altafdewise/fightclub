@@ -58,13 +58,13 @@ export function PricingCountryCodeSelect({
       if (!trigger) return;
 
       const rect = trigger.getBoundingClientRect();
-      const desiredWidth = Math.max(rect.width, 320);
-      const width = Math.min(desiredWidth, window.innerWidth - 24);
-      const left = Math.min(rect.left, window.innerWidth - width - 12);
+      const desiredWidth = Math.max(rect.width, 280);
+      const width = Math.min(desiredWidth, window.innerWidth - 16);
+      const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8));
       const bottomSpace = window.innerHeight - rect.bottom - 12;
       const topSpace = rect.top - 12;
       const openAbove = bottomSpace < 260 && topSpace > bottomSpace;
-      const maxHeight = Math.max(180, Math.min(360, openAbove ? topSpace : bottomSpace));
+      const maxHeight = Math.max(180, Math.min(320, openAbove ? topSpace : bottomSpace));
       const top = openAbove ? Math.max(12, rect.top - maxHeight - 8) : rect.bottom + 8;
 
       setPanelPosition({ top, left, width, maxHeight });
@@ -124,7 +124,7 @@ export function PricingCountryCodeSelect({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         className={cn(
-          "flex h-full w-full min-w-0 items-center justify-between gap-2 rounded-l-[14px] rounded-r-[10px] px-3 py-3.5 text-left text-sm text-white transition",
+          "flex h-full w-full min-w-0 items-center justify-between gap-2 rounded-l-[14px] rounded-r-[10px] px-2.5 py-3.5 text-left text-sm text-white transition sm:px-3",
           "bg-transparent",
           invalid ? "text-red-200" : "text-white",
           isOpen ? "bg-white/[0.05]" : "hover:bg-white/[0.03]"
@@ -147,7 +147,7 @@ export function PricingCountryCodeSelect({
                 width: `${panelPosition.width}px`,
               }}
             >
-              <div className="border-b border-white/8 p-3">
+              <div className="border-b border-white/8 p-2.5 sm:p-3">
                 <div className="flex items-center gap-2 rounded-[14px] border border-white/10 bg-white/[0.03] px-3 py-2.5">
                   <Search className="h-4 w-4 text-white/35" />
                   <input
@@ -160,7 +160,7 @@ export function PricingCountryCodeSelect({
                 </div>
               </div>
 
-              <div className="overflow-y-auto p-2" style={{ maxHeight: `${panelPosition.maxHeight}px` }}>
+              <div className="overflow-y-auto p-1.5 sm:p-2" style={{ maxHeight: `${panelPosition.maxHeight}px` }}>
                 {filteredOptions.map((option) => {
                   const isSelected = option.key === value;
 

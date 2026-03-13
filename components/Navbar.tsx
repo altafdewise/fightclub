@@ -20,9 +20,9 @@ export function Navbar() {
   const closeMobileMenu = () => setMobileOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl border-b border-[var(--border)] bg-[rgba(5,6,7,0.45)] shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
-      <div className="section-space relative flex items-center justify-between py-4">
-        <Link href="/" className="font-semibold tracking-[0.08em] text-lg">BRUTAL</Link>
+    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[rgba(5,6,7,0.45)] shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+      <div className="section-space relative flex items-center justify-between py-3.5 sm:py-4">
+        <Link href="/" className="text-base font-semibold tracking-[0.08em] sm:text-lg">BRUTAL</Link>
 
         <nav className="hidden md:flex items-center gap-8 text-sm text-muted">
           {links.map((link) => (
@@ -42,7 +42,7 @@ export function Navbar() {
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
-            className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-white/10 text-white/80 transition hover:border-white/50 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-white/10 text-white/80 transition hover:border-white/50 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)] md:hidden sm:h-11 sm:w-11"
           >
             {mobileOpen ? <X size={20} strokeWidth={2.25} /> : <Menu size={20} strokeWidth={2.25} />}
           </button>
@@ -54,7 +54,7 @@ export function Navbar() {
 
         <div
           className={cn(
-            "md:hidden absolute left-0 right-0 top-full origin-top rounded-b-2xl border border-t-0 border-[var(--border)] bg-[rgba(5,6,7,0.92)] backdrop-blur-2xl shadow-[0_18px_40px_rgba(0,0,0,0.45)] transition-all duration-200 px-5 pb-5",
+            "absolute left-0 right-0 top-full origin-top rounded-b-2xl border border-t-0 border-[var(--border)] bg-[rgba(5,6,7,0.92)] px-4 pb-4 backdrop-blur-2xl shadow-[0_18px_40px_rgba(0,0,0,0.45)] transition-all duration-200 md:hidden sm:px-5 sm:pb-5",
             mobileOpen ? "pointer-events-auto opacity-100 scale-100" : "pointer-events-none opacity-0 scale-95"
           )}
         >

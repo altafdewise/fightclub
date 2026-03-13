@@ -1,9 +1,9 @@
 var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/messages/list/route.js")
-R.c("server/chunks/brutal-fit_c02543e3._.js")
-R.c("server/chunks/[root-of-the-server]__b113b9b7._.js")
-R.c("server/chunks/8eb6f_next_123c6e0c._.js")
-R.c("server/chunks/[root-of-the-server]__dc81d3cf._.js")
-R.c("server/chunks/8eb6f_next_9e375823._.js")
-R.c("server/chunks/brutal-fit__next-internal_server_app_api_messages_list_route_actions_3dfe804f.js")
-R.m(15670)
-module.exports=R.m(15670).exports
+R.c("server/chunks/_aa63bc0b._.js")
+R.c("server/chunks/[root-of-the-server]__b8ecdb20._.js")
+R.c("server/chunks/node_modules_next_f5199d09._.js")
+R.c("server/chunks/[root-of-the-server]__0e43a126._.js")
+R.c("server/chunks/node_modules_next_f2da0d3e._.js")
+R.c("server/chunks/_next-internal_server_app_api_messages_list_route_actions_4e4d58b6.js")
+R.m(82863)
+module.exports=R.m(82863).exports

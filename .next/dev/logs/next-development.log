@@ -1,3 +1,14 @@
-[00:00:16.068] Server  LOG     ✓ Ready in 14.9s
-[00:00:19.611] Server  LOG     ○ Compiling / ...
-[00:00:24.958] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:06.584] Server  LOG     ✓ Ready in 5.5s
+[00:00:09.953] Server  LOG     ○ Compiling / ...
+[00:00:20.806] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:22.577] Browser ERROR   ./components/WebsiteAssistant.tsx
+Error: 
+
+Caused by:
+    0: Failed to read source code from D:\brutal_website\brutal-fit\components\WebsiteAssistant.tsx
+    1: stream did not contain valid UTF-8
+
+Import trace for requested module:
+./components/WebsiteAssistant.tsx
+./app/layout.tsx
+[00:40:28.682] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
