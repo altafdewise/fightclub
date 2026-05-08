@@ -217,6 +217,37 @@ select option:checked {
   }
 }
 
+/* ── Fight Club variant ───────────────────────────────────────── */
+:root {
+  --fight: #e63c1e;
+  --fightSoft: rgba(230, 60, 30, 0.2);
+}
+
+.fightclub-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 110% 55% at 50% 105%, rgba(230, 60, 30, 0.5) 0%, rgba(160, 28, 8, 0.28) 40%, transparent 68%),
+    radial-gradient(ellipse 65% 38% at 15% 95%, rgba(200, 35, 8, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 65% 38% at 85% 90%, rgba(190, 28, 6, 0.18) 0%, transparent 52%),
+    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(60, 8, 2, 0.35) 0%, transparent 60%),
+    #060101;
+}
+
+.btn-fight {
+  @apply px-5 py-3 rounded-full font-semibold transition transform duration-200;
+  background: linear-gradient(135deg, rgba(230, 60, 30, 0.95), rgba(195, 35, 15, 0.85));
+  color: #fff;
+  box-shadow: 0 0 24px rgba(230, 60, 30, 0.3);
+}
+
+.btn-fight:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(230, 60, 30, 0.42);
+}
+
 .trainer-note h2 {
   font-size: 16px;
   margin-top: 18px;
