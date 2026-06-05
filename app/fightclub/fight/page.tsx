@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { cn } from "@/utils/cn";
-import { PRICING, EXPERIENCE_OPTIONS } from "@/lib/fightclub/config";
+import { PRICING, EXPERIENCE_OPTIONS, WEIGHT_CLASSES } from "@/lib/fightclub/config";
 import { Stepper } from "@/components/fightclub/Stepper";
 import { AckChecklist, type AckResult } from "@/components/fightclub/AckChecklist";
 import { SelfieCapture } from "@/components/fightclub/SelfieCapture";
@@ -18,7 +18,7 @@ const STEPS = ["Acknowledge", "Details", "Selfie", "Pay"];
 
 type Details = {
   name: string;
-  weightKg: string;
+  weightClass: string;
   experience: string;
   experienceYears: string;
   email: string;
@@ -32,7 +32,7 @@ export default function FightPage() {
   const [ack, setAck] = useState<AckResult | null>(null);
   const [details, setDetails] = useState<Details>({
     name: "",
-    weightKg: "",
+    weightClass: "",
     experience: "",
     experienceYears: "",
     email: "",
@@ -66,8 +66,7 @@ export default function FightPage() {
     if (!details.email.trim() || !/.+@.+\..+/.test(details.email)) errs.email = "Valid email required.";
     if (!/^[6-9]\d{9}$/.test(details.phone.replace(/\s/g, "")))
       errs.phone = "Valid 10-digit Indian mobile required.";
-    const w = Number(details.weightKg);
-    if (!details.weightKg || isNaN(w) || w < 25 || w > 250) errs.weightKg = "Enter a weight in kg.";
+    if (!details.weightClass) errs.weightClass = "Pick your weight division.";
     if (!details.experience) errs.experience = "Pick your experience level.";
     if (Object.keys(errs).length > 0) {
       setDetailErrors(errs);
@@ -90,7 +89,8 @@ export default function FightPage() {
       extras: {
         acknowledgementId: ack?.acknowledgementId,
         boxer: {
-          weightKg: details.weightKg ? Number(details.weightKg) : null,
+          weightKg: null,
+          weightClass: details.weightClass || null,
           experience: details.experience || null,
           experienceYears: details.experienceYears ? Number(details.experienceYears) : null,
           selfieUrl: selfiePath,
@@ -170,18 +170,20 @@ export default function FightPage() {
                 />
               </DetailField>
 
-              <DetailField label="Weight (kg)" error={detailErrors.weightKg}>
-                <input
-                  name="weightKg"
-                  type="number"
-                  inputMode="decimal"
-                  min={25}
-                  max={250}
-                  placeholder="e.g. 72"
-                  value={details.weightKg}
+              <DetailField label="Weight division" error={detailErrors.weightClass}>
+                <select
+                  name="weightClass"
+                  value={details.weightClass}
                   onChange={onDetailChange}
-                  className={cn("w-full rounded-xl px-3 py-3", detailErrors.weightKg && "!border-red-500")}
-                />
+                  className={cn("w-full rounded-xl px-3 py-3", detailErrors.weightClass && "!border-red-500")}
+                >
+                  <option value="">Select your division…</option>
+                  {WEIGHT_CLASSES.map((c) => (
+                    <option key={c.label} value={c.label}>
+                      {c.label} ({c.range})
+                    </option>
+                  ))}
+                </select>
               </DetailField>
 
               <DetailField label="Experience" error={detailErrors.experience}>
@@ -250,7 +252,7 @@ export default function FightPage() {
             <div className="mx-auto max-w-lg space-y-5">
               <div className="fc-card space-y-3 p-6 text-sm">
                 <Row label="Name" value={details.name} />
-                <Row label="Weight" value={`${details.weightKg} kg`} />
+                <Row label="Division" value={details.weightClass} />
                 <Row
                   label="Experience"
                   value={

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
@@ -24,118 +25,97 @@ export default function FightClubPage() {
     <>
       <Navbar />
       <main>
-        <section className="section-space flex min-h-[88vh] flex-col items-center justify-center py-28 text-center">
+        <section className="relative flex min-h-[94vh] flex-col items-center justify-center overflow-hidden px-5 py-28 text-center">
+          {/* Local glow behind the title for depth */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[42%] -z-10 h-[70vh] w-[120vw] -translate-x-1/2 -translate-y-1/2"
+            style={{
+              background:
+                "radial-gradient(ellipse 42% 48% at 50% 50%, rgba(230,60,30,0.16) 0%, rgba(139,0,0,0.14) 38%, transparent 70%)",
+            }}
+          />
+
           <Reveal>
-            <p className="fc-kicker mb-5">{FIGHTCLUB.season}</p>
-            <h1 className="fc-display text-[clamp(4rem,16vw,9rem)]">Fight Club</h1>
-            <p className="mt-4 text-xl font-medium italic text-[var(--fc-muted)]">
+            {/* Season, flanked by hairlines */}
+            <div className="mb-8 flex items-center justify-center gap-4">
+              <span className="h-px w-8 bg-[var(--fc-line)] sm:w-12" aria-hidden />
+              <p className="fc-kicker">{FIGHTCLUB.season}</p>
+              <span className="h-px w-8 bg-[var(--fc-line)] sm:w-12" aria-hidden />
+            </div>
+
+            {/* Poster title */}
+            <h1 className="fc-display text-[clamp(3rem,12vw,7rem)] leading-[0.86]">
+              <span className="text-[var(--fc-text)]">Fight </span>
+              <span
+                className="text-[var(--fc-ember)]"
+                style={{ textShadow: "0 0 60px rgba(230,60,30,0.45)" }}
+              >
+                Club
+              </span>
+            </h1>
+
+            {/* Accent rule */}
+            <div
+              aria-hidden
+              className="mx-auto mt-9 h-px w-24"
+              style={{ background: "linear-gradient(to right, transparent, var(--fc-ember), transparent)" }}
+            />
+
+            <p className="mt-7 text-sm font-semibold uppercase tracking-[0.34em] text-[var(--fc-muted)] sm:text-base">
               {FIGHTCLUB.tagline}
             </p>
 
-            <div className="mx-auto mb-10 mt-9 max-w-md space-y-1 rounded-2xl border border-[var(--fc-line)] bg-[rgba(0,0,0,0.4)] px-6 py-4">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--fc-ember)]">
-                {FIGHTCLUB.date} / {FIGHTCLUB.time}
+            <div className="mx-auto mb-12 mt-11 flex max-w-md flex-col items-center gap-2">
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-[var(--fc-ember)]">
+                {FIGHTCLUB.date} &middot; {FIGHTCLUB.time}
               </p>
-              <p className="text-sm text-[var(--fc-text)]">{FIGHTCLUB.venue}</p>
+              <p className="text-sm leading-relaxed text-[var(--fc-muted)]">{FIGHTCLUB.venue}</p>
             </div>
 
-            <Link href="/fightclub/enter" className="btn-blood inline-flex items-center text-base">
+            <Link
+              href="/fightclub/enter"
+              className="btn-blood inline-flex items-center px-9 text-base"
+            >
               Get In
             </Link>
           </Reveal>
+
+          {/* Scroll cue */}
+          <div
+            aria-hidden
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--fc-muted)]"
+          >
+            <ChevronDown className="h-6 w-6 animate-bounce opacity-50" strokeWidth={1.5} />
+          </div>
         </section>
 
         <ChampionSpotlight />
 
-        <section id="crowd" className="relative overflow-hidden border-y border-[var(--fc-line)] py-20 sm:py-28">
-          <div
-            className="pointer-events-none absolute inset-0"
-            aria-hidden
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(139,0,0,0.2), transparent 28%, transparent 72%, rgba(139,0,0,0.16)), radial-gradient(ellipse 78% 36% at 50% 50%, rgba(230,60,30,0.14), transparent 70%)",
-            }}
-          />
-          <div
-            className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-[linear-gradient(90deg,transparent,rgba(230,60,30,0.5),transparent)]"
-            aria-hidden
-          />
+        {/* ── THE CROWD DECIDES (minimal hook) ─────────────────── */}
+        <section className="section-space py-28 text-center sm:py-40">
+          <Reveal>
+            <p className="fc-kicker mb-10">The rules of the ring</p>
 
-          <div className="section-space relative">
-            <Reveal>
-              <div className="grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr]">
-                <div className="text-left">
-                  <p className="fc-kicker mb-4">The rules of the ring</p>
-                  <h2 className="fc-display max-w-[9ch] text-[clamp(2.75rem,8vw,6rem)]">
-                    The room keeps score.
+            <div className="mx-auto flex max-w-5xl flex-col gap-1 sm:gap-2">
+              {CROWD_LINES.map((line, i) => {
+                const isLast = i === CROWD_LINES.length - 1;
+                return (
+                  <h2
+                    key={line}
+                    className="fc-display text-[clamp(2.4rem,10vw,5.5rem)]"
+                    style={isLast ? { color: "var(--fc-ember)" } : { color: "var(--fc-text)" }}
+                  >
+                    {line}.
                   </h2>
-                  <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--fc-muted)] sm:text-lg">
-                    No table, no clipboard, no polite verdict. You win when the whole room feels it.
-                  </p>
-                  <div className="mt-8 grid max-w-md grid-cols-3 gap-2 text-center">
-                    {["0 judges", "0 scorecards", "1 crowd"].map((item) => (
-                      <div key={item} className="border border-[var(--fc-line)] bg-black/35 px-3 py-3">
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--fc-text)]">
-                          {item}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                );
+              })}
+            </div>
 
-                <div className="relative">
-                  <div className="absolute -inset-3 border border-[rgba(230,60,30,0.16)]" aria-hidden />
-                  <div className="relative border border-[var(--fc-line)] bg-[rgba(0,0,0,0.62)] p-4 shadow-[0_26px_80px_rgba(0,0,0,0.7)] sm:p-6">
-                    <div className="mb-4 flex items-center justify-between border-b border-[var(--fc-line)] pb-3">
-                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.28em] text-[var(--fc-muted)]">
-                        Verdict board
-                      </span>
-                      <span className="h-2 w-2 rounded-full bg-[var(--fc-ember)] shadow-[0_0_18px_rgba(230,60,30,0.9)]" />
-                    </div>
-
-                    <div className="space-y-3">
-                      {CROWD_LINES.map((line, i) => {
-                        const isLast = i === CROWD_LINES.length - 1;
-
-                        return (
-                          <div
-                            key={line}
-                            className={[
-                              "grid grid-cols-[3rem_1fr] items-center gap-3 border px-3 py-4 sm:grid-cols-[4rem_1fr] sm:px-5",
-                              isLast
-                                ? "border-[rgba(230,60,30,0.55)] bg-[rgba(160,16,16,0.16)]"
-                                : "border-[rgba(255,255,255,0.08)] bg-white/[0.025]",
-                            ].join(" ")}
-                          >
-                            <span className="font-mono text-xs font-bold text-[var(--fc-muted)]">
-                              0{i + 1}
-                            </span>
-                            <h3
-                              className={[
-                                "fc-display text-[clamp(1.85rem,6vw,4rem)]",
-                                isLast ? "text-[var(--fc-ember)]" : "text-[var(--fc-text)]",
-                              ].join(" ")}
-                            >
-                              {line}
-                            </h3>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div className="mt-5 border-t border-[var(--fc-line)] pt-5">
-                      <p className="mb-2 text-[0.65rem] font-bold uppercase tracking-[0.24em] text-[#c9a86a]">
-                        The prize
-                      </p>
-                      <p className="text-base leading-relaxed text-[var(--fc-text)] sm:text-lg">
-                        {FIGHTCLUB.prizeLine}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
+            <p className="mx-auto mt-12 max-w-md text-base leading-relaxed text-[var(--fc-muted)] sm:text-lg">
+              {FIGHTCLUB.prizeLine}
+            </p>
+          </Reveal>
         </section>
 
         <section className="section-space py-16 text-center">
@@ -182,7 +162,7 @@ export default function FightClubPage() {
                   <div
                     key={`${src}-${i}`}
                     aria-hidden={i >= GALLERY.length}
-                    className="fc-card w-[clamp(240px,42vw,380px)] shrink-0 overflow-hidden"
+                    className="fc-card w-[clamp(320px,82vw,620px)] shrink-0 overflow-hidden"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img

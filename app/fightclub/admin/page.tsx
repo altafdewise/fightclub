@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { WEIGHT_CLASSES } from "@/lib/fightclub/config";
 
 interface BookingRow {
   id: string;
@@ -17,6 +18,7 @@ interface BookingRow {
 interface BoxerRow extends BookingRow {
   entry: {
     weight_kg: number | null;
+    weight_class: string | null;
     experience: string | null;
     experience_years: number | null;
   } | null;
@@ -169,49 +171,72 @@ export default function AdminPage() {
         )}
       </Section>
 
-      {/* Boxers */}
-      <Section
-        title={`Boxers (${data.boxers.length})`}
-        action={<ExportBtn type="boxers" />}
-      >
+      {/* Boxers — grouped by weight division so you can match opponents */}
+      <Section title={`Boxers (${data.boxers.length})`} action={<ExportBtn type="boxers" />}>
         {data.boxers.length === 0 ? (
           <Empty>No paid boxers yet.</Empty>
         ) : (
-          <Table head={["Selfie", "Name", "Weight", "Experience", "Phone", "Paid", "Status"]}>
-            {data.boxers.map((b) => (
-              <tr key={b.id} className="border-t border-[var(--fc-line)]">
-                <Td>
-                  {b.selfieSignedUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={b.selfieSignedUrl}
-                      alt={b.full_name}
-                      onClick={() => setZoom(b.selfieSignedUrl)}
-                      className="h-12 w-12 cursor-pointer rounded-lg object-cover ring-1 ring-[var(--fc-line)]"
-                    />
-                  ) : (
-                    <span className="text-[var(--fc-muted)]">—</span>
-                  )}
-                </Td>
-                <Td>
-                  <span className="flex items-center gap-2">
-                    {b.full_name}
-                    {b.coupon_code && <CompBadge code={b.coupon_code} />}
+          <div className="space-y-9">
+            {groupBoxersByDivision(data.boxers).map(({ division, range, rows }) => (
+              <div key={division}>
+                <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-[var(--fc-line)] pb-2">
+                  <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-[var(--fc-ember)]">
+                    {division}
+                  </h3>
+                  {range && <span className="text-xs text-[var(--fc-muted)]">{range}</span>}
+                  <span className="text-xs font-semibold text-[var(--fc-muted)]">
+                    · {rows.length} {rows.length === 1 ? "fighter" : "fighters"}
                   </span>
-                </Td>
-                <Td>{b.entry?.weight_kg ? `${b.entry.weight_kg} kg` : "—"}</Td>
-                <Td>
-                  {b.entry?.experience || "—"}
-                  {b.entry?.experience_years ? ` · ${b.entry.experience_years}yr` : ""}
-                </Td>
-                <Td>{b.phone}</Td>
-                <Td>{b.coupon_code && b.amount === 0 ? "Cash (comp)" : "UPI"}</Td>
-                <Td>
-                  <Badge status={b.status} />
-                </Td>
-              </tr>
+                </div>
+                <Table
+                  head={["Selfie", "Name", "Experience", "Phone", "Email", "Booked", "Paid", "Status"]}
+                >
+                  {rows.map((b) => (
+                    <tr key={b.id} className="border-t border-[var(--fc-line)] align-top">
+                      <Td>
+                        {b.selfieSignedUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={b.selfieSignedUrl}
+                            alt={b.full_name}
+                            onClick={() => setZoom(b.selfieSignedUrl)}
+                            className="h-14 w-14 cursor-pointer rounded-lg object-cover ring-1 ring-[var(--fc-line)]"
+                          />
+                        ) : (
+                          <span className="text-[var(--fc-muted)]">—</span>
+                        )}
+                      </Td>
+                      <Td>
+                        <span className="flex items-center gap-2 font-semibold">
+                          {b.full_name}
+                          {b.coupon_code && <CompBadge code={b.coupon_code} />}
+                        </span>
+                      </Td>
+                      <Td>
+                        {b.entry?.experience || "—"}
+                        {b.entry?.experience_years ? ` · ${b.entry.experience_years}yr` : ""}
+                      </Td>
+                      <Td>
+                        <a href={`tel:${b.phone}`} className="text-[var(--fc-ember)] hover:underline">
+                          {b.phone}
+                        </a>
+                      </Td>
+                      <Td>
+                        <a href={`mailto:${b.email}`} className="hover:underline">
+                          {b.email}
+                        </a>
+                      </Td>
+                      <Td className="whitespace-nowrap text-xs text-[var(--fc-muted)]">{when(b.created_at)}</Td>
+                      <Td>{b.coupon_code && b.amount === 0 ? "Cash (comp)" : "UPI"}</Td>
+                      <Td>
+                        <Badge status={b.status} />
+                      </Td>
+                    </tr>
+                  ))}
+                </Table>
+              </div>
             ))}
-          </Table>
+          </div>
         )}
       </Section>
 
@@ -317,8 +342,28 @@ function Table({ head, children }: { head: string[]; children: React.ReactNode }
   );
 }
 
-function Td({ children }: { children: React.ReactNode }) {
-  return <td className="px-3 py-2.5 text-[var(--fc-text)]">{children}</td>;
+function Td({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <td className={`px-3 py-2.5 text-[var(--fc-text)] ${className ?? ""}`}>{children}</td>;
+}
+
+// Groups paid boxers by their weight division, in WEIGHT_CLASSES order,
+// with anyone missing a division collected under "Unspecified".
+function groupBoxersByDivision(boxers: BoxerRow[]) {
+  const rangeOf = (label: string) =>
+    WEIGHT_CLASSES.find((c) => c.label === label)?.range ?? "";
+  const groups: { division: string; range: string; rows: BoxerRow[] }[] = [];
+
+  for (const cls of WEIGHT_CLASSES) {
+    const rows = boxers.filter((b) => b.entry?.weight_class === cls.label);
+    if (rows.length) groups.push({ division: cls.label, range: rangeOf(cls.label), rows });
+  }
+
+  const unspecified = boxers.filter(
+    (b) => !b.entry?.weight_class || !WEIGHT_CLASSES.some((c) => c.label === b.entry?.weight_class)
+  );
+  if (unspecified.length) groups.push({ division: "Unspecified", range: "", rows: unspecified });
+
+  return groups;
 }
 
 function Badge({ status }: { status: string }) {

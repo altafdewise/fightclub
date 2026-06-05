@@ -89,6 +89,7 @@ export async function POST(req: Request) {
       await createBoxerEntry({
         bookingId: booking.id,
         weightKg: boxer?.weightKg != null ? Number(boxer.weightKg) : null,
+        weightClass: boxer?.weightClass ?? null,
         experience: boxer?.experience ?? null,
         experienceYears: boxer?.experienceYears != null ? Number(boxer.experienceYears) : null,
         selfieUrl: boxer?.selfieUrl ?? null,

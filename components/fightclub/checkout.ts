@@ -40,6 +40,7 @@ export interface ConfirmExtras {
   // Boxer-only payload merged into the confirm request.
   boxer?: {
     weightKg: number | null;
+    weightClass: string | null;
     experience: string | null;
     experienceYears: number | null;
     selfieUrl: string | null;

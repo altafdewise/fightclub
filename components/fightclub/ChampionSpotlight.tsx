@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Crown } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CHAMPION } from "@/lib/fightclub/config";
 
@@ -32,19 +33,18 @@ export function ChampionSpotlight() {
           Fighter of the Night
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-[var(--fc-muted)]">
-          One fighter rages the hardest. The crowd crowns them. Their photo goes
-          here and stays until someone takes it.
+          One fighter wins the night — for the heart they show and the fight they
+          give. The crowd decides. Their photo goes here until the next one earns it.
         </p>
       </Reveal>
 
       <Reveal delay={90}>
-        <div
-          className="mx-auto mb-8 mt-14 flex h-12 w-12 items-center justify-center border border-[rgba(201,168,106,0.32)] text-[0.6rem] font-black uppercase tracking-[0.18em]"
-          style={{ color: GOLD, filter: "drop-shadow(0 0 14px rgba(201,168,106,0.5))" }}
+        <Crown
+          className="mx-auto mb-8 mt-14 h-9 w-9"
+          strokeWidth={1.5}
+          style={{ color: GOLD, filter: "drop-shadow(0 0 16px rgba(201,168,106,0.55))" }}
           aria-hidden
-        >
-          Crown
-        </div>
+        />
 
         <div
           className="relative mx-auto w-full max-w-[460px] rounded-[26px] p-[2px]"
@@ -64,13 +64,12 @@ export function ChampionSpotlight() {
               />
             ) : (
               <div className="flex aspect-[4/5] w-full flex-col items-center justify-center gap-5 px-8">
-                <span
-                  className="select-none text-sm font-black uppercase tracking-[0.28em]"
-                  style={{ color: GOLD, opacity: 0.42 }}
+                <Crown
+                  className="h-16 w-16"
+                  strokeWidth={1.25}
+                  style={{ color: GOLD, opacity: 0.32 }}
                   aria-hidden
-                >
-                  Crown vacant
-                </span>
+                />
                 <p
                   className="text-sm font-bold uppercase tracking-[0.3em]"
                   style={{ color: "rgba(201,168,106,0.7)" }}
@@ -115,10 +114,10 @@ export function ChampionSpotlight() {
         />
 
         <p className="mb-7 text-[clamp(1.1rem,3.5vw,1.5rem)] font-bold uppercase tracking-tight text-[var(--fc-text)]">
-          {crowned ? "Beat them, and the throne is yours." : "Be the first face on this wall."}
+          {crowned ? "Next time, this could be you." : "This could be the first face here."}
         </p>
-        <Link href="/fightclub/enter" className="btn-blood inline-flex items-center gap-2">
-          {crowned ? "Take their place" : "Claim the throne"}
+        <Link href="/fightclub/enter" className="btn-blood inline-flex items-center">
+          Step Into the Ring
         </Link>
       </Reveal>
     </section>

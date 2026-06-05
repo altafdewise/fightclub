@@ -25,19 +25,20 @@ export async function GET(req: Request) {
 
     if (type === "boxers") {
       csv = toCsv(
-        ["Booking ID", "Name", "Email", "Phone", "Weight (kg)", "Experience", "Years", "Acknowledged", "Paid via", "Coupon", "Status"],
+        ["Booking ID", "Name", "Email", "Phone", "Division", "Experience", "Years", "Acknowledged", "Paid via", "Coupon", "Status", "Booked at"],
         data.boxers.map((b) => [
           b.id,
           b.full_name,
           b.email,
           b.phone,
-          b.entry?.weight_kg ?? "",
+          b.entry?.weight_class ?? "",
           b.entry?.experience ?? "",
           b.entry?.experience_years ?? "",
           "yes",
           b.coupon_code && b.amount === 0 ? "Cash (comp)" : "UPI",
           b.coupon_code ?? "",
           b.status,
+          b.created_at,
         ])
       );
       filename = "fightclub-boxers.csv";

@@ -86,6 +86,28 @@ export const EXPERIENCE_OPTIONS = [
   "Pro",
 ] as const;
 
+// ── Weight divisions (~5 kg bands) ───────────────────────────────
+// Boxers pick their division during registration so they can be
+// matched with someone their size. `max` is the upper bound in kg
+// (null = open/heaviest). Used for grouping in the admin gate list.
+export const WEIGHT_CLASSES: { label: string; range: string; max: number | null }[] = [
+  { label: "Flyweight", range: "up to 52 kg", max: 52 },
+  { label: "Bantamweight", range: "52–57 kg", max: 57 },
+  { label: "Featherweight", range: "57–62 kg", max: 62 },
+  { label: "Lightweight", range: "62–67 kg", max: 67 },
+  { label: "Welterweight", range: "67–72 kg", max: 72 },
+  { label: "Middleweight", range: "72–78 kg", max: 78 },
+  { label: "Light Heavyweight", range: "78–85 kg", max: 85 },
+  { label: "Heavyweight", range: "85 kg +", max: null },
+];
+
+/** Suggests a weight class from a kg value (used as a default in the form). */
+export function weightClassFor(kg: number): string {
+  if (!kg || isNaN(kg)) return "";
+  const cls = WEIGHT_CLASSES.find((c) => c.max !== null && kg <= c.max);
+  return (cls ?? WEIGHT_CLASSES[WEIGHT_CLASSES.length - 1]).label;
+}
+
 // ── Coupon codes ─────────────────────────────────────────────────
 // Two staff-only codes, validated case-insensitively + trimmed server-side:
 //

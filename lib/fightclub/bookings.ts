@@ -22,6 +22,7 @@ export interface BoxerEntryRow {
   id: string;
   booking_id: string;
   weight_kg: number | null;
+  weight_class: string | null;
   experience: string | null;
   experience_years: number | null;
   selfie_url: string | null;
@@ -138,6 +139,7 @@ export async function markBookingFailed(orderId: string): Promise<void> {
 export async function createBoxerEntry(input: {
   bookingId: string;
   weightKg: number | null;
+  weightClass: string | null;
   experience: string | null;
   experienceYears: number | null;
   selfieUrl: string | null;
@@ -145,6 +147,7 @@ export async function createBoxerEntry(input: {
   const { error } = await fcSupabase().from("fc_boxer_entries").insert({
     booking_id: input.bookingId,
     weight_kg: input.weightKg,
+    weight_class: input.weightClass,
     experience: input.experience,
     experience_years: input.experienceYears,
     selfie_url: input.selfieUrl,

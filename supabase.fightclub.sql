@@ -44,11 +44,15 @@ create table if not exists fc_boxer_entries (
   id                uuid primary key default gen_random_uuid(),
   booking_id        uuid not null references fc_bookings(id) on delete cascade,
   weight_kg         numeric null,
+  weight_class      text null,            -- e.g. Welterweight (boxer-selected division)
   experience        text null,            -- First-timer | Some training | Amateur | Pro
   experience_years  int null,
   selfie_url        text null,            -- storage path inside the boxer-selfies bucket
   created_at        timestamptz not null default now()
 );
+
+-- Idempotent column add for projects that already ran the original schema.
+alter table fc_boxer_entries add column if not exists weight_class text;
 
 create index if not exists fc_boxer_entries_booking_idx on fc_boxer_entries (booking_id);
 
