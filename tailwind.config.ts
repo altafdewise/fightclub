@@ -15,6 +15,8 @@ const config: Config = {
         panelBorder: "var(--panelBorder)",
         text: "var(--text)",
         muted: "var(--muted)",
+        fight: "#e63c1e",
+        fightSoft: "rgba(230,60,30,0.2)",
       },
       boxShadow: {
         glow: "0 10px 40px rgba(171, 36, 46, 0.35)",

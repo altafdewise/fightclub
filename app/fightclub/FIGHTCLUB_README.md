@@ -1,6 +1,9 @@
-# Fight Club Hyderabad — Season One
+# Fight Club — Season One, Series Two
 
-Setup guide for the `/fightclub` section of brutal.fit.
+Ticketing + registration for the `/fightclub` section of brutal.fit. Darker,
+paid chapter built on Supabase + Razorpay + Resend.
+
+All event details and pricing live in **`lib/fightclub/config.ts`** — edit there.
 
 ---
 
@@ -8,85 +11,92 @@ Setup guide for the `/fightclub` section of brutal.fit.
 
 | Route | Description |
 |-------|-------------|
-| `/fightclub` | Landing page — hero, rules, fighters section, footer |
-| `/fightclub/book` | Booking form — name, email, phone, ticket count |
-| `/fightclub/success` | Post-booking success screen with WhatsApp CTA |
-| `/api/fightclub/create-order` | POST — creates a booking token (free flow) or Razorpay order (paid flow) |
-| `/api/fightclub/confirm-booking` | POST — confirms booking, generates booking ID, sends email via Resend |
+| `/fightclub` | Series Two landing — hero, "the crowd decides" hook, rules strip, gallery, GET IN |
+| `/fightclub/enter` | Two-door gate: WATCH (₹199) vs FIGHT (₹349) |
+| `/fightclub/watch` | Viewer flow — form → Razorpay (UPI) → email → success |
+| `/fightclub/fight` | Boxer flow — acknowledge → details → selfie → pay (strict order) |
+| `/fightclub/success` | Post-payment screen + WhatsApp broadcast CTA |
+| `/fightclub/admin` | Password-gated operations dashboard |
+| `/fightclub/book`, `/fightclub/rules` | **Legacy** Season One free flow — left intact, unlinked |
+
+### API
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/fightclub/create-order` | Server-computes amount, creates Razorpay order + pending booking. (Legacy free flow kept when no `type`.) |
+| `POST /api/fightclub/confirm-booking` | Verifies Razorpay signature → marks paid → links boxer/ack → emails ticket |
+| `POST /api/fightclub/mark-failed` | Records abandoned/failed attempts for admin |
+| `POST /api/fightclub/acknowledge` | Stores boxer acknowledgement before payment |
+| `POST /api/fightclub/upload-selfie` | Uploads selfie to the private `boxer-selfies` bucket (service role) |
+| `POST /api/fightclub/admin/login` | Checks `ADMIN_PASSWORD`, sets httpOnly cookie |
+| `GET /api/fightclub/admin/data` | Gated aggregates + lists (+ signed selfie URLs) |
+| `GET /api/fightclub/admin/export?type=boxers\|viewers` | Gated CSV gate-list |
 
 ---
 
-## Environment variables
+## Setup
 
-Add to `.env.local`. All existing keys are preserved.
+1. **Supabase** — open the SQL editor and run **`supabase.fightclub.sql`** (repo root).
+   It creates `fc_bookings`, `fc_boxer_entries`, `fc_acknowledgements`, and the
+   private `boxer-selfies` storage bucket. Safe to re-run.
+2. **Storage** — confirm the `boxer-selfies` bucket is **Private** (the SQL sets this).
+3. **Env** — copy keys from `.env.local.example` into `.env.local` and fill them in
+   (see table below). Each is commented with where to swap the live value.
+4. **Install & run** — `npm install` (nothing new to add), then `npm run dev`.
+5. **Admin** — open `/fightclub/admin`, enter `ADMIN_PASSWORD`.
 
-```env
-# Razorpay — test keys (rzp_test_...). Switch to rzp_live_ for production.
-NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_REPLACE_ME
-RAZORPAY_KEY_SECRET=REPLACE_ME
-
-# Resend sender for fight club emails. Falls back to FROM_EMAIL if blank.
-FIGHTCLUB_FROM_EMAIL=Fight Club HYD <fightclub@brutal.fit>
-
-# WhatsApp broadcast invite link.
-NEXT_PUBLIC_WHATSAPP_INVITE_URL=https://chat.whatsapp.com/REPLACE_ME
-WHATSAPP_INVITE_URL=https://chat.whatsapp.com/REPLACE_ME
-```
-
-`RESEND_API_KEY` is already present in the project — no change needed.
+### Going live
+KYC is already done. Paste your **live** Razorpay keys (`rzp_live_…`) into
+`NEXT_PUBLIC_RAZORPAY_KEY_ID` + `RAZORPAY_KEY_SECRET` and deploy — **no code change**.
 
 ---
 
-## Email
+## Env keys
 
-Sent from `confirm-booking` via the project's existing Resend instance.
-
-- **Subject**: "You're in. Fight Club Hyderabad — Season One"
-- **From**: `FIGHTCLUB_FROM_EMAIL` → `FROM_EMAIL` → hardcoded fallback
-- **Template**: `lib/fightclub-email.ts` — pure function, dark HTML email
-
-To test email delivery locally, set `RESEND_API_KEY` in `.env.local` and use a real recipient address. Resend's free tier works fine for this.
-
----
-
-## Booking flow (current — free tickets)
-
-```
-User fills form
-  → POST /api/fightclub/create-order  →  returns { free: true, orderId: "FC_FREE_..." }
-  → Client detects free: true, skips Razorpay modal
-  → POST /api/fightclub/confirm-booking  →  generates booking ID, sends email
-  → Redirect to /fightclub/success?bookingId=...
-```
-
-Razorpay is **not** called for ₹0 tickets. Razorpay's API requires a minimum of ₹1 (100 paise) for INR orders.
+| Key | Notes |
+|-----|-------|
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | already used by the site |
+| `SUPABASE_SERVICE_ROLE_KEY` | server only (falls back to `SUPABASE_SERVICE_KEY`) |
+| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | client checkout key |
+| `RAZORPAY_KEY_ID` | server (alias; falls back to `NEXT_PUBLIC_RAZORPAY_KEY_ID`) |
+| `RAZORPAY_KEY_SECRET` | server-only secret; used for signature verification |
+| `RESEND_API_KEY` | already present |
+| `SENDER_EMAIL` | ticket sender (falls back to `FIGHTCLUB_FROM_EMAIL` → `FROM_EMAIL`) |
+| `WHATSAPP_INVITE_URL`, `NEXT_PUBLIC_WHATSAPP_INVITE_URL` | broadcast redirect (placeholder for now) |
+| `ADMIN_PASSWORD` | **new** — gates `/fightclub/admin` |
 
 ---
 
-## Switching to paid tiers
+## Money & security
 
-When you're ready to charge for tickets:
-
-1. **`app/api/fightclub/create-order/route.ts`** — uncomment the Razorpay block and set `TICKET_PRICE_PAISE`.
-2. **`.env.local`** — replace `rzp_test_` keys with `rzp_live_` keys from the Razorpay dashboard.
-3. **`app/fightclub/book/page.tsx`** — the `openRazorpay()` function is already wired; the `free` branch in `handleSubmit` will be skipped automatically since `create-order` will return `{ orderId }` without `free: true`.
-
-No other changes needed.
-
----
-
-## Fonts
-
-Loaded via `next/font/google` in `app/fightclub/layout.tsx`:
-- **Bebas Neue** → CSS variable `--fc-bebas` (headlines)
-- **Barlow Condensed** → CSS variable `--fc-barlow` (body)
-
-These are scoped to the `/fightclub` route group and don't affect the rest of the site.
+- **All amounts are computed server-side** from `lib/fightclub/config.ts`
+  (`computeAmountPaise`). The client never sends a price.
+- The **Razorpay signature is verified server-side** before any booking is marked `paid`.
+- The **service-role key is used only in server routes** (`lib/fightclub/supabase.ts`)
+  and never imported into client components.
+- Selfies live in a **private** bucket; admin reads them via short-lived signed URLs.
 
 ---
 
-## Isolation
+## Schema
 
-The `/fightclub` layout is a nested layout inside the root layout. The root layout's `BackgroundLightLines` and `WebsiteAssistant` still render, but they appear behind the fightclub content (which has a solid `#0a0a0a` background covering the decorative lines).
+- **`fc_bookings`** — one row per purchase: `type` (viewer|boxer), name/email/phone,
+  `quantity` (viewers), `amount` (paise), `razorpay_order_id`/`payment_id`,
+  `status` (pending|paid|failed), timestamps.
+- **`fc_boxer_entries`** — 1:1 with a boxer booking: weight, experience, years, `selfie_url`.
+- **`fc_acknowledgements`** — name, `all_points_accepted`, `accepted_at`, `points_version`,
+  `booking_id` (linked once paid). Acknowledgement text lives in
+  `lib/fightclub/acknowledgement.ts`; bump `POINTS_VERSION` if you change it.
+- Tables are `fc_`-prefixed to avoid any clash with the existing trainer schema in `supabase.sql`.
 
-To completely suppress `WebsiteAssistant` on fightclub pages, modify `app/layout.tsx` to conditionally render it using `usePathname()` — this requires converting the root layout to a client component, so it's left as an opt-in change.
+---
+
+## Styling
+
+Series Two styling is scoped to the `.fc2` wrapper in `app/fightclub/layout.tsx`.
+Tokens + classes (`.btn-blood`, `.fc-card`, `.fc-bg`, `.fc-display`, …) are appended
+to `app/globals.css` under that scope — the main brutal.fit site is untouched.
+
+## Photos
+
+Drop real Season 1 photos into `public/fightclub/` and swap the placeholder tiles in
+`app/fightclub/page.tsx` (search for `TODO`). Until then the gallery renders styled voids.

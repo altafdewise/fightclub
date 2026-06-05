@@ -1,70 +1,106 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { Resend } from "resend";
-import { fightclubEmailHtml } from "@/lib/fightclub-email";
+import { RAZORPAY_KEY_SECRET } from "@/lib/fightclub/env";
+import {
+  getBookingByOrderId,
+  markBookingPaid,
+  createBoxerEntry,
+  linkAcknowledgementToBooking,
+  type BookingRow,
+} from "@/lib/fightclub/bookings";
+import { sendTicketEmail } from "@/lib/fightclub/notify";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-function generateBookingId(): string {
+function legacyBookingId(): string {
   const ts = Date.now().toString(36).toUpperCase();
   const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
   return `FCH-S1-${ts}-${rand}`;
 }
 
+function verifySignature(orderId: string, paymentId: string, signature: string): boolean {
+  const expected = crypto
+    .createHmac("sha256", RAZORPAY_KEY_SECRET)
+    .update(`${orderId}|${paymentId}`)
+    .digest("hex");
+  const a = Buffer.from(expected);
+  const b = Buffer.from(signature || "");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, tickets } =
-      body || {};
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      // Series Two extras:
+      boxer,
+      acknowledgementId,
+      // Legacy fields:
+      name,
+      email,
+      tickets,
+    } = body || {};
 
-    if (!name || !email || !phone || !razorpay_order_id) {
-      return NextResponse.json({ message: "Missing required fields." }, { status: 400 });
+    if (!razorpay_order_id) {
+      return NextResponse.json({ message: "Missing order id." }, { status: 400 });
     }
 
-    // Verify Razorpay signature for paid orders.
-    // Free orders (FC_FREE_* prefix) skip verification — they are server-generated tokens.
-    // When enabling paid tiers, remove the free-order bypass below.
-    const isFreeOrder = String(razorpay_order_id).startsWith("FC_FREE_");
-    if (!isFreeOrder && razorpay_payment_id && razorpay_signature) {
-      const expected = crypto
-        .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
-        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-        .digest("hex");
-      if (expected !== razorpay_signature) {
-        return NextResponse.json({ message: "Invalid payment signature." }, { status: 400 });
+    // ── Legacy free flow (FC_FREE_* tokens) ────────────────────────
+    if (String(razorpay_order_id).startsWith("FC_FREE_")) {
+      if (!name || !email) {
+        return NextResponse.json({ message: "Missing required fields." }, { status: 400 });
+      }
+      const bookingId = legacyBookingId();
+      // Build a synthetic booking row for the email helper.
+      const synthetic: BookingRow = {
+        id: bookingId,
+        type: "viewer",
+        full_name: String(name),
+        email: String(email),
+        phone: "",
+        quantity: Number(tickets) || 1,
+        amount: 0,
+        currency: "INR",
+        razorpay_order_id: null,
+        razorpay_payment_id: null,
+        coupon_code: null,
+        status: "paid",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      await sendTicketEmail(synthetic);
+      return NextResponse.json({ ok: true, bookingId, type: "viewer" });
+    }
+
+    // ── Series Two paid flow ───────────────────────────────────────
+    if (!verifySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature)) {
+      return NextResponse.json({ message: "Invalid payment signature." }, { status: 400 });
+    }
+
+    const existing = await getBookingByOrderId(razorpay_order_id);
+    if (!existing) {
+      return NextResponse.json({ message: "Unknown order." }, { status: 404 });
+    }
+
+    const booking = await markBookingPaid(razorpay_order_id, razorpay_payment_id);
+
+    if (booking.type === "boxer") {
+      await createBoxerEntry({
+        bookingId: booking.id,
+        weightKg: boxer?.weightKg != null ? Number(boxer.weightKg) : null,
+        experience: boxer?.experience ?? null,
+        experienceYears: boxer?.experienceYears != null ? Number(boxer.experienceYears) : null,
+        selfieUrl: boxer?.selfieUrl ?? null,
+      });
+      if (acknowledgementId) {
+        await linkAcknowledgementToBooking(acknowledgementId, booking.id);
       }
     }
 
-    const bookingId = generateBookingId();
-    const whatsappUrl = process.env.WHATSAPP_INVITE_URL || "#";
+    await sendTicketEmail(booking);
 
-    // Send confirmation email — reuses project's existing Resend + FROM_EMAIL setup.
-    // FIGHTCLUB_FROM_EMAIL overrides FROM_EMAIL so fight club emails come from a dedicated address.
-    const from =
-      process.env.FIGHTCLUB_FROM_EMAIL ||
-      process.env.FROM_EMAIL ||
-      "Fight Club HYD <noreply@brutal.fit>";
-
-    const { error: emailError } = await resend.emails.send({
-      from,
-      to: [email],
-      subject: "You're in. Fight Club Hyderabad — Season One",
-      html: fightclubEmailHtml({
-        bookingId,
-        name,
-        tickets: Number(tickets) || 1,
-        whatsappUrl,
-      }),
-    });
-
-    if (emailError) {
-      // Log but don't fail — booking is confirmed regardless of email delivery
-      console.error("[fightclub/confirm-booking] email error:", emailError);
-    }
-
-    console.info("[fightclub/confirm-booking] booked:", { bookingId, name, email, phone, tickets });
-
-    return NextResponse.json({ ok: true, bookingId });
+    return NextResponse.json({ ok: true, bookingId: booking.id, type: booking.type });
   } catch (error) {
     console.error("[fightclub/confirm-booking]", error);
     return NextResponse.json({ message: "Could not confirm booking." }, { status: 500 });

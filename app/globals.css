@@ -277,3 +277,114 @@ select option:checked {
   font-weight: 600;
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   FIGHT CLUB — SERIES TWO (scoped to .fc2 only)
+   Darker, meaner chapter of the same brand. Nothing here leaks out of
+   the .fc2 wrapper applied by app/fightclub/layout.tsx.
+   ══════════════════════════════════════════════════════════════════ */
+.fc2 {
+  --fc-blood: #8b0000;
+  --fc-blood-bright: #a01010;
+  --fc-ember: #e63c1e; /* brighter highlight */
+  --fc-bg: #0a0a0a;
+  --fc-bg-deep: #060606;
+  --fc-text: #f4f4f0;
+  --fc-muted: #8a8a8a;
+  --fc-line: rgba(160, 16, 16, 0.22);
+  color: var(--fc-text);
+}
+
+/* Deeper, more menacing version of .fightclub-bg */
+.fc-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 108%, rgba(139, 0, 0, 0.55) 0%, rgba(80, 6, 6, 0.3) 38%, transparent 66%),
+    radial-gradient(ellipse 70% 40% at 12% 96%, rgba(160, 16, 16, 0.2) 0%, transparent 54%),
+    radial-gradient(ellipse 70% 40% at 88% 92%, rgba(120, 8, 8, 0.16) 0%, transparent 52%),
+    radial-gradient(ellipse 90% 32% at 50% -2%, rgba(40, 4, 4, 0.5) 0%, transparent 60%),
+    var(--fc-bg-deep);
+}
+
+/* Heavy condensed display heading — uses Inter, no new font dependency */
+.fc-display {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--fc-text);
+}
+
+.fc-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--fc-ember);
+}
+
+/* The darker "blood" button variant */
+.btn-blood {
+  @apply px-6 py-3.5 rounded-full font-bold uppercase tracking-[0.06em] transition transform duration-200;
+  background: linear-gradient(135deg, var(--fc-blood-bright), var(--fc-blood));
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(230, 60, 30, 0.25), 0 0 30px rgba(139, 0, 0, 0.45);
+}
+
+.btn-blood:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, var(--fc-ember), var(--fc-blood-bright));
+  box-shadow: 0 0 0 1px rgba(230, 60, 30, 0.5), 0 12px 40px rgba(230, 60, 30, 0.4);
+}
+
+.btn-blood:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  transform: none;
+}
+
+/* Outline / ghost variant */
+.btn-blood-ghost {
+  @apply px-6 py-3.5 rounded-full font-bold uppercase tracking-[0.06em] transition;
+  background: rgba(139, 0, 0, 0.06);
+  border: 1px solid var(--fc-line);
+  color: var(--fc-text);
+}
+
+.btn-blood-ghost:hover {
+  border-color: var(--fc-blood-bright);
+  background: rgba(139, 0, 0, 0.14);
+}
+
+/* Near-black panel with blood hairline */
+.fc-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.2));
+  border: 1px solid var(--fc-line);
+  border-radius: 1rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+/* Inputs inside the fight club section — darker, ember focus */
+.fc2 input,
+.fc2 textarea,
+.fc2 select {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--fc-line);
+  color: var(--fc-text);
+}
+
+.fc2 input:focus,
+.fc2 textarea:focus,
+.fc2 select:focus {
+  outline: 2px solid rgba(230, 60, 30, 0.25);
+  border-color: var(--fc-ember);
+  box-shadow: 0 0 0 3px rgba(230, 60, 30, 0.2);
+}
+
+.fc2 select option {
+  background: #0a0a0a;
+  color: var(--fc-text);
+}
+

@@ -9,11 +9,19 @@ export function Reveal({ children, delay = 0 }: { children: React.ReactNode; del
     const el = ref.current;
     if (!el) return;
 
+    const reveal = () => el.classList.add("visible");
+    const fallback = window.setTimeout(reveal, delay + 160);
+
+    if (!("IntersectionObserver" in window)) {
+      reveal();
+      return () => window.clearTimeout(fallback);
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+            reveal();
             observer.unobserve(entry.target);
           }
         });
@@ -28,6 +36,7 @@ export function Reveal({ children, delay = 0 }: { children: React.ReactNode; del
     }
 
     return () => {
+      window.clearTimeout(fallback);
       if (node) observer.unobserve(node);
     };
   }, [delay]);
@@ -38,4 +47,3 @@ export function Reveal({ children, delay = 0 }: { children: React.ReactNode; del
     </div>
   );
 }
-
