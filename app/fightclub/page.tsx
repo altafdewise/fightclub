@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ExternalLink, MapPin } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
@@ -19,6 +19,9 @@ const CROWD_LINES = ["No judges", "No scorecards", "The crowd decides"] as const
 // and list them in lib/fightclub/config.ts.
 const GALLERY_PLACEHOLDERS = Array.from({ length: 6 }, (_, i) => i + 1);
 const hasGallery = GALLERY.length > 0;
+const mapsQuery = encodeURIComponent(FIGHTCLUB.venue);
+const mapsHref = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+const mapsPreviewHref = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
 
 export default function FightClubPage() {
   return (
@@ -211,6 +214,48 @@ export default function FightClubPage() {
               <Link href="/fightclub/enter" className="btn-blood">
                 Get In
               </Link>
+            </div>
+          </Reveal>
+        </section>
+
+        <section id="location" className="section-space pb-24 pt-2 text-center sm:pb-32">
+          <Reveal>
+            <div className="mx-auto mb-8 max-w-2xl">
+              <p className="fc-kicker mb-3">Location</p>
+              <h2 className="mb-4 text-[clamp(1.9rem,7vw,2.6rem)] font-bold uppercase tracking-tight text-[var(--fc-text)]">
+                Find the ring.
+              </h2>
+              <p className="mx-auto max-w-md text-sm leading-relaxed text-[var(--fc-muted)]">
+                {FIGHTCLUB.venue}
+              </p>
+            </div>
+
+            <div className="fc-card mx-auto max-w-xl overflow-hidden p-2 sm:p-3">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-black sm:aspect-[16/9]">
+                <iframe
+                  title="BRUTAL Fight Club location map"
+                  src={mapsPreviewHref}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="h-full w-full border-0"
+                  style={{
+                    filter: "invert(90%) hue-rotate(180deg) brightness(58%) contrast(92%) saturate(65%)",
+                  }}
+                />
+                <a
+                  href={mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${FIGHTCLUB.venue} in Google Maps`}
+                  className="absolute inset-0 z-10 flex items-end justify-center bg-gradient-to-t from-black/55 via-transparent to-transparent p-4 sm:justify-end sm:p-6"
+                >
+                  <span className="btn-blood-ghost inline-flex items-center justify-center gap-2 bg-black/70 backdrop-blur-sm">
+                    <MapPin className="h-4 w-4" aria-hidden="true" />
+                    Open Maps
+                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                </a>
+              </div>
             </div>
           </Reveal>
         </section>
