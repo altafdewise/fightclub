@@ -293,6 +293,16 @@ export interface AdminData {
   stuck: BookingRow[]; // pending or failed
 }
 
+function isMissingTableError(error: { code?: string; message?: string } | null, table: string): boolean {
+  if (!error) return false;
+  return (
+    error.code === "PGRST205" ||
+    error.code === "42P01" ||
+    (error.message?.includes(`'public.${table}'`) ?? false) ||
+    (error.message?.includes(`"${table}"`) ?? false)
+  );
+}
+
 export async function getAdminData(): Promise<AdminData> {
   const sb = fcSupabase();
 
@@ -309,9 +319,16 @@ export async function getAdminData(): Promise<AdminData> {
   for (const e of (entries ?? []) as BoxerEntryRow[]) entryByBooking.set(e.booking_id, e);
 
   const { data: challengeEntries, error: cErr } = await sb.from("fc_challenge_entries").select();
-  if (cErr) throw cErr;
+  if (cErr && !isMissingTableError(cErr, "fc_challenge_entries")) throw cErr;
+  if (cErr) {
+    console.warn(
+      "[fightclub/admin] fc_challenge_entries is missing. Run supabase.fightclub-admin-data-fix.sql."
+    );
+  }
   const challengeByBooking = new Map<string, ChallengeEntryRow>();
-  for (const e of (challengeEntries ?? []) as ChallengeEntryRow[]) challengeByBooking.set(e.booking_id, e);
+  for (const e of (cErr ? [] : (challengeEntries ?? [])) as ChallengeEntryRow[]) {
+    challengeByBooking.set(e.booking_id, e);
+  }
 
   const paid = rows.filter((r) => r.status === "paid");
   const viewers = rows.filter((r) => r.type === "viewer" && r.status === "paid");
