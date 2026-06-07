@@ -16,6 +16,9 @@ export function Footer() {
           <Link href="#pricing" className="hover:text-[var(--gold)] transition-colors">
             Pricing
           </Link>
+          <Link href="#updates" className="hover:text-[var(--gold)] transition-colors">
+            Updates
+          </Link>
           <Link href="/get-started" className="hover:text-[var(--gold)] transition-colors">
             Book a consult
           </Link>

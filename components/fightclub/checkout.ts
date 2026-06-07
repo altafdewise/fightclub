@@ -5,7 +5,7 @@ import type { EntryType } from "@/lib/fightclub/config";
 declare global {
   interface Window {
     // Must match the same global declaration in app/fightclub/book/page.tsx.
-    Razorpay: new (options: Record<string, any>) => { open: () => void }; // eslint-disable-line @typescript-eslint/no-explicit-any
+    Razorpay: new (options: Record<string, unknown>) => { open: () => void };
   }
 }
 
@@ -36,6 +36,31 @@ export interface CheckoutPerson {
   phone: string;
 }
 
+export interface ChallengeCheckoutPayload {
+  targetName: string;
+  age: number | null;
+  city: string | null;
+  instagram: string | null;
+  heightCm: number | null;
+  weightKg: number | null;
+  weightClass: string | null;
+  stance: string | null;
+  experience: string | null;
+  experienceYears: number | null;
+  fightRecord: string | null;
+  trainingGym: string | null;
+  coachName: string | null;
+  strengths: string | null;
+  injuries: string | null;
+  medicalConditions: string | null;
+  availability: string | null;
+  challengeReason: string | null;
+  emergencyContactName: string | null;
+  emergencyContactPhone: string | null;
+  selfieUrl: string | null;
+  termsAccepted: boolean;
+}
+
 export interface ConfirmExtras {
   // Boxer-only payload merged into the confirm request.
   boxer?: {
@@ -45,7 +70,13 @@ export interface ConfirmExtras {
     experienceYears: number | null;
     selfieUrl: string | null;
   };
+  challenge?: ChallengeCheckoutPayload;
   acknowledgementId?: string;
+}
+
+function checkoutDescription(type: EntryType): string {
+  if (type === "challenge") return "Challenge Purvik · Series Two";
+  return type === "boxer" ? "Boxer entry · Series Two" : "Viewer admission · Series Two";
 }
 
 /**
@@ -61,7 +92,7 @@ export async function startCheckout(opts: {
   onError: (msg: string) => void;
   onDismiss: () => void;
 }): Promise<{ bookingId: string; type: string } | null> {
-  // 1. Create order — server computes amount and decides whether this is a
+  // 1. Create order - server computes amount and decides whether this is a
   //    coupon comp (free, no Razorpay) or a real Razorpay round-trip
   //    (including the PBC1 ₹1 coupon, which still pays through Razorpay).
   const orderRes = await fetch("/api/fightclub/create-order", {
@@ -74,9 +105,10 @@ export async function startCheckout(opts: {
       email: opts.person.email,
       phone: opts.person.phone,
       couponCode: opts.couponCode || undefined,
-      // Boxer extras need to ride along on the coupon path because there
-      // is no second confirm-booking call to attach them.
+      // Extras ride along for server validation; they are persisted after
+      // successful payment confirmation.
       boxer: opts.extras?.boxer,
+      challenge: opts.extras?.challenge,
       acknowledgementId: opts.extras?.acknowledgementId,
     }),
   });
@@ -86,7 +118,7 @@ export async function startCheckout(opts: {
     return null;
   }
 
-  // Coupon comp path — booking was already inserted + emailed server-side.
+  // Coupon comp path - booking was already inserted + emailed server-side.
   if (order.free === true && order.bookingId) {
     return { bookingId: String(order.bookingId), type: String(order.type || opts.type) };
   }
@@ -101,12 +133,12 @@ export async function startCheckout(opts: {
   // 2. Open Razorpay and resolve when the server confirms (or null on dismiss).
   return new Promise((resolve) => {
     const rzp = new window.Razorpay({
-      key: order.keyId, // public checkout key — swap to rzp_live_ via env
+      key: order.keyId,
       order_id: order.orderId,
       amount: order.amount,
       currency: order.currency,
       name: "Fight Club",
-      description: opts.type === "boxer" ? "Boxer entry · Series Two" : "Viewer admission · Series Two",
+      description: checkoutDescription(opts.type),
       prefill: {
         name: opts.person.fullName,
         email: opts.person.email,
@@ -135,6 +167,7 @@ export async function startCheckout(opts: {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               boxer: opts.extras?.boxer,
+              challenge: opts.extras?.challenge,
               acknowledgementId: opts.extras?.acknowledgementId,
             }),
           });

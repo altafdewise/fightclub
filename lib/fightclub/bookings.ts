@@ -29,6 +29,34 @@ export interface BoxerEntryRow {
   created_at: string;
 }
 
+export interface ChallengeEntryRow {
+  id: string;
+  booking_id: string;
+  target_name: string;
+  age: number | null;
+  city: string | null;
+  instagram: string | null;
+  height_cm: number | null;
+  weight_kg: number | null;
+  weight_class: string | null;
+  stance: string | null;
+  experience: string | null;
+  experience_years: number | null;
+  fight_record: string | null;
+  training_gym: string | null;
+  coach_name: string | null;
+  strengths: string | null;
+  injuries: string | null;
+  medical_conditions: string | null;
+  availability: string | null;
+  challenge_reason: string | null;
+  emergency_contact_name: string | null;
+  emergency_contact_phone: string | null;
+  selfie_url: string | null;
+  terms_accepted: boolean;
+  created_at: string;
+}
+
 export interface AcknowledgementRow {
   id: string;
   booking_id: string | null;
@@ -157,6 +185,59 @@ export async function createBoxerEntry(input: {
 
 // ── Acknowledgements ───────────────────────────────────────────────
 
+export async function createChallengeEntry(input: {
+  bookingId: string;
+  targetName: string;
+  age: number | null;
+  city: string | null;
+  instagram: string | null;
+  heightCm: number | null;
+  weightKg: number | null;
+  weightClass: string | null;
+  stance: string | null;
+  experience: string | null;
+  experienceYears: number | null;
+  fightRecord: string | null;
+  trainingGym: string | null;
+  coachName: string | null;
+  strengths: string | null;
+  injuries: string | null;
+  medicalConditions: string | null;
+  availability: string | null;
+  challengeReason: string | null;
+  emergencyContactName: string | null;
+  emergencyContactPhone: string | null;
+  selfieUrl: string | null;
+  termsAccepted: boolean;
+}): Promise<void> {
+  const { error } = await fcSupabase().from("fc_challenge_entries").insert({
+    booking_id: input.bookingId,
+    target_name: input.targetName,
+    age: input.age,
+    city: input.city,
+    instagram: input.instagram,
+    height_cm: input.heightCm,
+    weight_kg: input.weightKg,
+    weight_class: input.weightClass,
+    stance: input.stance,
+    experience: input.experience,
+    experience_years: input.experienceYears,
+    fight_record: input.fightRecord,
+    training_gym: input.trainingGym,
+    coach_name: input.coachName,
+    strengths: input.strengths,
+    injuries: input.injuries,
+    medical_conditions: input.medicalConditions,
+    availability: input.availability,
+    challenge_reason: input.challengeReason,
+    emergency_contact_name: input.emergencyContactName,
+    emergency_contact_phone: input.emergencyContactPhone,
+    selfie_url: input.selfieUrl,
+    terms_accepted: input.termsAccepted,
+  });
+  if (error) throw error;
+}
+
 export async function createAcknowledgement(input: {
   fullName: string;
   allPointsAccepted: boolean;
@@ -203,10 +284,12 @@ export interface AdminData {
     paidCount: number;
     viewerPaid: number;
     boxerPaid: number;
+    challengePaid: number;
     revenuePaise: number;
   };
   viewers: BookingRow[];
   boxers: Array<BookingRow & { entry: BoxerEntryRow | null; selfieSignedUrl: string | null }>;
+  challenges: Array<BookingRow & { entry: ChallengeEntryRow | null; selfieSignedUrl: string | null }>;
   stuck: BookingRow[]; // pending or failed
 }
 
@@ -225,9 +308,15 @@ export async function getAdminData(): Promise<AdminData> {
   const entryByBooking = new Map<string, BoxerEntryRow>();
   for (const e of (entries ?? []) as BoxerEntryRow[]) entryByBooking.set(e.booking_id, e);
 
+  const { data: challengeEntries, error: cErr } = await sb.from("fc_challenge_entries").select();
+  if (cErr) throw cErr;
+  const challengeByBooking = new Map<string, ChallengeEntryRow>();
+  for (const e of (challengeEntries ?? []) as ChallengeEntryRow[]) challengeByBooking.set(e.booking_id, e);
+
   const paid = rows.filter((r) => r.status === "paid");
   const viewers = rows.filter((r) => r.type === "viewer" && r.status === "paid");
   const boxerPaidRows = rows.filter((r) => r.type === "boxer" && r.status === "paid");
+  const challengePaidRows = rows.filter((r) => r.type === "challenge" && r.status === "paid");
   const stuck = rows.filter((r) => r.status !== "paid");
 
   const boxers = await Promise.all(
@@ -240,15 +329,27 @@ export async function getAdminData(): Promise<AdminData> {
     })
   );
 
+  const challenges = await Promise.all(
+    challengePaidRows.map(async (r) => {
+      const entry = challengeByBooking.get(r.id) ?? null;
+      const selfieSignedUrl = entry?.selfie_url
+        ? await signedSelfieUrl(entry.selfie_url)
+        : null;
+      return { ...r, entry, selfieSignedUrl };
+    })
+  );
+
   return {
     totals: {
       paidCount: paid.length,
       viewerPaid: viewers.length,
       boxerPaid: boxerPaidRows.length,
+      challengePaid: challengePaidRows.length,
       revenuePaise: paid.reduce((sum, r) => sum + (r.amount || 0), 0),
     },
     viewers,
     boxers,
+    challenges,
     stuck,
   };
 }

@@ -42,6 +42,68 @@ export async function GET(req: Request) {
         ])
       );
       filename = "fightclub-boxers.csv";
+    } else if (type === "challenges") {
+      csv = toCsv(
+        [
+          "Booking ID",
+          "Name",
+          "Email",
+          "Phone",
+          "Target",
+          "Age",
+          "City",
+          "Instagram",
+          "Height cm",
+          "Weight kg",
+          "Division",
+          "Stance",
+          "Experience",
+          "Years",
+          "Fight Record",
+          "Gym",
+          "Coach",
+          "Strengths",
+          "Injuries",
+          "Medical Conditions",
+          "Availability",
+          "Reason",
+          "Emergency Name",
+          "Emergency Phone",
+          "Amount (â‚¹)",
+          "Status",
+          "Booked at",
+        ],
+        data.challenges.map((c) => [
+          c.id,
+          c.full_name,
+          c.email,
+          c.phone,
+          c.entry?.target_name ?? "",
+          c.entry?.age ?? "",
+          c.entry?.city ?? "",
+          c.entry?.instagram ?? "",
+          c.entry?.height_cm ?? "",
+          c.entry?.weight_kg ?? "",
+          c.entry?.weight_class ?? "",
+          c.entry?.stance ?? "",
+          c.entry?.experience ?? "",
+          c.entry?.experience_years ?? "",
+          c.entry?.fight_record ?? "",
+          c.entry?.training_gym ?? "",
+          c.entry?.coach_name ?? "",
+          c.entry?.strengths ?? "",
+          c.entry?.injuries ?? "",
+          c.entry?.medical_conditions ?? "",
+          c.entry?.availability ?? "",
+          c.entry?.challenge_reason ?? "",
+          c.entry?.emergency_contact_name ?? "",
+          c.entry?.emergency_contact_phone ?? "",
+          (c.amount / 100).toFixed(0),
+          c.status,
+          c.created_at,
+        ])
+      );
+      filename = "fightclub-challenges.csv";
     } else if (type === "viewers") {
       csv = toCsv(
         ["Booking ID", "Name", "Email", "Phone", "Tickets", "Amount (₹)", "Paid via", "Coupon", "Status"],
@@ -59,7 +121,7 @@ export async function GET(req: Request) {
       );
       filename = "fightclub-viewers.csv";
     } else {
-      return NextResponse.json({ message: "type must be boxers or viewers." }, { status: 400 });
+      return NextResponse.json({ message: "type must be boxers, viewers, or challenges." }, { status: 400 });
     }
 
     return new NextResponse(csv, {

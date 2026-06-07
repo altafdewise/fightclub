@@ -5,7 +5,7 @@ import { WEIGHT_CLASSES } from "@/lib/fightclub/config";
 
 interface BookingRow {
   id: string;
-  type: "viewer" | "boxer";
+  type: "viewer" | "boxer" | "challenge";
   full_name: string;
   email: string;
   phone: string;
@@ -24,10 +24,37 @@ interface BoxerRow extends BookingRow {
   } | null;
   selfieSignedUrl: string | null;
 }
+interface ChallengeRow extends BookingRow {
+  entry: {
+    target_name: string;
+    age: number | null;
+    city: string | null;
+    instagram: string | null;
+    height_cm: number | null;
+    weight_kg: number | null;
+    weight_class: string | null;
+    stance: string | null;
+    experience: string | null;
+    experience_years: number | null;
+    fight_record: string | null;
+    training_gym: string | null;
+    coach_name: string | null;
+    strengths: string | null;
+    injuries: string | null;
+    medical_conditions: string | null;
+    availability: string | null;
+    challenge_reason: string | null;
+    emergency_contact_name: string | null;
+    emergency_contact_phone: string | null;
+    terms_accepted: boolean;
+  } | null;
+  selfieSignedUrl: string | null;
+}
 interface AdminData {
-  totals: { paidCount: number; viewerPaid: number; boxerPaid: number; revenuePaise: number };
+  totals: { paidCount: number; viewerPaid: number; boxerPaid: number; challengePaid: number; revenuePaise: number };
   viewers: BookingRow[];
   boxers: BoxerRow[];
+  challenges: ChallengeRow[];
   stuck: BookingRow[];
 }
 
@@ -132,12 +159,14 @@ export default function AdminPage() {
         // A true comp is ₹0 (PBC). PBC1 is a ₹1 paid booking, counted as paid.
         const comped =
           data.viewers.filter((v) => v.coupon_code && v.amount === 0).length +
-          data.boxers.filter((b) => b.coupon_code && b.amount === 0).length;
+          data.boxers.filter((b) => b.coupon_code && b.amount === 0).length +
+          data.challenges.filter((c) => c.coupon_code && c.amount === 0).length;
         return (
-          <div className="mb-12 grid grid-cols-2 gap-3 sm:grid-cols-5">
+          <div className="mb-12 grid grid-cols-2 gap-3 sm:grid-cols-6">
             <Stat label="Paid bookings" value={String(data.totals.paidCount)} />
             <Stat label="Viewers" value={String(data.totals.viewerPaid)} />
             <Stat label="Boxers" value={String(data.totals.boxerPaid)} />
+            <Stat label="Challenges" value={String(data.totals.challengePaid)} />
             <Stat label="Comp (coupon)" value={String(comped)} />
             <Stat label="Revenue" value={rupees(data.totals.revenuePaise)} highlight />
           </div>
@@ -172,6 +201,106 @@ export default function AdminPage() {
       </Section>
 
       {/* Boxers — grouped by weight division so you can match opponents */}
+      <Section title={`Purvik Challenges (${data.challenges.length})`} action={<ExportBtn type="challenges" />}>
+        {data.challenges.length === 0 ? (
+          <Empty>No paid Purvik challengers yet.</Empty>
+        ) : (
+          <Table
+            head={[
+              "Selfie",
+              "Name",
+              "Profile",
+              "Contact",
+              "Safety",
+              "Reason",
+              "Emergency",
+              "Booked",
+              "Paid",
+              "Status",
+            ]}
+          >
+            {data.challenges.map((c) => (
+              <tr key={c.id} className="border-t border-[var(--fc-line)] align-top">
+                <Td>
+                  {c.selfieSignedUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={c.selfieSignedUrl}
+                      alt={c.full_name}
+                      onClick={() => setZoom(c.selfieSignedUrl)}
+                      className="h-14 w-14 cursor-pointer rounded-lg object-cover ring-1 ring-[var(--fc-line)]"
+                    />
+                  ) : (
+                    <span className="text-[var(--fc-muted)]">â€”</span>
+                  )}
+                </Td>
+                <Td>
+                  <span className="block font-semibold">{c.full_name}</span>
+                  <span className="block text-xs text-[var(--fc-muted)]">
+                    {c.entry?.age ? `${c.entry.age} yrs` : "Age â€”"}
+                    {c.entry?.city ? ` · ${c.entry.city}` : ""}
+                  </span>
+                  {c.entry?.instagram && (
+                    <span className="block text-xs text-[var(--fc-ember)]">{c.entry.instagram}</span>
+                  )}
+                </Td>
+                <Td>
+                  <span className="block">{c.entry?.weight_class || "â€”"}</span>
+                  <span className="block text-xs text-[var(--fc-muted)]">
+                    {c.entry?.height_cm ? `${c.entry.height_cm}cm` : "Height â€”"}
+                    {c.entry?.weight_kg ? ` · ${c.entry.weight_kg}kg` : ""}
+                  </span>
+                  <span className="block text-xs text-[var(--fc-muted)]">
+                    {c.entry?.stance || "Stance â€”"} · {c.entry?.experience || "Experience â€”"}
+                    {c.entry?.experience_years ? ` · ${c.entry.experience_years}yr` : ""}
+                  </span>
+                  <span className="block text-xs text-[var(--fc-muted)]">
+                    Record: {c.entry?.fight_record || "â€”"}
+                  </span>
+                  <span className="block text-xs text-[var(--fc-muted)]">
+                    Gym: {c.entry?.training_gym || "â€”"}
+                  </span>
+                </Td>
+                <Td>
+                  <a href={`tel:${c.phone}`} className="block text-[var(--fc-ember)] hover:underline">
+                    {c.phone}
+                  </a>
+                  <a href={`mailto:${c.email}`} className="block text-xs hover:underline">
+                    {c.email}
+                  </a>
+                  <span className="block text-xs text-[var(--fc-muted)]">
+                    Available: {c.entry?.availability || "â€”"}
+                  </span>
+                </Td>
+                <Td className="min-w-[220px] text-xs">
+                  <span className="block text-[var(--fc-text)]">Injuries: {c.entry?.injuries || "â€”"}</span>
+                  <span className="block text-[var(--fc-muted)]">
+                    Medical: {c.entry?.medical_conditions || "â€”"}
+                  </span>
+                </Td>
+                <Td className="min-w-[220px] text-xs text-[var(--fc-muted)]">
+                  <span className="block text-[var(--fc-text)]">{c.entry?.challenge_reason || "â€”"}</span>
+                  <span className="mt-1 block">Strengths: {c.entry?.strengths || "â€”"}</span>
+                </Td>
+                <Td>
+                  <span className="block">{c.entry?.emergency_contact_name || "â€”"}</span>
+                  {c.entry?.emergency_contact_phone && (
+                    <a href={`tel:${c.entry.emergency_contact_phone}`} className="text-xs text-[var(--fc-ember)] hover:underline">
+                      {c.entry.emergency_contact_phone}
+                    </a>
+                  )}
+                </Td>
+                <Td className="whitespace-nowrap text-xs text-[var(--fc-muted)]">{when(c.created_at)}</Td>
+                <Td>{rupees(c.amount)}</Td>
+                <Td>
+                  <Badge status={c.status} />
+                </Td>
+              </tr>
+            ))}
+          </Table>
+        )}
+      </Section>
+
       <Section title={`Boxers (${data.boxers.length})`} action={<ExportBtn type="boxers" />}>
         {data.boxers.length === 0 ? (
           <Empty>No paid boxers yet.</Empty>
@@ -399,7 +528,7 @@ function Empty({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ExportBtn({ type }: { type: "boxers" | "viewers" }) {
+function ExportBtn({ type }: { type: "boxers" | "viewers" | "challenges" }) {
   return (
     <a
       href={`/api/fightclub/admin/export?type=${type}`}

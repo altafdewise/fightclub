@@ -64,9 +64,19 @@ export const GALLERY: string[] = [
 export const PRICING = {
   viewer: { label: "Viewer", price: 199, maxQty: 4 },
   boxer: { label: "Boxer", price: 349, maxQty: 1 },
+  challenge: { label: "Challenge Purvik", price: 21000, maxQty: 1 },
 } as const;
 
-export type EntryType = "viewer" | "boxer";
+export type EntryType = "viewer" | "boxer" | "challenge";
+
+export const CHALLENGE = {
+  targetName: "Purvik",
+  photo: "/fightclub/Purvik.JPEG",
+  price: PRICING.challenge.price,
+  deadlineLabel: "12 June 2026",
+  deadlineIso: "2026-06-12T23:59:59+05:30",
+  shortLine: "One premium challenger slot. No casual entries.",
+} as const;
 
 export const rupeesToPaise = (rupees: number) => Math.round(rupees * 100);
 
@@ -76,11 +86,16 @@ export function computeAmountPaise(type: EntryType, quantity = 1): number {
     const qty = Math.min(Math.max(quantity, 1), PRICING.viewer.maxQty);
     return rupeesToPaise(PRICING.viewer.price * qty);
   }
+  if (type === "challenge") return rupeesToPaise(PRICING.challenge.price);
   return rupeesToPaise(PRICING.boxer.price);
 }
 
+export function isChallengeOfferOpen(now = new Date()): boolean {
+  return now.getTime() <= new Date(CHALLENGE.deadlineIso).getTime();
+}
+
 export const EXPERIENCE_OPTIONS = [
-  "First-timer",
+  "First timer",
   "Some training",
   "Amateur",
   "Pro",
@@ -92,12 +107,12 @@ export const EXPERIENCE_OPTIONS = [
 // (null = open/heaviest). Used for grouping in the admin gate list.
 export const WEIGHT_CLASSES: { label: string; range: string; max: number | null }[] = [
   { label: "Flyweight", range: "up to 52 kg", max: 52 },
-  { label: "Bantamweight", range: "52–57 kg", max: 57 },
-  { label: "Featherweight", range: "57–62 kg", max: 62 },
-  { label: "Lightweight", range: "62–67 kg", max: 67 },
-  { label: "Welterweight", range: "67–72 kg", max: 72 },
-  { label: "Middleweight", range: "72–78 kg", max: 78 },
-  { label: "Light Heavyweight", range: "78–85 kg", max: 85 },
+  { label: "Bantamweight", range: "52 to 57 kg", max: 57 },
+  { label: "Featherweight", range: "57 to 62 kg", max: 62 },
+  { label: "Lightweight", range: "62 to 67 kg", max: 67 },
+  { label: "Welterweight", range: "67 to 72 kg", max: 72 },
+  { label: "Middleweight", range: "72 to 78 kg", max: 78 },
+  { label: "Light Heavyweight", range: "78 to 85 kg", max: 85 },
   { label: "Heavyweight", range: "85 kg +", max: null },
 ];
 

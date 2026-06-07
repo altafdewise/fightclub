@@ -1,9 +1,9 @@
-import { FIGHTCLUB } from "@/lib/fightclub/config";
+import { CHALLENGE, FIGHTCLUB } from "@/lib/fightclub/config";
 
 interface FightclubEmailProps {
   bookingId: string;
   name: string;
-  type: "viewer" | "boxer";
+  type: "viewer" | "boxer" | "challenge";
   quantity?: number; // viewers only
   whatsappUrl: string;
 }
@@ -16,9 +16,12 @@ export function fightclubEmailHtml({
   whatsappUrl,
 }: FightclubEmailProps): string {
   const isBoxer = type === "boxer";
+  const isChallenge = type === "challenge";
 
-  const ticketValue = isBoxer
-    ? "Boxer entry — you fight"
+  const ticketValue = isChallenge
+    ? `Challenge ${escapeHtml(CHALLENGE.targetName)}`
+    : isBoxer
+    ? "Boxer entry. You fight"
     : `${quantity} &times; Viewer admission`;
 
   const rows: Array<{ label: string; value: string; highlight?: boolean; mono?: boolean }> = [
@@ -42,7 +45,7 @@ export function fightclubEmailHtml({
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fight Club — Season One, Series Two</title>
+  <title>Fight Club, Season One, Series Two</title>
 </head>
 <body style="margin:0;padding:0;background:#060606;font-family:'Helvetica Neue',Arial,sans-serif;color:#f4f4f0;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#060606;padding:32px 0;">
@@ -60,7 +63,7 @@ export function fightclubEmailHtml({
                 Fight Club
               </h1>
               <p style="margin:12px 0 0;font-size:15px;color:#8a8a8a;">
-                You&rsquo;re in. ${isBoxer ? "Step into the ring." : "See you ringside."}
+                You&rsquo;re in. ${isChallenge ? `Challenge ${escapeHtml(CHALLENGE.targetName)}.` : isBoxer ? "Step into the ring." : "See you ringside."}
               </p>
             </td>
           </tr>
@@ -70,7 +73,7 @@ export function fightclubEmailHtml({
             <td style="background:#0a0a0a;padding:32px 40px 0;">
               <p style="margin:0 0 8px;font-size:16px;color:#f4f4f0;">Hey ${escapeHtml(name)},</p>
               <p style="margin:0 0 32px;font-size:15px;color:#8a8a8a;line-height:1.7;">
-                Your ${isBoxer ? "fighter entry" : "spot"} for Fight Club &mdash; Season One, Series Two is locked in. Here&rsquo;s everything you need.
+                Your ${isChallenge ? `premium challenge against ${escapeHtml(CHALLENGE.targetName)}` : isBoxer ? "fighter entry" : "spot"} for Fight Club Season One, Series Two is locked in. Here&rsquo;s everything you need.
               </p>
             </td>
           </tr>
@@ -100,7 +103,23 @@ export function fightclubEmailHtml({
           </tr>
 
           ${
-            isBoxer
+            isChallenge
+              ? `<!-- Challenge note -->
+          <tr>
+            <td style="background:#0a0a0a;padding:0 40px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                style="background:rgba(139,0,0,0.12);border:1px solid rgba(230,60,30,0.3);border-radius:4px;">
+                <tr>
+                  <td style="padding:18px 20px;text-align:center;">
+                    <p style="margin:0;font-size:14px;color:#f4f4f0;line-height:1.6;font-weight:600;">
+                      Your detailed challenger profile is recorded. Our team will use it for safety verification and match readiness.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>`
+              : isBoxer
               ? `<!-- Boxer wristband note -->
           <tr>
             <td style="background:#0a0a0a;padding:0 40px 32px;">
@@ -133,7 +152,7 @@ export function fightclubEmailHtml({
                       Join the WhatsApp Broadcast
                     </h2>
                     <p style="margin:0 0 20px;font-size:14px;color:#8a8a8a;line-height:1.7;">
-                      Fight-night updates, line-ups, and last-minute changes straight to your phone.
+                      Fight night updates, lineups, and last minute changes straight to your phone.
                     </p>
                   </td>
                 </tr>
@@ -161,7 +180,7 @@ export function fightclubEmailHtml({
                     (line, i, arr) => `
                 <tr>
                   <td style="padding:10px 0;${i < arr.length - 1 ? "border-bottom:1px solid rgba(255,255,255,0.06);" : ""}">
-                    <span style="color:#e63c1e;margin-right:12px;font-weight:700;">&mdash;</span>
+                    <span style="color:#e63c1e;margin-right:12px;font-weight:700;">&bull;</span>
                     <span style="font-size:14px;color:#8a8a8a;line-height:1.6;">${escapeHtml(line)}</span>
                   </td>
                 </tr>`
@@ -184,7 +203,7 @@ export function fightclubEmailHtml({
                 <a href="${escapeHtml(whatsappUrl)}" style="color:#25D366;text-decoration:none;">WhatsApp Broadcast</a>
               </p>
               <p style="margin:0;font-size:11px;color:#2a2a2a;letter-spacing:0.08em;text-transform:uppercase;">
-                Fight Club &mdash; Season One, Series Two.
+                Fight Club Season One, Series Two.
               </p>
             </td>
           </tr>

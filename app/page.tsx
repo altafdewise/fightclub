@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { Services } from "@/components/Services";
+import { SocialUpdates } from "@/components/SocialUpdates";
 import { VideoSection } from "@/components/VideoSection";
 import { TestimonialsMarquee } from "@/components/TestimonialsMarquee";
 import { Why } from "@/components/Why";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <Why />
       <TestimonialsMarquee />
       <Plans />
+      <SocialUpdates />
       <CTA />
       <section id="member-access" className="section-space pt-4 pb-16" aria-label="Access">
         <div className="mb-6 text-center space-y-2">

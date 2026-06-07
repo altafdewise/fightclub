@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
@@ -15,10 +16,15 @@ export default function EnterPage() {
               Why are you here?
             </h1>
             <p className="mb-12 text-[var(--fc-muted)]">
-              There are only two ways through these ropes. Choose.
+              Regular entry has two doors. The Purvik challenge is a premium slot.
             </p>
           </Reveal>
           <TwoDoor />
+          <Reveal delay={120}>
+            <Link href="/fightclub/challenge" className="btn-blood-ghost mt-6 inline-flex">
+              Challenge Purvik
+            </Link>
+          </Reveal>
         </div>
       </main>
       <Footer />

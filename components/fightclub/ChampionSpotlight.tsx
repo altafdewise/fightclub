@@ -32,10 +32,6 @@ export function ChampionSpotlight() {
         <h2 className="fc-display text-[clamp(2.4rem,9vw,4.5rem)] text-[var(--fc-text)]">
           Fighter of the Night
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-[var(--fc-muted)]">
-          One fighter wins the night — for the heart they show and the fight they
-          give. The crowd decides. Their photo goes here until the next one earns it.
-        </p>
       </Reveal>
 
       <Reveal delay={90}>

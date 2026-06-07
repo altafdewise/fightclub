@@ -4,6 +4,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { ChampionSpotlight } from "@/components/fightclub/ChampionSpotlight";
+import { FightClubUpdatesStrip } from "@/components/fightclub/FightClubUpdatesStrip";
+import { PurvikChallengeSection } from "@/components/fightclub/PurvikChallengeSection";
 import { FIGHTCLUB, GALLERY } from "@/lib/fightclub/config";
 
 const RULES = [
@@ -19,6 +21,9 @@ const CROWD_LINES = ["No judges", "No scorecards", "The crowd decides"] as const
 // and list them in lib/fightclub/config.ts.
 const GALLERY_PLACEHOLDERS = Array.from({ length: 6 }, (_, i) => i + 1);
 const hasGallery = GALLERY.length > 0;
+const HERO_DATE = "Sunday, 14 June";
+const HERO_TIME = "5 PM onwards";
+const HERO_LOCATION = "Saroornagar, Hyderabad";
 const mapsQuery = encodeURIComponent(FIGHTCLUB.venue);
 const mapsHref = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 const mapsPreviewHref = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
@@ -28,7 +33,7 @@ export default function FightClubPage() {
     <>
       <Navbar />
       <main>
-        <section className="relative flex min-h-[94vh] flex-col items-center justify-center overflow-hidden px-5 py-28 text-center">
+        <section className="relative flex min-h-[94vh] flex-col items-center justify-center overflow-hidden px-5 py-24 text-center sm:py-28">
           {/* Local glow behind the title for depth */}
           <div
             aria-hidden
@@ -41,7 +46,7 @@ export default function FightClubPage() {
 
           <Reveal>
             {/* Season, flanked by hairlines */}
-            <div className="mb-8 flex items-center justify-center gap-4">
+            <div className="mb-7 flex items-center justify-center gap-4">
               <span className="h-px w-8 bg-[var(--fc-line)] sm:w-12" aria-hidden />
               <p className="fc-kicker">{FIGHTCLUB.season}</p>
               <span className="h-px w-8 bg-[var(--fc-line)] sm:w-12" aria-hidden />
@@ -58,30 +63,29 @@ export default function FightClubPage() {
               </span>
             </h1>
 
-            {/* Accent rule */}
-            <div
-              aria-hidden
-              className="mx-auto mt-9 h-px w-24"
-              style={{ background: "linear-gradient(to right, transparent, var(--fc-ember), transparent)" }}
-            />
-
-            <p className="mt-7 text-sm font-semibold uppercase tracking-[0.34em] text-[var(--fc-muted)] sm:text-base">
+            <p className="mt-7 text-[0.8rem] font-semibold uppercase tracking-[0.28em] text-[var(--fc-muted)] sm:text-base sm:tracking-[0.34em]">
               {FIGHTCLUB.tagline}
             </p>
 
-            <div className="mx-auto mb-12 mt-11 flex max-w-md flex-col items-center gap-2">
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-[var(--fc-ember)]">
-                {FIGHTCLUB.date} &middot; {FIGHTCLUB.time}
+            <div className="mx-auto mt-10 w-full max-w-[34rem] border-y border-[var(--fc-line)] py-5">
+              <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--fc-ember)] sm:text-sm sm:tracking-[0.2em]">
+                {HERO_DATE} &middot; {HERO_TIME}
               </p>
-              <p className="text-sm leading-relaxed text-[var(--fc-muted)]">{FIGHTCLUB.venue}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--fc-muted)]">
+                {HERO_LOCATION}
+              </p>
             </div>
 
             <Link
               href="/fightclub/enter"
-              className="btn-blood inline-flex items-center px-9 text-base"
+              className="btn-blood mt-9 inline-flex items-center px-9 text-base"
             >
               Get In
             </Link>
+
+            <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--fc-muted)] sm:text-[11px]">
+              Presented by <span className="text-[var(--fc-text)]">Purvik</span>
+            </p>
           </Reveal>
 
           {/* Scroll cue */}
@@ -151,7 +155,7 @@ export default function FightClubPage() {
         <section className="py-20 text-center">
           <div className="section-space">
             <Reveal>
-              <p className="fc-kicker mb-3">Series One - the carnage</p>
+              <p className="fc-kicker mb-3">Series One Carnage</p>
               <h2 className="mb-10 text-[clamp(1.8rem,6vw,2.4rem)] font-bold uppercase tracking-tight text-[var(--fc-text)]">
                 You missed the first one.
               </h2>
@@ -209,7 +213,7 @@ export default function FightClubPage() {
                 Watch or fight.
               </h2>
               <p className="mb-8 text-[var(--fc-muted)]">
-                Viewer INR 199. Boxer INR 349. Pick your door. There&apos;s no third option.
+                Viewer INR 199. Boxer INR 349. Regular entry first. Premium Purvik challenge follows.
               </p>
               <Link href="/fightclub/enter" className="btn-blood">
                 Get In
@@ -217,6 +221,8 @@ export default function FightClubPage() {
             </div>
           </Reveal>
         </section>
+
+        <PurvikChallengeSection />
 
         <section id="location" className="section-space pb-24 pt-2 text-center sm:pb-32">
           <Reveal>
@@ -259,6 +265,8 @@ export default function FightClubPage() {
             </div>
           </Reveal>
         </section>
+
+        <FightClubUpdatesStrip />
       </main>
       <Footer />
     </>

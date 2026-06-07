@@ -65,7 +65,7 @@ export default function FightPage() {
     if (!details.name.trim()) errs.name = "Name is required.";
     if (!details.email.trim() || !/.+@.+\..+/.test(details.email)) errs.email = "Valid email required.";
     if (!/^[6-9]\d{9}$/.test(details.phone.replace(/\s/g, "")))
-      errs.phone = "Valid 10-digit Indian mobile required.";
+      errs.phone = "Valid 10 digit Indian mobile required.";
     if (!details.weightClass) errs.weightClass = "Pick your weight division.";
     if (!details.experience) errs.experience = "Pick your experience level.";
     if (Object.keys(errs).length > 0) {
@@ -285,7 +285,7 @@ export default function FightPage() {
                       : "Opening payment…"
                     : hasCoupon
                     ? "Apply coupon & book"
-                    : `Pay ₹${PRICING.boxer.price} — UPI`}
+                    : `Pay INR ${PRICING.boxer.price} with UPI`}
                 </button>
               </div>
               <p className="text-center text-xs text-[var(--fc-muted)]">
@@ -296,7 +296,7 @@ export default function FightPage() {
 
           <p className="mt-8 text-center text-sm">
             <Link href="/fightclub/enter" className="text-[var(--fc-muted)] hover:text-[var(--fc-ember)]">
-              ← Wrong door? Go back
+              Wrong door? Go back
             </Link>
           </p>
         </div>

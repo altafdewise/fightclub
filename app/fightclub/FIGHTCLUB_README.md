@@ -15,21 +15,22 @@ All event details and pricing live in **`lib/fightclub/config.ts`** — edit the
 | `/fightclub/enter` | Two-door gate: WATCH (₹199) vs FIGHT (₹349) |
 | `/fightclub/watch` | Viewer flow — form → Razorpay (UPI) → email → success |
 | `/fightclub/fight` | Boxer flow — acknowledge → details → selfie → pay (strict order) |
+| `/fightclub/challenge` | Premium Purvik challenge — acknowledge → detailed form → selfie → Razorpay |
 | `/fightclub/success` | Post-payment screen + WhatsApp broadcast CTA |
 | `/fightclub/admin` | Password-gated operations dashboard |
-| `/fightclub/book`, `/fightclub/rules` | **Legacy** Season One free flow — left intact, unlinked |
+| `/fightclub/book`, `/fightclub/rules` | Legacy URLs now redirect to `/fightclub/enter` |
 
 ### API
 | Endpoint | Purpose |
 |----------|---------|
-| `POST /api/fightclub/create-order` | Server-computes amount, creates Razorpay order + pending booking. (Legacy free flow kept when no `type`.) |
+| `POST /api/fightclub/create-order` | Server-computes amount, creates Razorpay order + pending booking. Requires a paid `type`. |
 | `POST /api/fightclub/confirm-booking` | Verifies Razorpay signature → marks paid → links boxer/ack → emails ticket |
 | `POST /api/fightclub/mark-failed` | Records abandoned/failed attempts for admin |
 | `POST /api/fightclub/acknowledge` | Stores boxer acknowledgement before payment |
 | `POST /api/fightclub/upload-selfie` | Uploads selfie to the private `boxer-selfies` bucket (service role) |
 | `POST /api/fightclub/admin/login` | Checks `ADMIN_PASSWORD`, sets httpOnly cookie |
 | `GET /api/fightclub/admin/data` | Gated aggregates + lists (+ signed selfie URLs) |
-| `GET /api/fightclub/admin/export?type=boxers\|viewers` | Gated CSV gate-list |
+| `GET /api/fightclub/admin/export?type=boxers\|viewers\|challenges` | Gated CSV gate-list |
 
 ---
 
@@ -79,10 +80,11 @@ KYC is already done. Paste your **live** Razorpay keys (`rzp_live_…`) into
 
 ## Schema
 
-- **`fc_bookings`** — one row per purchase: `type` (viewer|boxer), name/email/phone,
+- **`fc_bookings`** — one row per purchase: `type` (viewer|boxer|challenge), name/email/phone,
   `quantity` (viewers), `amount` (paise), `razorpay_order_id`/`payment_id`,
   `status` (pending|paid|failed), timestamps.
 - **`fc_boxer_entries`** — 1:1 with a boxer booking: weight, experience, years, `selfie_url`.
+- **`fc_challenge_entries`** — 1:1 with a challenge booking: Purvik target, detailed fight profile, safety notes, emergency contact, `selfie_url`.
 - **`fc_acknowledgements`** — name, `all_points_accepted`, `accepted_at`, `points_version`,
   `booking_id` (linked once paid). Acknowledgement text lives in
   `lib/fightclub/acknowledgement.ts`; bump `POINTS_VERSION` if you change it.

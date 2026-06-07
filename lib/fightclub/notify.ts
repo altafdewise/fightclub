@@ -16,7 +16,10 @@ export async function sendTicketEmail(booking: BookingRow): Promise<void> {
     const { error } = await resend.emails.send({
       from: SENDER_EMAIL,
       to: [booking.email],
-      subject: "You're in — Fight Club, Season One Series Two",
+      subject:
+        booking.type === "challenge"
+          ? "Challenge locked - Fight Club, Season One Series Two"
+          : "You're in - Fight Club, Season One Series Two",
       html: fightclubEmailHtml({
         bookingId: booking.id,
         name: booking.full_name,

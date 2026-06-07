@@ -57,7 +57,7 @@ export function AckChecklist({
   return (
     <div className="mx-auto max-w-2xl text-left">
       <p className="mb-6 text-center text-sm text-[var(--fc-muted)]">
-        Read all the points below, then accept. This is a digital acknowledgement — no drawn signature needed.
+        Read all the points below, then accept. This is a digital acknowledgement. No drawn signature needed.
       </p>
 
       {/* Readable list — scrollable, no per-point checkboxes */}

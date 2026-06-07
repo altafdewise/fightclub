@@ -5,22 +5,32 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FIGHTCLUB } from "@/lib/fightclub/config";
+import { CHALLENGE, FIGHTCLUB } from "@/lib/fightclub/config";
 
 const WHATSAPP_URL = process.env.NEXT_PUBLIC_WHATSAPP_INVITE_URL || "#";
 
+type SuccessType = "viewer" | "boxer" | "challenge";
+
+function entryLabel(type: SuccessType, qty: number): string {
+  if (type === "challenge") return `Challenge ${CHALLENGE.targetName}`;
+  if (type === "boxer") return "Boxer entry. You fight";
+  return `${qty} x Viewer admission`;
+}
+
 function SuccessContent() {
   const params = useSearchParams();
-  const bookingId = params.get("bookingId") || "—";
+  const bookingId = params.get("bookingId") || "-";
   const name = params.get("name") || "Fighter";
-  const type = params.get("type") === "boxer" ? "boxer" : "viewer";
+  const rawType = params.get("type");
+  const type: SuccessType = rawType === "boxer" || rawType === "challenge" ? rawType : "viewer";
   const qty = Number(params.get("qty") || 1);
   const isBoxer = type === "boxer";
+  const isChallenge = type === "challenge";
 
   const details = [
     { label: "Booking ID", value: bookingId, red: true, mono: true },
     { label: "Name", value: name },
-    { label: "Entry", value: isBoxer ? "Boxer — you fight" : `${qty} × Viewer admission` },
+    { label: "Entry", value: entryLabel(type, qty) },
     { label: "Date & Time", value: `${FIGHTCLUB.date} · ${FIGHTCLUB.time}` },
     { label: "Venue", value: FIGHTCLUB.venue },
     { label: "Format", value: FIGHTCLUB.format },
@@ -32,11 +42,13 @@ function SuccessContent() {
         <div className="fc-card p-8 md:p-10">
           <p className="fc-kicker mb-2">You&apos;re in</p>
           <h1 className="mb-2 text-[clamp(1.9rem,7vw,2.5rem)] font-bold uppercase tracking-tight text-[var(--fc-text)]">
-            {isBoxer ? "Step into the ring" : "See you ringside"}
+            {isChallenge ? "Challenge locked" : isBoxer ? "Step into the ring" : "See you ringside"}
             {name !== "Fighter" ? `, ${name.split(" ")[0]}` : ""}.
           </h1>
           <p className="mb-8 text-[var(--fc-muted)]">
-            {isBoxer
+            {isChallenge
+              ? `Your premium challenge against ${CHALLENGE.targetName} is recorded. The team will use your detailed form for verification and match readiness.`
+              : isBoxer
               ? "Collect your wristband at the gate. 3 rounds. 3 minutes. The crowd decides."
               : "Booking confirmed. Check your email for your ticket."}
           </p>
@@ -72,13 +84,13 @@ function SuccessContent() {
             Join WhatsApp Broadcast
           </a>
           <p className="text-xs text-[var(--fc-muted)]">
-            Fight-night updates, line-ups, and last-minute changes on your phone.
+            Fight night updates, lineups, and last minute changes on your phone.
           </p>
         </div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-[var(--fc-muted)]">
           <Link href="/fightclub" className="transition-colors hover:text-[var(--fc-ember)]">
-            ← Fight Club Home
+            Fight Club Home
           </Link>
           <a
             href="https://instagram.com/brutal.fit"
@@ -101,7 +113,7 @@ export default function SuccessPage() {
       <Suspense
         fallback={
           <main className="section-space flex min-h-[70vh] items-center justify-center py-24 text-center">
-            <p className="text-[var(--fc-muted)]">Loading…</p>
+            <p className="text-[var(--fc-muted)]">Loading...</p>
           </main>
         }
       >

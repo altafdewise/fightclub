@@ -19,8 +19,8 @@ function validate(form: FormState): FieldErrors {
   if (!form.name.trim()) errors.name = "Name is required.";
   if (!form.email.trim() || !/.+@.+\..+/.test(form.email)) errors.email = "Enter a valid email.";
   if (!/^[6-9]\d{9}$/.test(form.phone.replace(/\s/g, "")))
-    errors.phone = "Enter a valid 10-digit Indian mobile number.";
-  if (form.quantity < 1 || form.quantity > PRICING.viewer.maxQty) errors.quantity = "1–4 tickets.";
+    errors.phone = "Enter a valid 10 digit Indian mobile number.";
+  if (form.quantity < 1 || form.quantity > PRICING.viewer.maxQty) errors.quantity = "Choose 1 to 4 tickets.";
   return errors;
 }
 
@@ -152,7 +152,7 @@ export default function WatchPage() {
                   : "Opening payment…"
                 : hasCoupon
                 ? "Apply coupon & book"
-                : `Pay ₹${PRICING.viewer.price * form.quantity} — UPI`}
+                : `Pay INR ${PRICING.viewer.price * form.quantity} with UPI`}
             </button>
 
             <p className="text-center text-xs text-[var(--fc-muted)]">
@@ -162,7 +162,7 @@ export default function WatchPage() {
 
           <p className="mt-6 text-center text-sm">
             <Link href="/fightclub/enter" className="text-[var(--fc-muted)] hover:text-[var(--fc-ember)]">
-              ← Wrong door? Go back
+              Wrong door? Go back
             </Link>
           </p>
         </div>

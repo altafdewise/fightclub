@@ -6,8 +6,7 @@ import { markBookingFailed } from "@/lib/fightclub/bookings";
 export async function POST(req: Request) {
   try {
     const { razorpay_order_id } = await req.json();
-    if (!razorpay_order_id || String(razorpay_order_id).startsWith("FC_FREE_")) {
-      // Nothing persisted for legacy free tokens — ignore quietly.
+    if (!razorpay_order_id) {
       return NextResponse.json({ ok: true });
     }
     await markBookingFailed(String(razorpay_order_id));

@@ -23,6 +23,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -387,4 +388,3 @@ select option:checked {
   background: #0a0a0a;
   color: var(--fc-text);
 }
-

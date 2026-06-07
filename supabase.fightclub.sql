@@ -14,7 +14,7 @@ create extension if not exists pgcrypto;
 -- ── Bookings (one row per ticket purchase, viewer or boxer) ────────
 create table if not exists fc_bookings (
   id                  uuid primary key default gen_random_uuid(),
-  type                text not null check (type in ('viewer', 'boxer')),
+  type                text not null check (type in ('viewer', 'boxer', 'challenge')),
   full_name           text not null,
   email               text not null,
   phone               text not null,
@@ -33,6 +33,9 @@ create table if not exists fc_bookings (
 -- Idempotent column add for projects that already ran the original schema.
 alter table fc_bookings add column if not exists coupon_code text;
 alter table fc_bookings alter column razorpay_order_id drop not null;
+alter table fc_bookings drop constraint if exists fc_bookings_type_check;
+alter table fc_bookings add constraint fc_bookings_type_check
+  check (type in ('viewer', 'boxer', 'challenge'));
 
 create index if not exists fc_bookings_status_idx     on fc_bookings (status, created_at desc);
 create index if not exists fc_bookings_type_idx        on fc_bookings (type);
@@ -55,6 +58,37 @@ create table if not exists fc_boxer_entries (
 alter table fc_boxer_entries add column if not exists weight_class text;
 
 create index if not exists fc_boxer_entries_booking_idx on fc_boxer_entries (booking_id);
+
+-- Challenge entries (premium challenge booking against Purvik)
+create table if not exists fc_challenge_entries (
+  id                      uuid primary key default gen_random_uuid(),
+  booking_id              uuid not null references fc_bookings(id) on delete cascade,
+  target_name             text not null default 'Purvik',
+  age                     int null,
+  city                    text null,
+  instagram               text null,
+  height_cm               numeric null,
+  weight_kg               numeric null,
+  weight_class            text null,
+  stance                  text null,
+  experience              text null,
+  experience_years        int null,
+  fight_record            text null,
+  training_gym            text null,
+  coach_name              text null,
+  strengths               text null,
+  injuries                text null,
+  medical_conditions      text null,
+  availability            text null,
+  challenge_reason        text null,
+  emergency_contact_name  text null,
+  emergency_contact_phone text null,
+  selfie_url              text null,
+  terms_accepted          boolean not null default false,
+  created_at              timestamptz not null default now()
+);
+
+create index if not exists fc_challenge_entries_booking_idx on fc_challenge_entries (booking_id);
 
 -- ── Acknowledgements (digital sign-off, captured before payment) ──
 create table if not exists fc_acknowledgements (
