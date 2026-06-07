@@ -33,7 +33,6 @@ export function PurvikChallengeSection() {
               </h2>
 
               <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--fc-muted)]">
-                <span>INR {CHALLENGE.price.toLocaleString("en-IN")}</span>
                 <span className="text-[var(--fc-ember)]">Closes {CHALLENGE.deadlineLabel}</span>
               </div>
 

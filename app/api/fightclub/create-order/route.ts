@@ -44,6 +44,24 @@ function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" ? (value as Record<string, unknown>) : {};
 }
 
+function createOrderErrorMessage(error: unknown): string {
+  const err = asRecord(error);
+  const code = String(err.code || "");
+  const message = String(err.message || "");
+  const details = String(err.details || "");
+  const combined = `${message} ${details}`;
+
+  if (
+    code === "23514" ||
+    combined.includes("fc_bookings_type_check") ||
+    combined.includes("fc_challenge_entries")
+  ) {
+    return "Challenge checkout needs a quick schema update. Please run supabase.fightclub-challenge-checkout-fix.sql.";
+  }
+
+  return "Could not create order.";
+}
+
 function hasCompleteChallengePayload(body: Record<string, unknown>): boolean {
   const challenge = asRecord(body.challenge);
   return Boolean(
@@ -216,6 +234,6 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("[fightclub/create-order]", error);
-    return NextResponse.json({ message: "Could not create order." }, { status: 500 });
+    return NextResponse.json({ message: createOrderErrorMessage(error) }, { status: 500 });
   }
 }

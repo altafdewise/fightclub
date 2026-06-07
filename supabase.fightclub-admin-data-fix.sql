@@ -1,8 +1,8 @@
 -- Safe repair for /fightclub/admin error:
 -- PGRST205: Could not find the table 'public.fc_challenge_entries'
 --
--- This creates only the missing Fight Club challenge-details table.
--- It does NOT delete, truncate, or update existing buyers in fc_bookings.
+-- This keeps existing Fight Club buyer rows as they are.
+-- It only creates the missing Fight Club challenge-details table.
 
 create extension if not exists pgcrypto;
 

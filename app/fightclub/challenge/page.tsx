@@ -170,7 +170,7 @@ export default function ChallengePurvikPage() {
               Challenge {CHALLENGE.targetName}
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[var(--fc-muted)] sm:text-base">
-              INR {CHALLENGE.price.toLocaleString("en-IN")} entry. Valid till {CHALLENGE.deadlineLabel}. Detailed profile, acknowledgement, selfie, and Razorpay payment are required.
+              Valid till {CHALLENGE.deadlineLabel}. Detailed profile, acknowledgement, selfie, and Razorpay payment are required.
             </p>
           </div>
 
@@ -517,7 +517,7 @@ export default function ChallengePurvikPage() {
                   Back
                 </button>
                 <button type="button" onClick={pay} disabled={loading || offerExpired} className="btn-blood flex-1">
-                  {loading ? "Opening payment..." : `Pay INR ${CHALLENGE.price.toLocaleString("en-IN")}`}
+                  {loading ? "Opening payment..." : "Proceed to Payment"}
                 </button>
               </div>
               <p className="text-center text-xs text-[var(--fc-muted)]">
