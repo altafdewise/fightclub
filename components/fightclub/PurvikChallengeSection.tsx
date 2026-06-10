@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
-import { CHALLENGE } from "@/lib/fightclub/config";
+import { BOOKINGS_OPEN, CHALLENGE } from "@/lib/fightclub/config";
 
 export function PurvikChallengeSection() {
   return (
@@ -25,7 +25,7 @@ export function PurvikChallengeSection() {
           <div className="flex min-h-[560px] items-end px-5 py-7 sm:min-h-[620px] sm:px-8 sm:py-9 lg:min-h-[660px] lg:items-center lg:justify-end lg:px-14">
             <div className="w-full max-w-xl lg:w-[48%]">
               <p className="mb-3 text-xs font-bold uppercase tracking-[0.26em] text-[var(--fc-ember)]">
-                Limited Challenge
+                {BOOKINGS_OPEN ? "Limited Challenge" : "Challenge Slot Booked"}
               </p>
 
               <h2 className="fc-display text-[clamp(3.2rem,14vw,6.4rem)] text-[var(--fc-text)]">
@@ -33,14 +33,17 @@ export function PurvikChallengeSection() {
               </h2>
 
               <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--fc-muted)]">
-                <span className="text-[var(--fc-ember)]">Closes {CHALLENGE.deadlineLabel}</span>
+                <span className="text-[var(--fc-ember)]">
+                  {BOOKINGS_OPEN ? `Closes ${CHALLENGE.deadlineLabel}` : "All Purvik challenge slots are booked"}
+                </span>
               </div>
 
               <Link
                 href="/fightclub/challenge"
+                aria-disabled={!BOOKINGS_OPEN}
                 className="btn-blood mt-8 inline-flex w-full items-center justify-center gap-2 sm:w-fit"
               >
-                Challenge Purvik
+                {BOOKINGS_OPEN ? "Challenge Purvik" : "Challenge Booked"}
               </Link>
             </div>
           </div>

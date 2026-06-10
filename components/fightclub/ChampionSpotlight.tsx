@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Crown } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { CHAMPION } from "@/lib/fightclub/config";
+import { BOOKINGS_OPEN, CHAMPION } from "@/lib/fightclub/config";
 
 // The headline section: the reigning Fighter of the Night. Their photo is
 // the prize. Win the night, and your face takes this spot until someone
@@ -110,10 +110,18 @@ export function ChampionSpotlight() {
         />
 
         <p className="mb-7 text-[clamp(1.1rem,3.5vw,1.5rem)] font-bold uppercase tracking-tight text-[var(--fc-text)]">
-          {crowned ? "Next time, this could be you." : "This could be the first face here."}
+          {!BOOKINGS_OPEN
+            ? "Series Two slots are fully booked."
+            : crowned
+            ? "Next time, this could be you."
+            : "This could be the first face here."}
         </p>
-        <Link href="/fightclub/enter" className="btn-blood inline-flex items-center">
-          Step Into the Ring
+        <Link
+          href="/fightclub/enter"
+          aria-disabled={!BOOKINGS_OPEN}
+          className="btn-blood inline-flex items-center"
+        >
+          {BOOKINGS_OPEN ? "Step Into the Ring" : "All Slots Booked"}
         </Link>
       </Reveal>
     </section>

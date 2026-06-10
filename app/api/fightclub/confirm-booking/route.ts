@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { BOOKINGS_OPEN, SOLD_OUT_MESSAGE } from "@/lib/fightclub/config";
 import { RAZORPAY_KEY_SECRET } from "@/lib/fightclub/env";
 import {
   createBoxerEntry,
@@ -62,6 +63,10 @@ function hasChallengeDetails(challenge: Record<string, unknown>, acknowledgement
 
 export async function POST(req: Request) {
   try {
+    if (!BOOKINGS_OPEN) {
+      return NextResponse.json({ message: SOLD_OUT_MESSAGE, soldOut: true }, { status: 403 });
+    }
+
     const body = asRecord(await req.json());
     const razorpayOrderId = text(body.razorpay_order_id);
     const razorpayPaymentId = text(body.razorpay_payment_id);

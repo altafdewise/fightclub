@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PRICING } from "@/lib/fightclub/config";
+import { BOOKINGS_OPEN, PRICING } from "@/lib/fightclub/config";
 import { Reveal } from "@/components/Reveal";
 
 // The gate: "WHY ARE YOU HERE?" - two heavy doors. Cinematic, center-aligned.
@@ -33,10 +33,12 @@ export function TwoDoor() {
             <span className="fc-display text-[clamp(2.8rem,11vw,4.5rem)] text-[var(--fc-text)] transition group-hover:text-[var(--fc-ember)]">
               {d.verb}
             </span>
-            <span className="text-2xl font-bold text-[var(--fc-ember)]">INR {d.price}</span>
+            <span className="text-2xl font-bold text-[var(--fc-ember)]">
+              {BOOKINGS_OPEN ? `INR ${d.price}` : "Fully booked"}
+            </span>
             <span className="max-w-xs text-sm leading-relaxed text-[var(--fc-muted)]">{d.blurb}</span>
             <span className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--fc-muted)] transition group-hover:text-[var(--fc-text)]">
-              Choose this door
+              {BOOKINGS_OPEN ? "Choose this door" : "No slots left"}
             </span>
           </Link>
         </Reveal>

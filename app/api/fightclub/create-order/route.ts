@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import {
+  BOOKINGS_OPEN,
   CHALLENGE,
   COUPON_CODE,
   PRICING,
   RUPEE_COUPON_CODE,
   RUPEE_COUPON_PRICE,
+  SOLD_OUT_MESSAGE,
   classifyCoupon,
   computeAmountPaise,
   isChallengeOfferOpen,
@@ -94,6 +96,12 @@ function hasCompleteChallengePayload(body: Record<string, unknown>): boolean {
 
 export async function POST(req: Request) {
   try {
+    // Master switch: when bookings are closed, refuse all payments here so
+    // nobody can pay even by calling this endpoint directly.
+    if (!BOOKINGS_OPEN) {
+      return NextResponse.json({ message: SOLD_OUT_MESSAGE, soldOut: true }, { status: 403 });
+    }
+
     const body = asRecord(await req.json());
     const typeRaw = body.type;
 

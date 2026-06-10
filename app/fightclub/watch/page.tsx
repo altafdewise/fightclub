@@ -6,9 +6,10 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { cn } from "@/utils/cn";
-import { PRICING } from "@/lib/fightclub/config";
+import { BOOKINGS_OPEN, PRICING } from "@/lib/fightclub/config";
 import { OrderSummary } from "@/components/fightclub/OrderSummary";
 import { CouponField } from "@/components/fightclub/CouponField";
+import { SoldOut } from "@/components/fightclub/SoldOut";
 import { startCheckout } from "@/components/fightclub/checkout";
 
 type FormState = { name: string; email: string; phone: string; quantity: number };
@@ -67,6 +68,8 @@ export default function WatchPage() {
       );
     }
   }
+
+  if (!BOOKINGS_OPEN) return <SoldOut />;
 
   return (
     <>

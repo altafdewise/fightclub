@@ -6,12 +6,13 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { cn } from "@/utils/cn";
-import { PRICING, EXPERIENCE_OPTIONS, WEIGHT_CLASSES } from "@/lib/fightclub/config";
+import { BOOKINGS_OPEN, PRICING, EXPERIENCE_OPTIONS, WEIGHT_CLASSES } from "@/lib/fightclub/config";
 import { Stepper } from "@/components/fightclub/Stepper";
 import { AckChecklist, type AckResult } from "@/components/fightclub/AckChecklist";
 import { SelfieCapture } from "@/components/fightclub/SelfieCapture";
 import { OrderSummary } from "@/components/fightclub/OrderSummary";
 import { CouponField } from "@/components/fightclub/CouponField";
+import { SoldOut } from "@/components/fightclub/SoldOut";
 import { startCheckout } from "@/components/fightclub/checkout";
 
 const STEPS = ["Acknowledge", "Details", "Selfie", "Pay"];
@@ -110,6 +111,8 @@ export default function FightPage() {
       );
     }
   }
+
+  if (!BOOKINGS_OPEN) return <SoldOut />;
 
   return (
     <>

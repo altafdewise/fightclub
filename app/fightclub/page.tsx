@@ -6,7 +6,13 @@ import { Reveal } from "@/components/Reveal";
 import { ChampionSpotlight } from "@/components/fightclub/ChampionSpotlight";
 import { FightClubUpdatesStrip } from "@/components/fightclub/FightClubUpdatesStrip";
 import { PurvikChallengeSection } from "@/components/fightclub/PurvikChallengeSection";
-import { FIGHTCLUB, GALLERY } from "@/lib/fightclub/config";
+import {
+  BOOKINGS_OPEN,
+  FIGHTCLUB,
+  GALLERY,
+  SOLD_OUT_HEADLINE,
+  SOLD_OUT_MESSAGE,
+} from "@/lib/fightclub/config";
 
 const RULES = [
   { num: "01", headline: "3 ROUNDS X 3 MINUTES", body: "No more, no less. Survive all three." },
@@ -76,11 +82,23 @@ export default function FightClubPage() {
               </p>
             </div>
 
+            {!BOOKINGS_OPEN && (
+              <div className="mx-auto mt-8 max-w-md rounded-xl border border-[rgba(230,60,30,0.35)] bg-[rgba(139,0,0,0.16)] px-5 py-4">
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--fc-ember)]">
+                  {SOLD_OUT_HEADLINE}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--fc-muted)]">
+                  {SOLD_OUT_MESSAGE}
+                </p>
+              </div>
+            )}
+
             <Link
               href="/fightclub/enter"
+              aria-disabled={!BOOKINGS_OPEN}
               className="btn-blood mt-9 inline-flex items-center px-9 text-base"
             >
-              Get In
+              {BOOKINGS_OPEN ? "Get In" : "All Slots Booked"}
             </Link>
 
             <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--fc-muted)] sm:text-[11px]">
@@ -213,10 +231,12 @@ export default function FightClubPage() {
                 Watch or fight.
               </h2>
               <p className="mb-8 text-[var(--fc-muted)]">
-                Viewer INR 199. Boxer INR 349. Regular entry first. Premium Purvik challenge follows.
+                {BOOKINGS_OPEN
+                  ? "Viewer INR 199. Boxer INR 349. Regular entry first. Premium Purvik challenge follows."
+                  : "Viewer, boxer, and premium challenge slots are now fully booked."}
               </p>
-              <Link href="/fightclub/enter" className="btn-blood">
-                Get In
+              <Link href="/fightclub/enter" aria-disabled={!BOOKINGS_OPEN} className="btn-blood">
+                {BOOKINGS_OPEN ? "Get In" : "All Slots Booked"}
               </Link>
             </div>
           </Reveal>

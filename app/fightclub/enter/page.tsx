@@ -3,8 +3,11 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
 import { TwoDoor } from "@/components/fightclub/TwoDoor";
+import { SoldOut } from "@/components/fightclub/SoldOut";
+import { BOOKINGS_OPEN } from "@/lib/fightclub/config";
 
 export default function EnterPage() {
+  if (!BOOKINGS_OPEN) return <SoldOut />;
   return (
     <>
       <Navbar />

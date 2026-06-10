@@ -10,7 +10,8 @@ import { OrderSummary } from "@/components/fightclub/OrderSummary";
 import { SelfieCapture } from "@/components/fightclub/SelfieCapture";
 import { Stepper } from "@/components/fightclub/Stepper";
 import { startCheckout, type ChallengeCheckoutPayload } from "@/components/fightclub/checkout";
-import { CHALLENGE, EXPERIENCE_OPTIONS, WEIGHT_CLASSES, weightClassFor } from "@/lib/fightclub/config";
+import { SoldOut } from "@/components/fightclub/SoldOut";
+import { BOOKINGS_OPEN, CHALLENGE, EXPERIENCE_OPTIONS, WEIGHT_CLASSES, weightClassFor } from "@/lib/fightclub/config";
 import { cn } from "@/utils/cn";
 
 const STEPS = ["Acknowledge", "Challenge Form", "Selfie", "Pay"];
@@ -158,6 +159,8 @@ export default function ChallengePurvikPage() {
       );
     }
   }
+
+  if (!BOOKINGS_OPEN) return <SoldOut />;
 
   return (
     <>

@@ -21,6 +21,15 @@ export const FIGHTCLUB = {
     "Surprise prize for the most entertaining fighter of the night. Rage hard enough and you walk away with it.",
 } as const;
 
+// ── Booking availability (master switch) ─────────────────────────
+// Set BOOKINGS_OPEN = false to mark the WHOLE /fightclub site as fully
+// booked: payments are refused server-side and every entry flow shows
+// the "fully booked" screen. Flip back to true to reopen sales.
+export const BOOKINGS_OPEN = false;
+export const SOLD_OUT_HEADLINE = "Fully booked";
+export const SOLD_OUT_MESSAGE =
+  "Every slot for Series Two is taken. Join the broadcast to be first in line for the next one.";
+
 // ── Reigning Champion / Fighter of the Night ─────────────────────
 // The headline section of the site. Update this after every event —
 // the winner's photo and name go here, and that IS the reason people
