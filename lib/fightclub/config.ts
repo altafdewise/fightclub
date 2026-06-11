@@ -25,7 +25,7 @@ export const FIGHTCLUB = {
 // Set BOOKINGS_OPEN = false to mark the WHOLE /fightclub site as fully
 // booked: payments are refused server-side and every entry flow shows
 // the "fully booked" screen. Flip back to true to reopen sales.
-export const BOOKINGS_OPEN = false;
+export const BOOKINGS_OPEN = true;
 export const SOLD_OUT_HEADLINE = "Fully booked";
 export const SOLD_OUT_MESSAGE =
   "Every slot for Series Two is taken. Join the broadcast to be first in line for the next one.";
