@@ -128,3 +128,25 @@ on conflict (id) do nothing;
 -- RLS on the tables above is intentionally left disabled because every
 -- query runs through the service-role client in server routes only —
 -- the anon key never touches these tables.
+
+-- ── Refund requests (manual, off-site) ────────────────────────────
+-- People who want a refund submit this via a private link the organiser
+-- shares directly. The organiser reviews and pays out manually via UPI,
+-- then marks the row "refunded" in the admin dashboard.
+create table if not exists fc_refund_requests (
+  id          uuid primary key default gen_random_uuid(),
+  type        text not null check (type in ('viewer', 'boxer')),
+  full_name   text not null,
+  email       text not null,
+  phone       text not null,
+  booking_id  text null,                     -- the FCH ticket id, if they have it
+  upi_id      text not null,                 -- where to send the money
+  amount_inr  int null,                      -- amount they paid (rupees), optional
+  reason      text not null,
+  status      text not null default 'pending'
+                check (status in ('pending', 'refunded')),
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists fc_refund_requests_status_idx
+  on fc_refund_requests (status, created_at desc);

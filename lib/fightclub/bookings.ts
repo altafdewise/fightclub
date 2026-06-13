@@ -66,6 +66,20 @@ export interface AcknowledgementRow {
   points_version: number;
 }
 
+export interface RefundRequestRow {
+  id: string;
+  type: "viewer" | "boxer";
+  full_name: string;
+  email: string;
+  phone: string;
+  booking_id: string | null; // the FCH booking id from their ticket, if known
+  upi_id: string;
+  amount_inr: number | null;
+  reason: string;
+  status: "pending" | "refunded";
+  created_at: string;
+}
+
 // ── Bookings ───────────────────────────────────────────────────────
 
 export async function createPendingBooking(input: {
@@ -267,6 +281,48 @@ export async function linkAcknowledgementToBooking(
   if (error) throw error;
 }
 
+// ── Refund requests ────────────────────────────────────────────────
+
+export async function createRefundRequest(input: {
+  type: "viewer" | "boxer";
+  fullName: string;
+  email: string;
+  phone: string;
+  bookingId: string | null;
+  upiId: string;
+  amountInr: number | null;
+  reason: string;
+}): Promise<RefundRequestRow> {
+  const { data, error } = await fcSupabase()
+    .from("fc_refund_requests")
+    .insert({
+      type: input.type,
+      full_name: input.fullName,
+      email: input.email,
+      phone: input.phone,
+      booking_id: input.bookingId,
+      upi_id: input.upiId,
+      amount_inr: input.amountInr,
+      reason: input.reason,
+      status: "pending",
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as RefundRequestRow;
+}
+
+export async function setRefundStatus(
+  id: string,
+  status: "pending" | "refunded"
+): Promise<void> {
+  const { error } = await fcSupabase()
+    .from("fc_refund_requests")
+    .update({ status })
+    .eq("id", id);
+  if (error) throw error;
+}
+
 // ── Storage: signed URL for a private selfie ──────────────────────
 export async function signedSelfieUrl(path: string, expiresIn = 60 * 30): Promise<string | null> {
   if (!path) return null;
@@ -291,6 +347,7 @@ export interface AdminData {
   boxers: Array<BookingRow & { entry: BoxerEntryRow | null; selfieSignedUrl: string | null }>;
   challenges: Array<BookingRow & { entry: ChallengeEntryRow | null; selfieSignedUrl: string | null }>;
   stuck: BookingRow[]; // pending or failed
+  refunds: RefundRequestRow[];
 }
 
 function isMissingTableError(error: { code?: string; message?: string } | null, table: string): boolean {
@@ -330,6 +387,18 @@ export async function getAdminData(): Promise<AdminData> {
     challengeByBooking.set(e.booking_id, e);
   }
 
+  const { data: refundRows, error: rErr } = await sb
+    .from("fc_refund_requests")
+    .select()
+    .order("created_at", { ascending: false });
+  if (rErr && !isMissingTableError(rErr, "fc_refund_requests")) throw rErr;
+  if (rErr) {
+    console.warn(
+      "[fightclub/admin] fc_refund_requests is missing. Run the refund-requests block in supabase.fightclub.sql."
+    );
+  }
+  const refunds = (rErr ? [] : (refundRows ?? [])) as RefundRequestRow[];
+
   const paid = rows.filter((r) => r.status === "paid");
   const viewers = rows.filter((r) => r.type === "viewer" && r.status === "paid");
   const boxerPaidRows = rows.filter((r) => r.type === "boxer" && r.status === "paid");
@@ -368,5 +437,6 @@ export async function getAdminData(): Promise<AdminData> {
     boxers,
     challenges,
     stuck,
+    refunds,
   };
 }

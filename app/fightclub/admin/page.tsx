@@ -50,12 +50,26 @@ interface ChallengeRow extends BookingRow {
   } | null;
   selfieSignedUrl: string | null;
 }
+interface RefundRow {
+  id: string;
+  type: "viewer" | "boxer";
+  full_name: string;
+  email: string;
+  phone: string;
+  booking_id: string | null;
+  upi_id: string;
+  amount_inr: number | null;
+  reason: string;
+  status: "pending" | "refunded";
+  created_at: string;
+}
 interface AdminData {
   totals: { paidCount: number; viewerPaid: number; boxerPaid: number; challengePaid: number; revenuePaise: number };
   viewers: BookingRow[];
   boxers: BoxerRow[];
   challenges: ChallengeRow[];
   stuck: BookingRow[];
+  refunds: RefundRow[];
 }
 
 const rupees = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
@@ -98,6 +112,15 @@ export default function AdminPage() {
       active = false;
     };
   }, []);
+
+  async function markRefund(id: string, status: "pending" | "refunded") {
+    const res = await fetch("/api/fightclub/admin/refund-status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status }),
+    });
+    if (res.ok) await loadData();
+  }
 
   async function login(e: React.FormEvent) {
     e.preventDefault();
@@ -390,6 +413,60 @@ export default function AdminPage() {
                 <Td>{v.coupon_code && v.amount === 0 ? "Cash (comp)" : "UPI"}</Td>
                 <Td>
                   <Badge status={v.status} />
+                </Td>
+              </tr>
+            ))}
+          </Table>
+        )}
+      </Section>
+
+      {/* Refund requests */}
+      <Section
+        title={`Refund requests (${data.refunds?.length ?? 0})`}
+        subtitle="Submitted via the private refund links. Review the reason, pay via UPI, then mark refunded."
+      >
+        {!data.refunds || data.refunds.length === 0 ? (
+          <Empty>No refund requests.</Empty>
+        ) : (
+          <Table head={["Name", "Type", "Phone", "Email", "UPI ID", "Amount", "Booking ID", "Reason", "When", "Status", ""]}>
+            {data.refunds.map((r) => (
+              <tr key={r.id} className="border-t border-[var(--fc-line)] align-top">
+                <Td>{r.full_name}</Td>
+                <Td>{r.type === "boxer" ? "Boxer" : "Spectator"}</Td>
+                <Td>
+                  <a href={`tel:${r.phone}`} className="text-[var(--fc-ember)] hover:underline">
+                    {r.phone}
+                  </a>
+                </Td>
+                <Td>
+                  <a href={`mailto:${r.email}`} className="hover:underline">
+                    {r.email}
+                  </a>
+                </Td>
+                <Td className="font-mono text-[var(--fc-ember)]">{r.upi_id}</Td>
+                <Td>{r.amount_inr != null ? `₹${r.amount_inr}` : "—"}</Td>
+                <Td className="font-mono text-xs">{r.booking_id || "—"}</Td>
+                <Td className="max-w-[16rem] whitespace-pre-wrap text-xs text-[var(--fc-muted)]">{r.reason}</Td>
+                <Td className="whitespace-nowrap text-xs text-[var(--fc-muted)]">{when(r.created_at)}</Td>
+                <Td>
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+                      r.status === "refunded"
+                        ? "border-green-500/30 bg-green-500/10 text-green-300"
+                        : "border-amber-500/30 bg-amber-500/10 text-amber-300"
+                    }`}
+                  >
+                    {r.status}
+                  </span>
+                </Td>
+                <Td>
+                  <button
+                    type="button"
+                    onClick={() => markRefund(r.id, r.status === "refunded" ? "pending" : "refunded")}
+                    className="btn-blood-ghost !px-3 !py-1.5 text-xs"
+                  >
+                    {r.status === "refunded" ? "Undo" : "Mark refunded"}
+                  </button>
                 </Td>
               </tr>
             ))}
