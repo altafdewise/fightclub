@@ -10,14 +10,14 @@ export function TwoDoor() {
       verb: "WATCH",
       role: "Spectator",
       price: PRICING.viewer.price,
-      blurb: "Ringside. Pick your fighter. Scream the winner into the throne.",
+      blurb: "Ringside seat. Watch every round up close.",
     },
     {
       href: "/fightclub/fight",
       verb: "FIGHT",
       role: "Boxer",
       price: PRICING.boxer.price,
-      blurb: "Step through the ropes. 3 rounds. The crowd decides if you're the one.",
+      blurb: "Step through the ropes. 3 rounds, judged under BFI rules.",
     },
   ];
 

@@ -49,7 +49,7 @@ function SuccessContent() {
             {isChallenge
               ? `Your premium challenge against ${CHALLENGE.targetName} is recorded. The team will use your detailed form for verification and match readiness.`
               : isBoxer
-              ? "Collect your wristband at the gate. 3 rounds. 3 minutes. The crowd decides."
+              ? "Collect your wristband at the gate. 3 rounds, 3 minutes each. Judges score every round."
               : "Booking confirmed. Check your email for your ticket."}
           </p>
 

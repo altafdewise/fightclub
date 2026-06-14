@@ -34,9 +34,9 @@ export function fightclubEmailHtml({
   ];
 
   const expectations = [
-    "No judges, no scorecards. The crowd decides who wins.",
-    "Surprise prize for the most entertaining fighter of the night.",
-    "3 rounds. 3 minutes each. You tap, it stops.",
+    "Bouts scored by five judges on the 10-point must system (BFI rules).",
+    "Surprise prize for the standout fighter of the night.",
+    "3 rounds, 3 minutes each. The referee can stop the bout for safety.",
     "Bring an ID. Doors open before the first bell.",
   ];
 
@@ -128,7 +128,7 @@ export function fightclubEmailHtml({
                 <tr>
                   <td style="padding:18px 20px;text-align:center;">
                     <p style="margin:0;font-size:14px;color:#f4f4f0;line-height:1.6;font-weight:600;">
-                      Collect your wristband at the gate. 3 rounds. 3 minutes. The crowd decides.
+                      Collect your wristband at the gate. 3 rounds, 3 minutes each. Judges score every round.
                     </p>
                   </td>
                 </tr>

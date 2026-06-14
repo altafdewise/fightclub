@@ -16,9 +16,9 @@ export const FIGHTCLUB = {
 
   format: "3 rounds, 3 minutes each",
   // The hook: the audience decides the winner.
-  crowdLine: "NO JUDGES. NO SCORECARDS. THE CROWD DECIDES.",
+  crowdLine: "FIVE JUDGES. TEN-POINT MUST. BEST BOXER WINS.",
   prizeLine:
-    "Surprise prize for the most entertaining fighter of the night. Rage hard enough and you walk away with it.",
+    "Every bout is scored by the judges under BFI rules. A surprise prize still goes to the standout fighter of the night.",
 } as const;
 
 // ── Booking availability (master switch) ─────────────────────────
@@ -51,7 +51,7 @@ export const CHAMPION: {
   quote: string; // short line in their voice (optional, "" to hide)
 } = {
   name: "", // left blank on purpose — nothing shows over the photo
-  photo: "/fightclub/champion.jpeg",
+  photo: "", // empty → shows the "throne empty" placeholder (no media on site)
   wonOn: "", // optional — e.g. "Series One · 8th June"
   record: "", // optional — e.g. "3 bouts · 3 stoppages"
   quote: "", // optional — a short line in their voice
@@ -61,12 +61,9 @@ export const CHAMPION: {
 // Drop photos in  public/fightclub/  and list their paths here. They
 // render in order on the landing page. Leave the array empty to show
 // styled placeholders instead. Any number of photos works.
-export const GALLERY: string[] = [
-  "/fightclub/s1-01.jpeg",
-  "/fightclub/s1-02.jpeg",
-  "/fightclub/s1-03.jpeg",
-  "/fightclub/s1-04.jpeg",
-];
+// Empty → the landing shows styled placeholder tiles (no photos on site).
+// Add paths back here once you want real photos again.
+export const GALLERY: string[] = [];
 
 // ── Pricing (rupees) ──────────────────────────────────────────────
 // Amounts are converted to paise server-side; the client never sets price.
@@ -80,7 +77,7 @@ export type EntryType = "viewer" | "boxer" | "challenge";
 
 export const CHALLENGE = {
   targetName: "Purvik",
-  photo: "/fightclub/Purvik.JPEG",
+  photo: "", // media removed from site
   price: PRICING.challenge.price,
   deadlineLabel: "12 June 2026",
   deadlineIso: "2026-06-12T23:59:59+05:30",

@@ -3,7 +3,7 @@ import { FIGHTCLUB } from "@/lib/fightclub/config";
 
 export const metadata: Metadata = {
   title: "Fight Club, Season One, Series Two | BRUTAL",
-  description: `No rules. Just fists. Fight Club ${FIGHTCLUB.season}. Underground boxing at ${FIGHTCLUB.venue}. ${FIGHTCLUB.date}, ${FIGHTCLUB.time}. The crowd decides.`,
+  description: `Fight Club ${FIGHTCLUB.season}. Amateur boxing at ${FIGHTCLUB.venue}. ${FIGHTCLUB.date}, ${FIGHTCLUB.time}. Scored by judges under BFI rules.`,
 };
 
 // Series Two styling is scoped to this route group via the `.fc2` class —

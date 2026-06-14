@@ -3,30 +3,22 @@ import { ChevronDown, ExternalLink, MapPin } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
-import { ChampionSpotlight } from "@/components/fightclub/ChampionSpotlight";
 import { FightClubUpdatesStrip } from "@/components/fightclub/FightClubUpdatesStrip";
-import { PurvikChallengeSection } from "@/components/fightclub/PurvikChallengeSection";
 import {
   BOOKINGS_OPEN,
   FIGHTCLUB,
-  GALLERY,
   SOLD_OUT_HEADLINE,
   SOLD_OUT_MESSAGE,
 } from "@/lib/fightclub/config";
 
 const RULES = [
-  { num: "01", headline: "3 ROUNDS X 3 MINUTES", body: "No more, no less. Survive all three." },
-  { num: "02", headline: "YOU TAP, IT STOPS", body: "Until then, nobody's saving you." },
-  { num: "03", headline: "THE CROWD DECIDES", body: "No judges. No scorecards. Just the roar." },
+  { num: "01", headline: "3 ROUNDS X 3 MINUTES", body: "Standard amateur format under BFI rules." },
+  { num: "02", headline: "JUDGES SCORE EVERY ROUND", body: "Five judges, 10-point must system." },
+  { num: "03", headline: "REFEREE'S CALL IS FINAL", body: "Counts and stoppages keep boxers safe." },
 ];
 
-const CROWD_LINES = ["No judges", "No scorecards", "The crowd decides"] as const;
+const CROWD_LINES = ["Five judges", "Every round scored", "The better boxer wins"] as const;
 
-// Gallery renders real photos from GALLERY in config when present, or six
-// styled placeholders while it's empty. Drop files into public/fightclub/
-// and list them in lib/fightclub/config.ts.
-const GALLERY_PLACEHOLDERS = Array.from({ length: 6 }, (_, i) => i + 1);
-const hasGallery = GALLERY.length > 0;
 const HERO_DATE = "Sunday, 14 June";
 const HERO_TIME = "5 PM onwards";
 const HERO_LOCATION = "Saroornagar, Hyderabad";
@@ -115,12 +107,10 @@ export default function FightClubPage() {
           </div>
         </section>
 
-        <ChampionSpotlight />
-
-        {/* ── THE CROWD DECIDES (minimal hook) ─────────────────── */}
+        {/* ── HOW IT'S SCORED (BFI) ────────────────────────────── */}
         <section className="section-space py-28 text-center sm:py-40">
           <Reveal>
-            <p className="fc-kicker mb-10">The rules of the ring</p>
+            <p className="fc-kicker mb-10">Scored under BFI rules</p>
 
             <div className="mx-auto flex max-w-5xl flex-col gap-1 sm:gap-2">
               {CROWD_LINES.map((line, i) => {
@@ -170,58 +160,6 @@ export default function FightClubPage() {
           </Reveal>
         </section>
 
-        <section className="py-20 text-center">
-          <div className="section-space">
-            <Reveal>
-              <p className="fc-kicker mb-3">Series One Carnage</p>
-              <h2 className="mb-10 text-[clamp(1.8rem,6vw,2.4rem)] font-bold uppercase tracking-tight text-[var(--fc-text)]">
-                You missed the first one.
-              </h2>
-            </Reveal>
-          </div>
-
-          {hasGallery ? (
-            <div className="marquee py-2">
-              <div className="marquee-track">
-                {[...GALLERY, ...GALLERY].map((src, i) => (
-                  <div
-                    key={`${src}-${i}`}
-                    aria-hidden={i >= GALLERY.length}
-                    className="fc-card w-[clamp(320px,82vw,620px)] shrink-0 overflow-hidden"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={src}
-                      alt="Fight Club Series One"
-                      loading="lazy"
-                      className="aspect-[4/3] w-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="section-space">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {GALLERY_PLACEHOLDERS.map((n, i) => (
-                  <Reveal key={n} delay={i * 50}>
-                    <div className="fc-card flex aspect-square items-center justify-center bg-[rgba(0,0,0,0.5)]">
-                      <span className="select-none text-3xl opacity-15" aria-hidden>
-                        FIGHT
-                      </span>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="section-space">
-            <Reveal>
-              <p className="mt-6 text-xs text-[var(--fc-muted)]">Photos from Series One. This time it&apos;s darker.</p>
-            </Reveal>
-          </div>
-        </section>
 
         <section className="section-space py-28 text-center">
           <Reveal>
@@ -241,8 +179,6 @@ export default function FightClubPage() {
             </div>
           </Reveal>
         </section>
-
-        <PurvikChallengeSection />
 
         <section id="location" className="section-space pb-24 pt-2 text-center sm:pb-32">
           <Reveal>
