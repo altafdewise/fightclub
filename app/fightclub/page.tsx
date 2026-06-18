@@ -61,10 +61,6 @@ export default function FightClubPage() {
               </span>
             </h1>
 
-            <p className="mt-7 text-[0.8rem] font-semibold uppercase tracking-[0.28em] text-[var(--fc-muted)] sm:text-base sm:tracking-[0.34em]">
-              {FIGHTCLUB.tagline}
-            </p>
-
             <div className="mx-auto mt-10 w-full max-w-[34rem] border-y border-[var(--fc-line)] py-5">
               <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--fc-ember)] sm:text-sm sm:tracking-[0.2em]">
                 {HERO_DATE} &middot; {HERO_TIME}

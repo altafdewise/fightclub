@@ -7,8 +7,6 @@
 export const FIGHTCLUB = {
   title: "FIGHT CLUB",
   season: "Season One · Series Two",
-  tagline: "No rules. Just fists.",
-
   date: "Sunday, 14th June",
   time: "5:00 PM onwards",
   // Placeholder address line — edit freely.
