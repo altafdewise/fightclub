@@ -25,6 +25,9 @@ export function Footer() {
           <Link href="#member-access" className="hover:text-[var(--gold)] transition-colors">
             Member
           </Link>
+          <Link href="/gyms/hyderabad" className="hover:text-[var(--gold)] transition-colors">
+            Hyderabad gyms
+          </Link>
           <Link href="/privacy" className="hover:text-[var(--gold)] transition-colors">
             Privacy
           </Link>

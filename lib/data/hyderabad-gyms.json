@@ -1,0 +1,4657 @@
+{
+ "city": "Hyderabad",
+ "generatedAt": "2026-10-13",
+ "sources": [
+  "OpenStreetMap (ODbL)",
+  "Official venue and brand websites"
+ ],
+ "venues": [
+  {
+   "id": "osm-n3392142319",
+   "name": "Body Granite Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "AS Rao Nagar",
+   "address": "H. T. Line Road, AS Rao Nagar, Hyderabad, 500062",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4798026,
+   "lng": 78.5628176,
+   "sources": [
+    "https://www.openstreetmap.org/node/3392142319"
+   ]
+  },
+  {
+   "id": "osm-n12545936083",
+   "name": "Crazy Sports & Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "AS Rao Nagar",
+   "address": "Sainikpuri-ECIL Main Road, AS Rao Nagar, Hyderabad, 500062",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4792707,
+   "lng": 78.5581674,
+   "sources": [
+    "https://www.openstreetmap.org/node/12545936083"
+   ]
+  },
+  {
+   "name": "HRX Gym AS Rao Nagar",
+   "brand": "",
+   "category": "gym",
+   "area": "AS Rao Nagar",
+   "address": "3rd floor, Beside Peter England, Maruthi Arcade, Plot No 5 G Block Colony, Dr. AS Rao Nagar Rd",
+   "phone": "+91 99164 74270",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/hrx-gym-as-rao-nagar/645",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/hrx-gym-as-rao-nagar/645"
+   ],
+   "instagram": "",
+   "id": "web-hrx-gym-as-rao-nagar-as-rao-nagar"
+  },
+  {
+   "id": "osm-n11690818700",
+   "name": "Perfect fitness centre",
+   "category": "gym",
+   "brand": "",
+   "area": "AS Rao Nagar",
+   "address": "sainathpuram road, AS Rao Nagar, Hyderabad, 500062",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4737311,
+   "lng": 78.5509872,
+   "sources": [
+    "https://www.openstreetmap.org/node/11690818700"
+   ]
+  },
+  {
+   "name": "Cult Gym Abids",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Abids",
+   "address": "1st Floor, Above Barbeque Spice, No 4/1/875, M 876, 877 & 877/1, Tilak Rd,Abids, Hyderabad, Telangana 500001",
+   "phone": "+91 95381 36706",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-abids/2282",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-abids/2282"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-abids-abids"
+  },
+  {
+   "name": "Raptor Fitness (Addagutta)",
+   "brand": "Raptor Fitness",
+   "category": "gym",
+   "area": "Addagutta",
+   "address": "260, Street No.9, Western Hills, First Floor Jal Vayu Vihar, Kukatpally, Hyderabad, Telangana",
+   "phone": "+91 88851 10136",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/raptor-fitness-addagutta/1779",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/raptor-fitness-addagutta/1779"
+   ],
+   "instagram": "",
+   "id": "web-raptor-fitness-addagutta-addagutta"
+  },
+  {
+   "name": "Cult Neo Gym Alwal",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Alwal",
+   "address": "1st & partially 2nd floor, Alwal Rd, Srinagar Colony, Bolarum, Secunderabad, Telangana 500010",
+   "phone": "+91 95381 40068",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-alwal/2283",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.5090628021609,
+   "lng": 78.50365048261509,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-alwal/2283"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-alwal-alwal"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Alwal",
+   "address": "No.1-5-1055/2/3, SVB Square, Colony, HMT Colony Rd, Saibaba Nagar, Father Balaiah Nagar, Alwal, Secunderabad",
+   "phone": "+91 96422 55009",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/afterburn-fitness-studio-alwal/218",
+   "hours": "05:00 AM - 09:00 PM",
+   "lat": 17.50699197,
+   "lng": 78.49299243,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/afterburn-fitness-studio-alwal/218"
+   ],
+   "instagram": "",
+   "id": "web-gym-alwal"
+  },
+  {
+   "name": "Cult Neo Gym Amberpet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Amberpet",
+   "address": "1st and 2nd Floor, GMR PlazaBeside Kings Palace Hotel, Amberpet, Hyderabad, Telangana 500013",
+   "phone": "+91 95381 36654",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-amberpet/2363",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-amberpet/2363"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-amberpet-amberpet"
+  },
+  {
+   "name": "Cult Gym Ameerpet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Ameerpet",
+   "address": "2nd Floor VC Complex, Swati Avenue, Balkampet Rd,Ameerpet, Hyderabad, Telangana 500016",
+   "phone": "+91 99164 75127",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-ameerpet/2186",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-ameerpet/2186"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-ameerpet-ameerpet"
+  },
+  {
+   "name": "Cult Gym Attapur",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Attapur",
+   "address": "Above Vishal Megamart, opp pillar no.188Inner Ring Road, Upperpally, Attapur",
+   "phone": "+91 99164 75278",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-attapur/679",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-attapur/679"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-attapur-attapur"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Attapur",
+   "address": "3-3-108/c/14Hyderguda,Attapur,Hyderabad,Telangana",
+   "phone": "+91 96185 15094",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-30-attapur/2354",
+   "hours": "06:00 AM - 01:00 PM & 04:00 PM - 10:00 PM",
+   "lat": 17.365348223243657,
+   "lng": 78.42033223062371,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-30-attapur/2354"
+   ],
+   "instagram": "",
+   "id": "web-gym-attapur"
+  },
+  {
+   "name": "Cult Neo Gym BN Reddy Nagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "BN Reddy Nagar",
+   "address": "2nd Floor, Above Style Union, BN Reddy Nagar Cross Road, Chaitanya NagarB.N Reddy Nagar, Hyderabad, Telangana 500070",
+   "phone": "+91 95380 13087",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-bn-reddy-nagar/1870",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.32083243,
+   "lng": 78.56024266,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-bn-reddy-nagar/1870"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-bn-reddy-nagar-bn-reddy-nagar"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Bachupally",
+   "address": "4th & 5th Floor, A Rama Chandra Rao Complex Plot No 3Behind Risina Apartments, Near Reliance Smart Mallampet Rd, Bachupally",
+   "phone": "+91 97000 75224",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-bachupally/568",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.547174132184082,
+   "lng": 78.36285688207855,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-bachupally/568"
+   ],
+   "instagram": "",
+   "id": "web-gym-bachupally"
+  },
+  {
+   "name": "Cult Neo Gym Balapur",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Balapur",
+   "address": "Plot No. 19 & 13 Part, SY.No. 141, Meerpet Village, 6-20, Midhani Quarters, Dhatu Nagar, Kanchan BaghBalapur, Hyderabad, Telangana",
+   "phone": "+91 1144736604",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-balapur/2835",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.320172,
+   "lng": 78.5199188,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-balapur/2835"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-balapur-balapur"
+  },
+  {
+   "name": "Gympossible",
+   "brand": "",
+   "category": "gym",
+   "area": "Bandlaguda",
+   "address": "14, Road No. 5, Sai Nagar,Indraprastha Colony, Bandlaguda, Nagole,",
+   "phone": "+91 72075 74028",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/gympossible/2333",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympossible/2333"
+   ],
+   "instagram": "",
+   "id": "web-gympossible-bandlaguda"
+  },
+  {
+   "name": "Cult Gym Bandlaguda Suncity",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Bandlaguda Suncity",
+   "address": "3rd floor VANTAGE LINE, Above Zudio/Westside/Croma, Bandlaguda Jagir, Ranga Reddy Dist.Hyderabad, Telangana",
+   "phone": "+91 1206341889",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-bandlaguda-suncity/2244",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-bandlaguda-suncity/2244"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-bandlaguda-suncity-bandlaguda-suncity"
+  },
+  {
+   "name": "Align Pilates Studio",
+   "brand": "Align Pilates",
+   "category": "pilates",
+   "area": "Banjara Hills",
+   "address": "Road No 12, Banjara Hills, Hyderabad 500034",
+   "phone": "+91 95152 28761",
+   "website": "https://www.alignpilates.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.alignpilates.in"
+   ],
+   "instagram": "",
+   "id": "web-align-pilates-studio-banjara-hills"
+  },
+  {
+   "name": "Cult Gym Banjara Hills",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Banjara Hills",
+   "address": "3rd Floor, Above AB's Barbecue, Krishe Amethyst, Road No 1, Banjara Hills, Hyderabad",
+   "phone": "+91 99164 75840",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-banjara-hills/1275",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-banjara-hills/1275"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-banjara-hills-banjara-hills"
+  },
+  {
+   "name": "Cult Gym Banjara Hills Road No. 2",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Banjara Hills",
+   "address": "3rd Floor, GHMC No. 8-2-120/45 on survey, 17, Road No. 2Banjara Hills, Hyderabad, Telangana 500034",
+   "phone": "+91 95380 13051",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-banjara-hills-road-no-2/1741",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.425313,
+   "lng": 78.4353792,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-banjara-hills-road-no-2/1741"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-banjara-hills-road-no-2-banjara-hills"
+  },
+  {
+   "name": "Gold's Gym Hyderabad Banjara Hills",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Banjara Hills",
+   "address": "Plot no: 8-2-701/12, Road no: 12, Banjara Hills, Hyderabad - 500034",
+   "phone": "+91 95504 10111",
+   "website": "https://goldsgym.in/our-gyms/gold-s-gym-hyderabad-banjara-hills/",
+   "hours": "Monday to Saturday: 6:00 AM to 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://goldsgym.in/our-gyms/gold-s-gym-hyderabad-banjara-hills/"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-hyderabad-banjara-hills-banjara-hills"
+  },
+  {
+   "name": "Millennium Fitness Club (Banjara Hills)",
+   "brand": "Millennium Fitness Club",
+   "category": "gym",
+   "area": "Banjara Hills",
+   "address": "8-2-617/A/2, Road No:11Banjara Hills, Second Floor",
+   "phone": "+91 99859 33550",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/millennium-fitness-club-banjara-hills/655",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/millennium-fitness-club-banjara-hills/655"
+   ],
+   "instagram": "",
+   "id": "web-millennium-fitness-club-banjara-hills-banjara-hills"
+  },
+  {
+   "name": "Pilates & Beyond Banjara Hills",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Banjara Hills",
+   "address": "Road No. 14, opposite Ratnadeep supermarket, BNR Colony, Venkat Nagar, Banjara Hills, Hyderabad 500034",
+   "phone": "+91 87126 12651",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-banjara-hills-banjara-hills"
+  },
+  {
+   "name": "Pilates Circle Banjara Hills",
+   "brand": "",
+   "category": "gym",
+   "area": "Banjara Hills",
+   "address": "3rd Floor, 8-2-120/86/5A, 8-2-120/86/5A, Road No. 2, BNR Colony, Venkat Nagar, Banjara Hills",
+   "phone": "+91 4461733306",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/pilates-circle-banjara-hills/2761",
+   "hours": "06:00 AM - 08:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/pilates-circle-banjara-hills/2761"
+   ],
+   "instagram": "",
+   "id": "web-pilates-circle-banjara-hills-banjara-hills"
+  },
+  {
+   "name": "The Pilates Studio Banjara Hills",
+   "brand": "The Pilates Studio",
+   "category": "pilates",
+   "area": "Banjara Hills",
+   "address": "Plot 13, Road No 5, Banjara Hills, Opposite Reliance Avans Court Apartments, Hyderabad 500034",
+   "phone": "+91 77025 55233",
+   "website": "https://www.pilatesaltitude.com",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.pilatesaltitude.com/location/hyderabad"
+   ],
+   "instagram": "",
+   "id": "web-the-pilates-studio-banjara-hills-banjara-hills"
+  },
+  {
+   "name": "F45 Training Basheerbagh",
+   "brand": "F45 Training",
+   "category": "gym",
+   "area": "Basheer Bagh",
+   "address": "Skyline & Sterling Residency, Shaheedyaar Jung Road, Basheer Bagh, Hyderabad, Telangana, India",
+   "phone": "",
+   "website": "https://f45training.com/in/studio/basheerbagh/",
+   "hours": "",
+   "lat": 17.4030374,
+   "lng": 78.4776351,
+   "sources": [
+    "https://f45training.com/in/find-a-studio/",
+    "https://f45training.com/in/studio/basheerbagh/"
+   ],
+   "instagram": "",
+   "id": "web-f45-training-basheerbagh-basheer-bagh"
+  },
+  {
+   "name": "F45 Training Basheerbagh",
+   "brand": "F45 Training",
+   "category": "gym",
+   "area": "Basheerbagh",
+   "address": "Skyline & Sterling Residency, Shaheedyaar Jung Road, Basheer Bagh, Hyderabad, Telangana 500029",
+   "phone": "+91 98851 69362",
+   "website": "https://f45training.com/in/studio/basheerbagh/",
+   "hours": "",
+   "lat": 17.4030374,
+   "lng": 78.4776351,
+   "sources": [
+    "https://f45training.com/in/studio/basheerbagh/",
+    "https://f45training.com/in/find-a-studio/"
+   ],
+   "instagram": "",
+   "id": "web-f45-training-basheerbagh-basheerbagh"
+  },
+  {
+   "name": "Cult Gym Beeramguda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Beeramguda",
+   "address": "G7HW+M53, S S Arcade, Raghavendra colony Ameenpur village road, Sangareddy, Phase 2, Beeramguda, Hyderabad, Ramachandrapuram, Telangana",
+   "phone": "+91 61267 28299",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-beeramguda-hybrid/2697",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-beeramguda-hybrid/2697"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-beeramguda-beeramguda"
+  },
+  {
+   "name": "Cult Gym Begumpet, Prakash Nagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Begumpet",
+   "address": "Laxmi Tower, Sardar Patel Rd, near Metro Pillar No C1321, Indian Airlines Colony, Patigadda, Begumpet, Secunderabad, Hyderabad, Telangana Indian Airlines Colony, Patigadda, Begumpet, Secunderabad, Hyderabad, Telangana",
+   "phone": "+91 1206341898",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-begumpet-prakash-nagar/2429",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4438946,
+   "lng": 78.4737665,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-begumpet-prakash-nagar/2429"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-begumpet-prakash-nagar-begumpet"
+  },
+  {
+   "name": "Volt Fitness Studio (Begumpet)",
+   "brand": "Volt Fitness Studio",
+   "category": "gym",
+   "area": "Begumpet",
+   "address": "Shop:7, 1st and 2nd Floor, Golden Hawk,Penderghast RoadSindhi Colony, Secunderabad, Sindhi Colony, Begumpet",
+   "phone": "+91 81797 83377",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/volt-fitness-studio-begumpet/1036",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/volt-fitness-studio-begumpet/1036"
+   ],
+   "instagram": "",
+   "id": "web-volt-fitness-studio-begumpet-begumpet"
+  },
+  {
+   "id": "osm-n6308214124",
+   "name": "Iconic fitness club",
+   "category": "gym",
+   "brand": "",
+   "area": "Bhagya Nagar Colony",
+   "address": "Chavella road, Bhagya Nagar Colony, 500091",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3621856,
+   "lng": 78.3935304,
+   "sources": [
+    "https://www.openstreetmap.org/node/6308214124"
+   ]
+  },
+  {
+   "name": "Cult Neo Gym Boduppal",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Boduppal",
+   "address": "1st & 2nd floor, Boduppal Road,Hyderabad Telangana,500092",
+   "phone": "+91 95381 36298",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-boduppal/2323",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.414342837783796,
+   "lng": 78.5853207153454,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-boduppal/2323",
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-uppal/2260"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-boduppal-boduppal"
+  },
+  {
+   "id": "osm-w357337057",
+   "name": "SIM Lion Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Boduppal",
+   "address": "Boduppal, 500039",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.409882,
+   "lng": 78.5739664,
+   "sources": [
+    "https://www.openstreetmap.org/way/357337057"
+   ]
+  },
+  {
+   "id": "osm-n6575273089",
+   "name": "Simlion Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Boduppal",
+   "address": "Boduppal, 500092",
+   "phone": "",
+   "website": "http://simlionfitness.in",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4137976,
+   "lng": 78.5855508,
+   "sources": [
+    "https://www.openstreetmap.org/node/6575273089"
+   ]
+  },
+  {
+   "name": "F7 Fitness by Prasad Konda (Bolarum)",
+   "brand": "F7 Fitness",
+   "category": "gym",
+   "area": "Bolarum",
+   "address": "1st Floor, Opposite Brindavan Enclave Railway Gate RoadShruthi Infra Complex, Vijay Cihar Colony",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/f7-fitness-by-prasad-konda-bolarum/484",
+   "hours": "05:00 AM - 09:30 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/f7-fitness-by-prasad-konda-bolarum/484"
+   ],
+   "instagram": "",
+   "id": "web-f7-fitness-by-prasad-konda-bolarum-bolarum"
+  },
+  {
+   "name": "Flex Pilates Secunderabad",
+   "brand": "Flex Pilates",
+   "category": "pilates",
+   "area": "Bowenpally",
+   "address": "2-21-116, Akbar Road, Sikh Village, near Diamond Point, Bowenpally, Secunderabad 500009",
+   "phone": "+91 80085 02283",
+   "website": "https://www.flexpilates.in",
+   "hours": "07:00 AM - 07:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.flexpilates.in/studios",
+    "https://www.flexpilates.in/contact-us"
+   ],
+   "instagram": "",
+   "id": "web-flex-pilates-secunderabad-bowenpally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Bowenpally",
+   "address": "FF9J+GVV, Hasmatpet Rd Dubai Gate, Old Bowenpally, Secunderabad",
+   "phone": "+91 88851 10136",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/raptor-fitness/984",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": 17.4696168162429,
+   "lng": 78.48220791534342,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/raptor-fitness/984"
+   ],
+   "instagram": "",
+   "id": "web-gym-bowenpally"
+  },
+  {
+   "name": "Cult Gym Champapet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Champapet",
+   "address": "Champapet Rd, Balaji NagarSaroor Nagar West, Saidabad, Champapet",
+   "phone": "+91 2063115887",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-champapet/2802",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-champapet/2802"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-champapet-champapet"
+  },
+  {
+   "id": "osm-n7243974347",
+   "name": "cult.fit",
+   "category": "gym",
+   "brand": "cult.fit",
+   "area": "Chanda Nagar",
+   "address": "Chandanagar, Hyderabad, 500050",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4959738,
+   "lng": 78.3372657,
+   "sources": [
+    "https://www.openstreetmap.org/node/7243974347"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Chanda Nagar",
+   "address": "3rd Floor Ramse Plaza, Ameenpur Rd, above Reliance trends, Chanda Nagar",
+   "phone": "+91 90306 17829",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/elevate-fitness-studio/1924",
+   "hours": "05:30 AM - 12:00 PM & 04:00 PM - 10:00 PM",
+   "lat": 17.5034971,
+   "lng": 78.31829595,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/elevate-fitness-studio/1924"
+   ],
+   "instagram": "",
+   "id": "web-gym-chanda-nagar"
+  },
+  {
+   "id": "osm-w229848422",
+   "name": "Sarojini Cricket, Tennis and Fitness Academy",
+   "category": "gym",
+   "brand": "",
+   "area": "Chikkadpally",
+   "address": "Chikkadpally, Hyderabad, 500044",
+   "phone": "+91 98487 91060",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4030643,
+   "lng": 78.5018592,
+   "sources": [
+    "https://www.openstreetmap.org/way/229848422"
+   ]
+  },
+  {
+   "id": "osm-n2712507444",
+   "name": "Yoga Jyoti",
+   "category": "yoga",
+   "brand": "",
+   "area": "Chikkadpally",
+   "address": "Chikkadapally Road, Chikkadpally, Hyderabad, 500020",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4024063,
+   "lng": 78.4950433,
+   "sources": [
+    "https://www.openstreetmap.org/node/2712507444"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Chintal",
+   "address": "IDPL, Surya NagarQuthbullapur",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/aesthetic-b-fitness-ex-stark-fitness/234",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.49031403,
+   "lng": 78.45127474,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/aesthetic-b-fitness-ex-stark-fitness/234"
+   ],
+   "instagram": "",
+   "id": "web-gym-chintal"
+  },
+  {
+   "id": "osm-n7008015422",
+   "name": "Xtreme Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Dabilpur",
+   "address": "501400",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.6687922,
+   "lng": 78.4705396,
+   "sources": [
+    "https://www.openstreetmap.org/node/7008015422"
+   ]
+  },
+  {
+   "name": "Cult Neo Gym - Dairy Farm",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Dairy Farm",
+   "address": "FFMX+5WC KAMALALAYA ENCLAVE, Military Dairy Farm Road, Ward No 7 Secunderabad, Subhash Nagar, Tirumalagiri, Secunderabad,",
+   "phone": "+91 2245076195",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-dairy-farm/2705",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-dairy-farm/2705"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-dairy-farm-dairy-farm"
+  },
+  {
+   "name": "Cult Gym Dilsukhnagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Dilsukhnagar",
+   "address": "2nd & 3rd Floor, Beside Fastrack, East Prasanth Nagar, Dilsukhnagar, Hyderabad",
+   "phone": "+91 70260 90263",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-dilsukhnagar/952",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-dilsukhnagar/952"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-dilsukhnagar-dilsukhnagar"
+  },
+  {
+   "name": "Raptor Fitness",
+   "brand": "Raptor Fitness",
+   "category": "gym",
+   "area": "Dundigal",
+   "address": "3rd and 4th floor,233 Bahadhurpally village Dundigal gandimaisammaSuraram",
+   "phone": "+91 96422 24991",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/raptor-fitness/1131",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/raptor-fitness/1131"
+   ],
+   "instagram": "",
+   "id": "web-raptor-fitness-dundigal"
+  },
+  {
+   "id": "osm-n9924565988",
+   "name": "Railway gym",
+   "category": "gym",
+   "brand": "",
+   "area": "East Anand Bagh",
+   "address": "East Anand Bagh, Hyderabad, 500017",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4462381,
+   "lng": 78.5451112,
+   "sources": [
+    "https://www.openstreetmap.org/node/9924565988"
+   ]
+  },
+  {
+   "name": "Cult Gym Erragadda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Erragadda",
+   "address": "3rd Floor, Fairmount Fortune One, Sanath Nagar Main Rd, Towards ErragaddaCzech Colony, Sanath Nagar, Hyderabad, Telangana, 500018",
+   "phone": "+91 95380 13082",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-erragadda/1813",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4559592,
+   "lng": 78.4341971,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-erragadda/1813"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-erragadda-erragadda"
+  },
+  {
+   "id": "osm-n11084918126",
+   "name": "Sliver Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Erragadda",
+   "address": "Erragadda, Hyderabad, 500018",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4497032,
+   "lng": 78.4226547,
+   "sources": [
+    "https://www.openstreetmap.org/node/11084918126"
+   ]
+  },
+  {
+   "name": "BodyScience Pilates Financial District",
+   "brand": "BodyScience Pilates",
+   "category": "pilates",
+   "area": "Financial District",
+   "address": "1st Floor, Sky One, Prestige SkyTech, ISB Road, Financial District, Hyderabad 500032",
+   "phone": "+91 76800 65711",
+   "website": "https://www.bodysciencepilates.com",
+   "hours": "6:00 AM - 8:00 PM Mon-Sat",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.bodysciencepilates.com/contact"
+   ],
+   "instagram": "",
+   "id": "web-bodyscience-pilates-financial-district-financial-district"
+  },
+  {
+   "name": "Cult Gym Financial District, PnP Towers",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Financial District",
+   "address": "5th Floor, PnP Tower, PnP Towers Rd, Financial DistrictNanakramguda, Hyderabad, Telangana",
+   "phone": "+91 80407 56988",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-financial-district-pnp-towers/2399",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.411651,
+   "lng": 78.3428237,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-financial-district-pnp-towers/2399"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-financial-district-pnp-towers-financial-district"
+  },
+  {
+   "id": "osm-n13965391464",
+   "name": "K5 Fitness Point",
+   "category": "gym",
+   "brand": "",
+   "area": "Financial District",
+   "address": "Financial District, Hyderabad, 500107",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4258846,
+   "lng": 78.328978,
+   "sources": [
+    "https://www.openstreetmap.org/node/13965391464"
+   ]
+  },
+  {
+   "id": "osm-w559183200",
+   "name": "Crag Studio( Rock Climbing Gym )",
+   "category": "gym",
+   "brand": "",
+   "area": "Gachibowli",
+   "address": "Swecha Sy. No. 91, Beside Centre for Good Governance, Greenlands colony, Gachibowli 'X'Roads,Rangareddy Dt.,",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "Mo-Su 07:00-21:00",
+   "lat": 17.4349973,
+   "lng": 78.3597544,
+   "sources": [
+    "https://www.openstreetmap.org/way/559183200"
+   ]
+  },
+  {
+   "name": "CrossFit Commune",
+   "brand": "CrossFit Commune",
+   "category": "crossfit",
+   "area": "Gachibowli",
+   "address": "1st Floor, Plot 108, TNGO's Colony, My Home Vihanga Road, Gachibowli, Hyderabad 500032",
+   "phone": "+91 81211 45533",
+   "website": "http://crossfitcommune.com",
+   "hours": "Mon-Fri 6:30-9:30 AM & 5:30-8:30 PM; Sat 7:30-9:30 AM; Open gym Mon-Sat 10 AM-5 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.crossfit.com/gym/35610/crossfit-commune",
+    "http://crossfitcommune.com"
+   ],
+   "instagram": "",
+   "id": "web-crossfit-commune-gachibowli"
+  },
+  {
+   "name": "Cult Gym Gachibowli",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Gachibowli",
+   "address": "3rd Floor, Jyothi Imperial, Above South India Shopping Mall, Near Flyover, Main Road, Diamond Hills, Gachibowli",
+   "phone": "+91 99164 75188",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-gachibowli/558",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-gachibowli/558"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-gachibowli-gachibowli"
+  },
+  {
+   "name": "Cult Gym Gachibowli - Indira Nagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Gachibowli",
+   "address": "3rd Floor, Survey No 124, Indira NagarGachibowli, Serilingampalle",
+   "phone": "+91 70265 75249",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-gachibowli-indira-nagar/968",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.442738,
+   "lng": 78.357266,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-gachibowli-indira-nagar/968"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-gachibowli-indira-nagar-gachibowli"
+  },
+  {
+   "name": "Gold's Gym Gachibowli",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Gachibowli",
+   "address": "5th floor, Vijaya Krishna towers, Madhava Reddy colony, Nanakramguda, Hyderabad - 500032",
+   "phone": "+91 92924 48888",
+   "website": "https://goldsgym.in/our-gyms/golds-gym-gachibowli/",
+   "hours": "Monday to Saturday: 5:30 AM to 10:30 PM | Sunday: 6:00 AM to 2:00 PM",
+   "lat": 17.423547364087284,
+   "lng": 78.34700419877508,
+   "sources": [
+    "https://goldsgym.in/our-gyms/golds-gym-gachibowli/",
+    "https://www.cult.fit/cult/cult-pass/hyderabad/golds-gym-gachibowli/2313"
+   ],
+   "phones": [
+    "+91 92924 48888",
+    "+91 92062 26666"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-gachibowli-gachibowli"
+  },
+  {
+   "name": "Mouve Pilates Studio",
+   "brand": "Mouve Pilates",
+   "category": "pilates",
+   "area": "Gachibowli",
+   "address": "",
+   "phone": "+91 80740 78804",
+   "website": "https://www.mouve.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.mouve.in",
+    "https://lbb.in/hyderabad/pilates-classes-in-hyderabad"
+   ],
+   "instagram": "",
+   "id": "web-mouve-pilates-studio-gachibowli"
+  },
+  {
+   "name": "WisdomFit Martial Arts & Fitness Academy",
+   "brand": "WisdomFit",
+   "category": "boxing_mma",
+   "area": "Gachibowli",
+   "address": "2nd Floor, TNGOS Bhavan, Plot No. 15, Phase 1, TNGOS Colony, Gachibowli, Hyderabad 500046",
+   "phone": "+91 90106 09988",
+   "website": "https://wisdomfit.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://wisdomfit.in/contact-us/"
+   ],
+   "instagram": "",
+   "id": "web-wisdomfit-martial-arts-fitness-academy-gachibowli"
+  },
+  {
+   "id": "osm-n6029139573",
+   "name": "Fitness 9",
+   "category": "gym",
+   "brand": "",
+   "area": "Gaddiannaram",
+   "address": "Sai Baba Temple Road, Gaddiannaram, Hyderabad, 500035",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3620883,
+   "lng": 78.5260307,
+   "sources": [
+    "https://www.openstreetmap.org/node/6029139573"
+   ]
+  },
+  {
+   "id": "osm-n8386185609",
+   "name": "Fitness9",
+   "category": "gym",
+   "brand": "",
+   "area": "Gaddiannaram",
+   "address": "Sai Baba Temple Road, Gaddiannaram, Hyderabad, 500035",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3662584,
+   "lng": 78.526909,
+   "sources": [
+    "https://www.openstreetmap.org/node/8386185609"
+   ]
+  },
+  {
+   "id": "osm-n6390378846",
+   "name": "Universal Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Gaddiannaram",
+   "address": "Gaddiannaram, Hyderabad, 500035",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3700146,
+   "lng": 78.5224716,
+   "sources": [
+    "https://www.openstreetmap.org/node/6390378846"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Gajularamaram",
+   "address": "LOT NO 8918, Usha Mullapudi Rd, Sriven Enclave, HAL ColonyGajularamaram",
+   "phone": "+91 96666 77806",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-zone-20/2630",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.52342281,
+   "lng": 78.4275194,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-zone-20/2630"
+   ],
+   "instagram": "",
+   "id": "web-gym-gajularamaram"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Gajularamaram",
+   "address": "Plot no :- 119 & 120 , Beside Ramky one MarvelGajularamaram Rd, IDA Jeedimetla",
+   "phone": "+91 96768 85827",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-fitness/119",
+   "hours": "05:30 AM - 12:00 PM & 05:30 AM - 10:00 PM",
+   "lat": 17.52212099,
+   "lng": 78.42078212,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-fitness/119"
+   ],
+   "instagram": "",
+   "id": "web-gym-gajularamaram"
+  },
+  {
+   "name": "Glint Fitness Center",
+   "brand": "",
+   "category": "gym",
+   "area": "Gandimaisamma",
+   "address": "4th floor, survey no 164, plot no 6 & 7, dommara Pochampally villageNear Gandimaisamma Bustop, Gandimaisamma Mandal, Medak X road, Medchal District",
+   "phone": "+91 97000 75224",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/glint-fitness-center/569",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/glint-fitness-center/569"
+   ],
+   "instagram": "",
+   "id": "web-glint-fitness-center-gandimaisamma"
+  },
+  {
+   "id": "osm-n10262083194",
+   "name": "Chikky Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Gautham Nagar",
+   "address": "Gautham Nagar, Hyderabad, 500017",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4507633,
+   "lng": 78.528267,
+   "sources": [
+    "https://www.openstreetmap.org/node/10262083194"
+   ]
+  },
+  {
+   "name": "Gold's Gym Gopanpally",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Gopanpally",
+   "address": "League Finanza building, 3rd & 4th floor, above Mahindra showroom, Q-City, Gopanpalli road, Hyderabad",
+   "phone": "+91 81437 69333",
+   "website": "https://goldsgym.in/our-gyms/gold-s-gym-gopanpally/",
+   "hours": "Monday to Saturday: 6:00 AM - 9:30 PM | Sunday: 7:00 AM - 1:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://goldsgym.in/our-gyms/gold-s-gym-gopanpally/"
+   ],
+   "phones": [
+    "+91 81437 69333",
+    "+91 81437 67070"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-gopanpally-gopanpally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Gopanpally",
+   "address": "4&5 floor 2-89/A Gopanpally Tanda Serilingampally",
+   "phone": "+91 70755 96162",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-fitness-studio-gopanpally/1889",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.448847211253618,
+   "lng": 78.30385205379633,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-fitness-studio-gopanpally/1889"
+   ],
+   "instagram": "",
+   "id": "web-gym-gopanpally"
+  },
+  {
+   "id": "osm-n6559309139",
+   "name": "Amrutha Hospital For Health and Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Gudimalkapur",
+   "address": "Near Bus Depot, Mehdipatnam",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3918869,
+   "lng": 78.4406219,
+   "sources": [
+    "https://www.openstreetmap.org/node/6559309139"
+   ]
+  },
+  {
+   "id": "osm-n7174059838",
+   "name": "FitLifez",
+   "category": "gym",
+   "brand": "",
+   "area": "Gunrock Enclave",
+   "address": "Sikh Village Road, Gunrock Enclave, 500015",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4626522,
+   "lng": 78.4910292,
+   "sources": [
+    "https://www.openstreetmap.org/node/7174059838"
+   ]
+  },
+  {
+   "id": "osm-n2134524342",
+   "name": "Fitness 9",
+   "category": "gym",
+   "brand": "",
+   "area": "Gunrock Enclave",
+   "address": "Gunrock Enclave, 500026",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4571917,
+   "lng": 78.4959783,
+   "sources": [
+    "https://www.openstreetmap.org/node/2134524342"
+   ]
+  },
+  {
+   "id": "osm-n10166513759",
+   "name": "Fitness R Zone",
+   "category": "gym",
+   "brand": "",
+   "area": "Gunrock Enclave",
+   "address": "Akbar Road, Gunrock Enclave, 500011",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4641953,
+   "lng": 78.4842857,
+   "sources": [
+    "https://www.openstreetmap.org/node/10166513759"
+   ]
+  },
+  {
+   "id": "osm-n6369656809",
+   "name": "NEW F2 GYM",
+   "category": "gym",
+   "brand": "",
+   "area": "Gunrock Enclave",
+   "address": "Brigadier Sayeed Road, Gunrock Enclave, 500011",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4654973,
+   "lng": 78.4831055,
+   "sources": [
+    "https://www.openstreetmap.org/node/6369656809"
+   ]
+  },
+  {
+   "name": "Cult Gym Habsiguda(Hybrid)",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Habsiguda",
+   "address": "Door No :4-7, 20/B, Nacharam - Mallapur Rdnear ANR Gardens, Raghavendra Nagar, Tarnaka",
+   "phone": "+91 99164 73496",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-habsigudahybrid/618",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-habsigudahybrid/618"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-habsiguda-hybrid-habsiguda"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Habsiguda",
+   "address": "Balaji Arcade, 2nd and 3rd floor Koundinya NagarVeera Reddy Colony, Ram Reddy Colony, Tarnaka, Secunderabad",
+   "phone": "+91 99666 87087",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/five-the-fitness-hive/1269",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.42930507,
+   "lng": 78.55183232,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/five-the-fitness-hive/1269"
+   ],
+   "instagram": "",
+   "id": "web-gym-habsiguda"
+  },
+  {
+   "id": "osm-n8386159767",
+   "name": "Qube Gym and fitness centre",
+   "category": "gym",
+   "brand": "",
+   "area": "Habsiguda",
+   "address": "2-3-603/70,4th floor, Venkat reddy nagar, Hyderabad",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3859995,
+   "lng": 78.5285719,
+   "sources": [
+    "https://www.openstreetmap.org/node/8386159767"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Hafeezpet",
+   "address": "Plot No: 448, Kanthivanam ColonyKondapur Village",
+   "phone": "+91 95157 77369",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-zone-hafeezpet/550",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.479926589598232,
+   "lng": 78.34941413964664,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-zone-hafeezpet/550"
+   ],
+   "instagram": "",
+   "id": "web-gym-hafeezpet"
+  },
+  {
+   "name": "Gold's Gym Hyderabad Himayat Nagar",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Himayatnagar",
+   "address": "3-6-289, 3rd floor, Hyderguda Main road, Himayathnagar, Hyderabad - 500029",
+   "phone": "+91 90000 26767",
+   "website": "https://goldsgym.in/our-gyms/gold-s-gym-hyderabad-himayat-nagar/",
+   "hours": "Monday to Saturday: 6:00 AM to 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://goldsgym.in/our-gyms/gold-s-gym-hyderabad-himayat-nagar/"
+   ],
+   "phones": [
+    "+91 90000 26767",
+    "+91 76809 89874"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-hyderabad-himayat-nagar-himayatnagar"
+  },
+  {
+   "name": "Neptune Fitness Studio",
+   "brand": "",
+   "category": "gym",
+   "area": "Himayatnagar",
+   "address": "Neptune fitness studio,4th floor , Al Samad Complex, Himayat Nagar Rdopposite TTD Temple, Chandra Nagar, Basheer Bagh",
+   "phone": "+91 95018 78971",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/neptune-fitness-studio/2369",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/neptune-fitness-studio/2369"
+   ],
+   "instagram": "",
+   "id": "web-neptune-fitness-studio-himayatnagar"
+  },
+  {
+   "id": "osm-w1199771911",
+   "name": "BSporty Sports and Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Hitec City",
+   "address": "HITEC City, Hyderabad, 500081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4562397,
+   "lng": 78.3859734,
+   "sources": [
+    "https://www.openstreetmap.org/way/1199771911"
+   ]
+  },
+  {
+   "name": "CrossFit HITEC City",
+   "brand": "CrossFit HITEC City",
+   "category": "crossfit",
+   "area": "Hitec City",
+   "address": "International Tech Park Hyderabad (ITPH), Hyderabad 500081",
+   "phone": "+91 98111 76700",
+   "website": "",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.crossfit.com/gym/34004/crossfit-hitec-city"
+   ],
+   "instagram": "",
+   "id": "web-crossfit-hitec-city-hitec-city"
+  },
+  {
+   "id": "osm-n7021303657",
+   "name": "Sri Sai fitness world",
+   "category": "gym",
+   "brand": "",
+   "area": "Hitec City",
+   "address": "HITEC City, Hyderabad, 500081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4462898,
+   "lng": 78.3885131,
+   "sources": [
+    "https://www.openstreetmap.org/node/7021303657"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Hyder Nagar",
+   "address": "16-2-416, PLot No: 10/MIG 3rd Floor, Dharma Reddy Colony, Phase-II, Hydernagar, Kukatpally",
+   "phone": "+91 97000 75224",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio/571",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.49892693,
+   "lng": 78.3850833,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio/571"
+   ],
+   "instagram": "",
+   "id": "web-gym-hyder-nagar"
+  },
+  {
+   "name": "Cult Gym Himayatnagar Main(Hyderguda)",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Hyderguda",
+   "address": "3rd & 4th Floor, 3-6-57Hyderguda Main Rd, Himayatnagar, Hyderabad",
+   "phone": "+91 99164 75860",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-himayatnagar-mainhyderguda/591",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.399797,
+   "lng": 78.4810291,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-himayatnagar-mainhyderguda/591"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-himayatnagar-main-hyderguda-hyderguda"
+  },
+  {
+   "id": "osm-n13437146167",
+   "name": "Cult Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Jagadgirigutta",
+   "address": "Beerappa Nagar Cross Road, Jagadgirigutta, Hyderabad, 500055",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5010283,
+   "lng": 78.4291274,
+   "sources": [
+    "https://www.openstreetmap.org/node/13437146167"
+   ]
+  },
+  {
+   "id": "osm-n13437146166",
+   "name": "Hot Blood Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Jagadgirigutta",
+   "address": "Jagadgirigutta, Hyderabad, 500047",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.501936,
+   "lng": 78.426079,
+   "sources": [
+    "https://www.openstreetmap.org/node/13437146166"
+   ]
+  },
+  {
+   "id": "osm-n13436972419",
+   "name": "yash Body Grow Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Jagadgirigutta",
+   "address": "Jagadgirigutta, Hyderabad, 500055",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5114813,
+   "lng": 78.4241846,
+   "sources": [
+    "https://www.openstreetmap.org/node/13436972419"
+   ]
+  },
+  {
+   "name": "360 Degree Fitness Jubilee Hills",
+   "brand": "360 Degree Fitness",
+   "category": "gym",
+   "area": "Jubilee Hills",
+   "address": "Croma Building, 2nd Floor, Road Number 36, Jubilee Hills, Hyderabad",
+   "phone": "+91 90001 11360",
+   "website": "http://www.360fitnesshyd.com/contact-us.html",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "http://www.360fitnesshyd.com/contact-us.html"
+   ],
+   "phones": [
+    "+91 90001 11360",
+    "+91 40 2355 2360"
+   ],
+   "instagram": "",
+   "id": "web-360-degree-fitness-jubilee-hills-jubilee-hills"
+  },
+  {
+   "name": "Anytime Fitness Jubilee Hills",
+   "brand": "Anytime Fitness",
+   "category": "gym",
+   "area": "Jubilee Hills",
+   "address": "Plot No.722, Road No.36, Pemmasani Complex - 3rd Floor, Near Madhapur Police Station, Jubilee Hills, Hyderabad, Telangana 500033",
+   "phone": "+91 89777 12481",
+   "website": "https://www.anytimefitness.com/en-in/locations/hyderabad-telangana-in-1206",
+   "hours": "Open 24 hours (Mon-Su 00:00-23:59)",
+   "lat": 17.43836,
+   "lng": 78.3978,
+   "sources": [
+    "https://www.anytimefitness.com/en-in/locations/hyderabad-telangana-in-1206"
+   ],
+   "instagram": "",
+   "id": "web-anytime-fitness-jubilee-hills-jubilee-hills"
+  },
+  {
+   "name": "BodyScience Pilates Jubilee Hills",
+   "brand": "BodyScience Pilates",
+   "category": "pilates",
+   "area": "Jubilee Hills",
+   "address": "3rd Floor, Building 82 Jubilee, Road No. 82, Jubilee Hills, Hyderabad 500033",
+   "phone": "+91 70363 98711",
+   "website": "https://www.bodysciencepilates.com",
+   "hours": "6:00 AM - 8:00 PM Mon-Sat",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.bodysciencepilates.com/contact"
+   ],
+   "instagram": "",
+   "id": "web-bodyscience-pilates-jubilee-hills-jubilee-hills"
+  },
+  {
+   "name": "CrossFit Mend",
+   "brand": "CrossFit Mend",
+   "category": "crossfit",
+   "area": "Jubilee Hills",
+   "address": "#656 A, Road No. 34, Jubilee Hills, Hyderabad 500033",
+   "phone": "+91 91210 06060",
+   "website": "https://www.crossfitmend.com/",
+   "hours": "Mon-Fri 6:30-9:30 AM & 5:30-7:30 PM classes; Sat 8:00 AM; Sun closed",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.crossfit.com/gym/22708/crossfit-mend",
+    "https://www.crossfitmend.com/"
+   ],
+   "instagram": "",
+   "id": "web-crossfit-mend-jubilee-hills"
+  },
+  {
+   "id": "osm-n6261444485",
+   "name": "cult.fit",
+   "category": "gym",
+   "brand": "cult.fit",
+   "area": "Jubilee Hills",
+   "address": "Jubilee Hills, Hyderabad, 800081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4382015,
+   "lng": 78.3982341,
+   "sources": [
+    "https://www.openstreetmap.org/node/6261444485",
+    "https://www.openstreetmap.org/node/7113998286"
+   ]
+  },
+  {
+   "name": "F45 Training Jubilee Hills",
+   "brand": "F45 Training",
+   "category": "gym",
+   "area": "Jubilee Hills",
+   "address": "Level 2, Starbucks Coffee Building, Road No. 92, Near Apollo Hospital, Jubilee Hills, Hyderabad - 500033",
+   "phone": "+91 73067 64545",
+   "website": "https://f45training.com/in/studio/jubileehills/",
+   "hours": "",
+   "lat": 17.4162502,
+   "lng": 78.418704,
+   "sources": [
+    "https://f45training.com/in/studio/jubileehills/",
+    "https://f45training.com/in/find-a-studio/"
+   ],
+   "instagram": "",
+   "id": "web-f45-training-jubilee-hills-jubilee-hills"
+  },
+  {
+   "name": "Flex Pilates Jubilee Hills Rd No 10",
+   "brand": "Flex Pilates",
+   "category": "pilates",
+   "area": "Jubilee Hills",
+   "address": "131, A V Towers, Road No. 10 (Rd Number 2, ICRISAT Colony), Jubilee Hills, Hyderabad 500033",
+   "phone": "+91 80085 02283",
+   "website": "https://www.flexpilates.in",
+   "hours": "07:00 AM - 07:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.flexpilates.in/studios",
+    "https://www.flexpilates.in/contact-us"
+   ],
+   "instagram": "",
+   "id": "web-flex-pilates-jubilee-hills-rd-no-10-jubilee-hills"
+  },
+  {
+   "name": "Flex Pilates Jubilee Hills Rd No 46",
+   "brand": "Flex Pilates",
+   "category": "pilates",
+   "area": "Jubilee Hills",
+   "address": "82-A, 8-2-293, Plot No 952, Road No 46, Jubilee Hills, Hyderabad 500033",
+   "phone": "+91 80085 02283",
+   "website": "https://www.flexpilates.in",
+   "hours": "07:00 AM - 07:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.flexpilates.in/studios",
+    "https://www.flexpilates.in/contact-us"
+   ],
+   "instagram": "",
+   "id": "web-flex-pilates-jubilee-hills-rd-no-46-jubilee-hills"
+  },
+  {
+   "name": "Isha Life Hyderabad (Isha Yoga)",
+   "brand": "Isha Foundation",
+   "category": "yoga",
+   "area": "Jubilee Hills",
+   "address": "522, Road Number 27, Venkatagiri, Jubilee Hills, Hyderabad 500033",
+   "phone": "+91 91212 30393",
+   "website": "https://isha.sadhguru.org/en/center/isha-life-hyderabad",
+   "hours": "9 AM - 10 PM daily",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://isha.sadhguru.org/en/center/isha-life-hyderabad",
+    "https://isha.sadhguru.org/en/center/local-center"
+   ],
+   "instagram": "",
+   "id": "web-isha-life-hyderabad-isha-yoga-jubilee-hills"
+  },
+  {
+   "name": "Pilates & Beyond Jubilee Hills",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Jubilee Hills",
+   "address": "Ground Floor, Yellolife Cafe, Road No. 45, Nandagiri Hills, Jubilee Hills, Hyderabad 500033",
+   "phone": "+91 87126 12652",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-jubilee-hills-jubilee-hills"
+  },
+  {
+   "name": "Cult Gym Kukatpally",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "KPHB",
+   "address": "SY.No. 1009, Door No. 15-31-VH-OP-1, 3rd Floor Phase V, Kphb Colony HYDERABAD",
+   "phone": "+91 74166 14646",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kukatpally/364",
+   "hours": "06:00 AM - 09:30 PM",
+   "lat": 17.483783768034854,
+   "lng": 78.3914013107525,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kukatpally/364"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-kukatpally-kphb"
+  },
+  {
+   "name": "Nirvaana Yoga KPHB",
+   "brand": "Nirvaana Yoga",
+   "category": "yoga",
+   "area": "KPHB",
+   "address": "Plot No 71, Samhitha Enclave, KPHB Phase 9, Hyderabad 500085",
+   "phone": "+91 97784 71498",
+   "website": "https://nirvaanayoga.com",
+   "hours": "Mon-Fri 6-11 AM; Sat 7 AM-12 PM; Sun closed",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://nirvaanayoga.com"
+   ],
+   "instagram": "",
+   "id": "web-nirvaana-yoga-kphb-kphb"
+  },
+  {
+   "id": "osm-n11358156635",
+   "name": "Cult",
+   "category": "crossfit",
+   "brand": "",
+   "area": "KPHB Colony",
+   "address": "2n floor,fourtune signature, Nizampet - JNTU Road Mumbai Highway, Hyderabad",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/center/kukatpally/cult-nizampet-x-roads/194",
+   "instagram": "",
+   "hours": "Mo-Su 06:00-22:00",
+   "lat": 17.4979986,
+   "lng": 78.390141,
+   "sources": [
+    "https://www.openstreetmap.org/node/11358156635"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Karmanghat",
+   "address": "8-4-23, Karmanghat Rd, opp. Green Park Colony Main Roadopp. UNLIMITED, Pavanpuri Colony, KAMAN",
+   "phone": "+91 78420 98920",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-fitness-studio-karmanghat/2261",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.3453327049277,
+   "lng": 78.5261059820993,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-fitness-studio-karmanghat/2261"
+   ],
+   "instagram": "",
+   "id": "web-gym-karmanghat"
+  },
+  {
+   "name": "Velocity Fitness Zone (Kavadiguda)",
+   "brand": "Velocity Fitness",
+   "category": "gym",
+   "area": "Kavadiguda",
+   "address": "Shop No 101, 102, 103, 1st Floor, Above Ratnadeep, Bansilalpet roadBhagyalaxmi nagar, Kavadiguda",
+   "phone": "+91 63000 69861",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/velocity-fitness-zone-kavadiguda/2267",
+   "hours": "05:30 AM - 09:30 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/velocity-fitness-zone-kavadiguda/2267"
+   ],
+   "instagram": "",
+   "id": "web-velocity-fitness-zone-kavadiguda-kavadiguda"
+  },
+  {
+   "name": "Pilates & Beyond Kavuri Hills",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Kavuri Hills",
+   "address": "Plot No 34, 35, Kavuri Hills Rd, Guttala Begumpet, Kavuri Hills, Madhapur, Hyderabad 500033",
+   "phone": "",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-kavuri-hills-kavuri-hills"
+  },
+  {
+   "name": "Cult Gym Khajaguda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Khajaguda",
+   "address": "4th & 5th floor, Survey No 28, Marvel Infra, No 3/72/1 & 3/72/4, Serilingampally, Khajaguda, Hyderabad, Telangana",
+   "phone": "+91 2245073921",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-khajaguda/2731",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.418640380982378,
+   "lng": 78.37129043743218,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-khajaguda/2731"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-khajaguda-khajaguda"
+  },
+  {
+   "name": "Impackt Fitness 2.0 (Khajaguda)",
+   "brand": "Impackt Fitness",
+   "category": "gym",
+   "area": "Khajaguda",
+   "address": "Sri tirumala Hub 9 survey no: 72/1raidurga nava kalsha village,serilingampally",
+   "phone": "+91 78936 41891",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-20-khajaguda/2102",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-20-khajaguda/2102"
+   ],
+   "instagram": "",
+   "id": "web-impackt-fitness-2-0-khajaguda-khajaguda"
+  },
+  {
+   "name": "Cult Gym Kokapet (Hybrid)",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kokapet",
+   "address": "3rd and 4th Floor, Plot No. 4, S.No -160, 160 Ft Road, NarsingiKokapet, Post, Hyderabad, Telangana 500075",
+   "phone": "+91 80469 84753",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kokapet-hybrid/1783",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kokapet-hybrid/1783"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-kokapet-hybrid-kokapet"
+  },
+  {
+   "name": "Pilates & Beyond Kokapet",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Kokapet",
+   "address": "Shop 420, 7-90/5, 4th Floor, Raichandani Business Bay, Gandipet Main Rd, Manchirevula, Hyderabad 500075",
+   "phone": "+91 78930 51414",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-kokapet-kokapet"
+  },
+  {
+   "name": "Cult Gym Kompally",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kompally",
+   "address": "4th Floor, Ratna ArcadeMedchal Rd, NCL Colony, Kompally",
+   "phone": "+91 74068 17177",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kompally/950",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.53191,
+   "lng": 78.487605,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kompally/950"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-kompally-kompally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kompally",
+   "address": "PPR Complex, 2nd FloorAbove Smart Bazar, Quthbullapur, Kompally",
+   "phone": "+91 99596 62626",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-turf-kompally/615",
+   "hours": "05:30 AM - 10:30 PM",
+   "lat": 17.53633812,
+   "lng": 78.489167,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-turf-kompally/615"
+   ],
+   "instagram": "",
+   "id": "web-gym-kompally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kompally",
+   "address": "Above Hotel Paradise, 3rd Floor, beside Reliance Petrol Stallion FitnessDmart Service Road, Kompally, Secunderabad",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/prime-strength/429",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": 17.52626425,
+   "lng": 78.48534612,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/prime-strength/429"
+   ],
+   "instagram": "",
+   "id": "web-gym-kompally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kompally",
+   "address": "Sy.no 9/A, Pride Arcade,High Tension Road, 1st floor,  petbhashirabad Opposite to SPG Grandnext to Kass hotel Suchitra",
+   "phone": "+91 95537 65558",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/vibe-fitness-studio-kompally/1126",
+   "hours": "05:30 AM - 09:30 PM",
+   "lat": 17.516026111820953,
+   "lng": 78.48201212883586,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/vibe-fitness-studio-kompally/1126"
+   ],
+   "instagram": "",
+   "id": "web-gym-kompally"
+  },
+  {
+   "name": "Stallion Fitness (Kompally)",
+   "brand": "Stallion Fitness",
+   "category": "gym",
+   "area": "Kompally",
+   "address": "Pipeline Road, Sriram Nagar, Jeedimetla, Village, Kompally",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-fitness-kompally/169",
+   "hours": "09:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-fitness-kompally/169"
+   ],
+   "instagram": "",
+   "id": "web-stallion-fitness-kompally-kompally"
+  },
+  {
+   "name": "V2 Fitness Zone Kompally",
+   "brand": "V2 Fitness Zone",
+   "category": "gym",
+   "area": "Kompally",
+   "address": "2nd Floor, Raichandani Orion, Petbasheerabad, Bashirabad, Quthbullapur, Kompally, Secunderabad, Telangana 500067",
+   "phone": "+91 99335 83222",
+   "website": "https://v2fitnesszone.com/branches/kompally",
+   "hours": "Mon-Sat 5:00 AM - 10:00 PM; Sun 6:00 AM - 12:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://v2fitnesszone.com/branches/kompally",
+    "https://v2fitnesszone.com/"
+   ],
+   "instagram": "",
+   "id": "web-v2-fitness-zone-kompally-kompally"
+  },
+  {
+   "name": "360 Degree Fitness Kondapur",
+   "brand": "360 Degree Fitness",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Stoneridge Center, 2nd Floor, Opp Google, next to CII Green Business Center, Kondapur, Hyderabad",
+   "phone": "+91 90005 51360",
+   "website": "http://www.360fitnesshyd.com/contact-us.html",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "http://www.360fitnesshyd.com/contact-us.html"
+   ],
+   "phones": [
+    "+91 90005 51360",
+    "+91 40 2355 2360"
+   ],
+   "instagram": "",
+   "id": "web-360-degree-fitness-kondapur-kondapur"
+  },
+  {
+   "name": "Anytime Fitness Kondapur",
+   "brand": "Anytime Fitness",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "4th Floor, Ektha Pearl, Gachibowli-Miyapur Rd, Laxmi Cyber City, Whitefields, Kothaguda, Kondapur, Hyderabad, Telangana 500081",
+   "phone": "+91 89777 12480",
+   "website": "https://www.anytimefitness.com/en-in/locations/hyderabad-telangana-in-1204",
+   "hours": "Open 24 hours (Mon-Su 00:00-23:59)",
+   "lat": 17.45594,
+   "lng": 78.3651,
+   "sources": [
+    "https://www.anytimefitness.com/en-in/locations/hyderabad-telangana-in-1204"
+   ],
+   "instagram": "",
+   "id": "web-anytime-fitness-kondapur-kondapur"
+  },
+  {
+   "id": "osm-n12290589154",
+   "name": "Bodhi yoga",
+   "category": "yoga",
+   "brand": "",
+   "area": "Kondapur",
+   "address": "Kondapur, Hyderabad, 500084",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4611024,
+   "lng": 78.3665027,
+   "sources": [
+    "https://www.openstreetmap.org/node/12290589154"
+   ]
+  },
+  {
+   "name": "CFS9 Kondapur",
+   "brand": "CFS9 Central Fitness Station",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Jaswitha Construction, Madhava Hills Estates, Kondapur, Hyderabad 500084",
+   "phone": "+91 88865 64999",
+   "website": "https://www.cfs9gym.com/branches",
+   "hours": "Mon-Sat 5:00 AM - 10:00 PM; Sun 6:00 AM - 10:00 AM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cfs9gym.com/branches",
+    "https://www.cfs9gym.com/"
+   ],
+   "instagram": "",
+   "id": "web-cfs9-kondapur-kondapur"
+  },
+  {
+   "name": "Cult Gym Botanical Garden Rd",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "2nd Floor, Above Vijetha Supermarket, Botanical Garden Rd, Masjid Banda, Camelot Layout, Kondapur, Hyderabad",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-botanical-garden-rd/1922",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-botanical-garden-rd/1922"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-botanical-garden-rd-kondapur"
+  },
+  {
+   "name": "Cult Gym Camelot layout, Botanical Garden",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "3rd &4th floor, Plot Nos. 94 and 95 (Northern Part), Survey No. 191, Camelot Layout,Kondapur Village, GHMC Serilingampally Circle, Ranga Reddy District,",
+   "phone": "+91 2245076199",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-camelot-layout-botanical-garden/2758",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.46525693153727,
+   "lng": 78.34803269076286,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-camelot-layout-botanical-garden/2758"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-camelot-layout-botanical-garden-kondapur"
+  },
+  {
+   "name": "Cult Neo Gym Kondapur",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "5th Floor, Survey no. 71, nearby Sri sea style aquarium, Raghavendra Nagar,Raghavendra Colony, Kondapur",
+   "phone": "+91 1144736599",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-kondapur/2834",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4693124,
+   "lng": 78.362334,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-kondapur/2834"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-kondapur-kondapur"
+  },
+  {
+   "id": "osm-n13970066466",
+   "name": "cult.fit",
+   "category": "gym",
+   "brand": "cult.fit",
+   "area": "Kondapur",
+   "address": "Old Bombay Road, Kondapur, Hyderabad, 500032",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4348568,
+   "lng": 78.3688255,
+   "sources": [
+    "https://www.openstreetmap.org/node/13970066466"
+   ]
+  },
+  {
+   "name": "F Square Fitness",
+   "brand": "",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Plot no 180/1-c & 142-c, Maa SS Arcade, Seshadri Marg, near RTA OfficeRaghavendra Colony, Kondapur",
+   "phone": "+91 90009 00344",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/f-square-fitness/116",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/f-square-fitness/116"
+   ],
+   "instagram": "",
+   "id": "web-f-square-fitness-kondapur"
+  },
+  {
+   "name": "F45 Training Kondapur",
+   "brand": "F45 Training",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Kondapur, Hyderabad, Telangana, India",
+   "phone": "+91 85085 14545",
+   "website": "https://f45training.com/in/studio/kondapur/",
+   "hours": "",
+   "lat": 17.4655696,
+   "lng": 78.3432978,
+   "sources": [
+    "https://f45training.com/in/studio/kondapur/",
+    "https://f45training.com/in/find-a-studio/"
+   ],
+   "instagram": "",
+   "id": "web-f45-training-kondapur-kondapur"
+  },
+  {
+   "name": "Forma Pilates Kondapur",
+   "brand": "Forma Pilates",
+   "category": "pilates",
+   "area": "Kondapur",
+   "address": "Plot No. 1491, 2nd Floor, Golden Tulip Layout, Lavender Street, Kondapur, Hyderabad 500084",
+   "phone": "+91 95509 65252",
+   "website": "https://www.formapilates.in",
+   "hours": "Mon-Sat 6 AM - 8 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.formapilates.in/contact"
+   ],
+   "instagram": "",
+   "id": "web-forma-pilates-kondapur-kondapur"
+  },
+  {
+   "name": "Gold's Gym (Kondapur)",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "3rd Floor, M-Square, 112-B & 4, High-Tension Line RdRaghavendra Nagar, Kondapur",
+   "phone": "+91 99599 10666",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/golds-gym-kondapur/1536",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/golds-gym-kondapur/1536"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-kondapur-kondapur"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Plot No 10, Beside BataAshok Nagar, Golden Habitat, Whitefields, Kondapur",
+   "phone": "+91 70755 76776",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/conquest-fitness/75",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.45338019,
+   "lng": 78.36422931,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/conquest-fitness/75"
+   ],
+   "instagram": "",
+   "id": "web-gym-kondapur"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "4th Floor,No 1/3/170, Plot No 22 to 24,Masjid Banda Main Rd, Serilingampalle (M), Hyderabad,Telangana",
+   "phone": "+91 76710 00560",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-40-kondapur/2568",
+   "hours": "06:00 AM - 01:00 PM & 03:30 PM - 10:00 PM",
+   "lat": 17.46663177,
+   "lng": 78.33820281,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-40-kondapur/2568"
+   ],
+   "instagram": "",
+   "id": "web-gym-kondapur"
+  },
+  {
+   "name": "Pilates for She",
+   "brand": "Pilates for She",
+   "category": "pilates",
+   "area": "Kondapur",
+   "address": "2nd Floor, Unit No 201, Ravi Enclave, Amplio Business Center, Hanuman Nagar, Kondapur, Hyderabad 500084",
+   "phone": "+91 73963 93131",
+   "website": "https://www.pilatesforshe.com",
+   "hours": "Mon-Sat 6:00 AM - 9:00 PM; Sun closed",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.pilatesforshe.com"
+   ],
+   "instagram": "",
+   "id": "web-pilates-for-she-kondapur"
+  },
+  {
+   "name": "Pran Fitness",
+   "brand": "",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Masjid Banda Rd, Masjid Banda Camelot Layout, Kondapur",
+   "phone": "+91 98489 27915",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/pran-fitness/600",
+   "hours": "05:00 AM - 01:00 PM & 04:30 PM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/pran-fitness/600"
+   ],
+   "instagram": "",
+   "id": "web-pran-fitness-kondapur"
+  },
+  {
+   "name": "Stallion Fitness (Kondapur)",
+   "brand": "Stallion Fitness",
+   "category": "gym",
+   "area": "Kondapur",
+   "address": "Ravi Enclave, 4th floor, Gachibowli - Miyapur Road, Hanuman Nagar, Shilpa Hills, Kohtaguda",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-fitness-kondapur/270",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-fitness-kondapur/270"
+   ],
+   "instagram": "",
+   "id": "web-stallion-fitness-kondapur-kondapur"
+  },
+  {
+   "name": "Cult Gym Kondapur (Raghavendra Colony)",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kondapur (Raghavendra Colony)",
+   "address": "Sarojini Mr Supreme, Serilingampalli Circle 20 Plot G-1, 475C & 476C KondapurOpposite Gem Motors, Hyderabad, Hyderabad ,500084",
+   "phone": "+91 70260 90298",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kondapur/619",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kondapur/619"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-kondapur-raghavendra-colony-kondapur-raghavendra-colony"
+  },
+  {
+   "id": "osm-n13285248841",
+   "name": "Austin Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Kothaguda",
+   "address": "Kothaguda, Hyderabad, 500032",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4485266,
+   "lng": 78.3591506,
+   "sources": [
+    "https://www.openstreetmap.org/node/13285248841"
+   ]
+  },
+  {
+   "id": "osm-n13917782900",
+   "name": "Cult Fit Botanical Garden",
+   "category": "gym",
+   "brand": "",
+   "area": "Kothaguda",
+   "address": "Masjid Banda Road, Kothaguda, Hyderabad, 500084",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4647729,
+   "lng": 78.3450875,
+   "sources": [
+    "https://www.openstreetmap.org/node/13917782900"
+   ]
+  },
+  {
+   "id": "osm-w1263185296",
+   "name": "E-Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Kothaguda",
+   "address": "Seshadri Marg, Kothaguda, Hyderabad, 500084",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4698847,
+   "lng": 78.3522557,
+   "sources": [
+    "https://www.openstreetmap.org/way/1263185296"
+   ]
+  },
+  {
+   "id": "osm-n13285248839",
+   "name": "Iron Kingdom Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Kothaguda",
+   "address": "dlf gachibowli, Kothaguda, Hyderabad, 500032",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4484894,
+   "lng": 78.3580517,
+   "sources": [
+    "https://www.openstreetmap.org/node/13285248839"
+   ]
+  },
+  {
+   "id": "osm-n4729069195",
+   "name": "Target Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Kothaguda",
+   "address": "Kothaguda, Hyderabad, 500032",
+   "phone": "+91 40 4261 5455",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4426522,
+   "lng": 78.3556084,
+   "sources": [
+    "https://www.openstreetmap.org/node/4729069195"
+   ]
+  },
+  {
+   "id": "osm-n6864339528",
+   "name": "Urban County Community Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Kothaguda",
+   "address": "Urban County, Raghiv Gandhi Nagar, Hyderabad",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "24/7",
+   "lat": 17.4430817,
+   "lng": 78.3589611,
+   "sources": [
+    "https://www.openstreetmap.org/node/6864339528"
+   ]
+  },
+  {
+   "name": "Cult Gym CTO Colony, Kothapet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kothapet",
+   "address": "New Nagole Main RdSnehapuri Colony, Nagole, Hyderabad, Telangana",
+   "phone": "+91 4844395362",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-cto-colony-kothapet/2906",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.3732995398648,
+   "lng": 78.54786187485045,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-cto-colony-kothapet/2906"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-cto-colony-kothapet-kothapet"
+  },
+  {
+   "name": "Cult Gym Kothapet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kothapet",
+   "address": "2nd Floor, Prajay Princeton Towers, Saroornagar,Doctors Colony, Hyderabad, Telangana 500035",
+   "phone": "+91 95380 13083",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kothapet/1814",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.3551251,
+   "lng": 78.5451641,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-kothapet/1814"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-kothapet-kothapet"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kothapet",
+   "address": "3rd Floor, Above Zudio, Beside Victoria Memorial Metro Station Green Hills Colony, Kothapet",
+   "phone": "+91 99164 74390",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/hrx-gym-kothapet/651",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.362369,
+   "lng": 78.5440962,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/hrx-gym-kothapet/651"
+   ],
+   "instagram": "",
+   "id": "web-gym-kothapet"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kothapet",
+   "address": "3rd Floor, Kontham Ram Reddy Complex, Opposite Fruit Market, Kothapet",
+   "phone": "+91 98859 26353",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/lifestyle-fitness-gym-and-cardio-kothapet/269",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.36810836,
+   "lng": 78.53502044,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/lifestyle-fitness-gym-and-cardio-kothapet/269"
+   ],
+   "instagram": "",
+   "id": "web-gym-kothapet"
+  },
+  {
+   "name": "Absolute Fitness Studio",
+   "brand": "",
+   "category": "gym",
+   "area": "Kukatpally",
+   "address": "Ramarao Nagar Colony Paparayadu Nagar, Kukatpally",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/absolute-fitness-studio/362",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/absolute-fitness-studio/362"
+   ],
+   "instagram": "",
+   "id": "web-absolute-fitness-studio-kukatpally"
+  },
+  {
+   "name": "Conquest Gym (Kukatpally)",
+   "brand": "Conquest Fitness",
+   "category": "gym",
+   "area": "Kukatpally",
+   "address": "4th Floor, VC Plaza, Shivalayam RdM J Colony, Vivek Nagar, Kukatpally",
+   "phone": "+91 77949 07007",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/conquest-gym-kukatpally/526",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/conquest-gym-kukatpally/526"
+   ],
+   "instagram": "",
+   "id": "web-conquest-gym-kukatpally-kukatpally"
+  },
+  {
+   "name": "Cult Gym Pragathi Nagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kukatpally",
+   "address": "Above Bajaj Electronics, Kakatiya Hills, Pragathi NagarKukatpally",
+   "phone": "+91 2245076193",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-pragathi-nagar/2737",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.536151668710907,
+   "lng": 78.39376608650717,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-pragathi-nagar/2737"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-pragathi-nagar-kukatpally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kukatpally",
+   "address": "Sri Harsha Towers, Sy no: 78,3Hafeezpet road, 9th Phase Kukatpally",
+   "phone": "+91 77999 77055",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/five-the-fitness-hive-kukatpally/1805",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": 17.478480169787808,
+   "lng": 78.37952905767169,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/five-the-fitness-hive-kukatpally/1805"
+   ],
+   "instagram": "",
+   "id": "web-gym-kukatpally"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Kukatpally",
+   "address": "Plot No. 93, A.S.Raju NagarOpp. KPHB Colony, Hyderabad, Telangana",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/pledge-fitness/64",
+   "hours": "04:30 AM - 10:00 PM",
+   "lat": 17.49531255,
+   "lng": 78.40543392,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/pledge-fitness/64"
+   ],
+   "instagram": "",
+   "id": "web-gym-kukatpally"
+  },
+  {
+   "id": "osm-n12368227663",
+   "name": "The Gym 365 Hyderabad",
+   "category": "yoga",
+   "brand": "",
+   "area": "Kukatpally",
+   "address": "4th Floor, Above Croma, Beside BJP Office, Shanti Nagar, Kukatpally, Hyderabad",
+   "phone": "+91 98898 81365",
+   "website": "https://thegym365.in",
+   "instagram": "",
+   "hours": "Mo-Su 05:00-22:00",
+   "lat": 17.4829122,
+   "lng": 78.4145632,
+   "sources": [
+    "https://www.openstreetmap.org/node/12368227663"
+   ]
+  },
+  {
+   "name": "Cult Neo Gym Kushaiguda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Kushaiguda",
+   "address": "Plot No. 8 and 9, 1-10-1/27/3&4, Kushaiguda mainroad, Sai Nagar Colony, Kushaiguda, Secunderabad, TelanganaPlot No. 8 and 9, 1-10-1/27/3&4, Kushaiguda mainroad, Sai Nagar Colony, Kushaiguda, Secunderabad, Telangana",
+   "phone": "+91 73145 00395",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-kushaiguda/3067",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-kushaiguda/3067"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-kushaiguda-kushaiguda"
+  },
+  {
+   "name": "Cult Gym LB Nagar, Vanasthalipuram",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "LB Nagar",
+   "address": "Above Croma, Hive Five Plaza, LB NagarVanasthalipuram, Hyderabad,Telangana",
+   "phone": "+91 61267 28287",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-lb-nagar-vanasthalipuram/2531",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-lb-nagar-vanasthalipuram/2531"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-lb-nagar-vanasthalipuram-lb-nagar"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "LB Nagar",
+   "address": "Plot No: 16, 17, 29 & 30, Survey No 66/5 & 66/6, Mansoorabad Next To Big Bazaar Opp Hp Petrol Bunk, Bahadurguda",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fast-fit-gym/83",
+   "hours": "05:30 AM - 12:30 PM & 04:30 PM - 09:30 PM",
+   "lat": 17.35536073,
+   "lng": 78.55679546,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fast-fit-gym/83"
+   ],
+   "instagram": "",
+   "id": "web-gym-lb-nagar"
+  },
+  {
+   "name": "CFS9 Madhapur",
+   "brand": "CFS9 Central Fitness Station",
+   "category": "gym",
+   "area": "Madhapur",
+   "address": "Pardha's Picasa, Durgam Cheruvu Road, Kavuri Hills, Madhapur, Hyderabad 500018",
+   "phone": "+91 90522 88888",
+   "website": "https://www.cfs9gym.com/branches",
+   "hours": "Mon-Sat 5:00 AM - 10:00 PM; Sun 6:00 AM - 10:00 AM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cfs9gym.com/branches",
+    "https://www.cfs9gym.com/"
+   ],
+   "instagram": "",
+   "id": "web-cfs9-madhapur-madhapur"
+  },
+  {
+   "name": "Cult Gym Madhapur - Hybrid",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Madhapur",
+   "address": "2nd & 3rd floor, MI show room building Inorbit mall road , Madhapur, Road, Kavuri Hills, Gafoornagar, Hyderabad",
+   "phone": "+91 70260 90238",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-madhapur-hybrid/592",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-madhapur-hybrid/592"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-madhapur-hybrid-madhapur"
+  },
+  {
+   "id": "osm-n5942781131",
+   "name": "Fit Dock",
+   "category": "gym",
+   "brand": "",
+   "area": "Madhapur",
+   "address": "Madhapur, Hyderabad, 500081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4465226,
+   "lng": 78.3842658,
+   "sources": [
+    "https://www.openstreetmap.org/node/5942781131"
+   ]
+  },
+  {
+   "id": "osm-n7025820843",
+   "name": "Fit Republic",
+   "category": "gym",
+   "brand": "",
+   "area": "Madhapur",
+   "address": "Road No. 44, Madhapur, Hyderabad, 800081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4366632,
+   "lng": 78.3957183,
+   "sources": [
+    "https://www.openstreetmap.org/node/7025820843"
+   ]
+  },
+  {
+   "name": "Fitmax (Madhapur)",
+   "brand": "Fitmax",
+   "category": "gym",
+   "area": "Madhapur",
+   "address": "Ayyappa Central, Plot No: 802803, 2nd Floor, Near YSR statue, Ayyappa society, Madhapur",
+   "phone": "+91 99495 19192",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitmax-madhapur/567",
+   "hours": "06:00 AM - 12:30 PM & 04:00 PM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitmax-madhapur/567"
+   ],
+   "instagram": "",
+   "id": "web-fitmax-madhapur-madhapur"
+  },
+  {
+   "name": "Gold's Gym Hyderabad Madhapur",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Madhapur",
+   "address": "2nd Floor, CSR Estate, Plot No. 8, Sector 1, HUDA Techno Enclave, Madhapur Road, Hyderabad, Telangana 500081",
+   "phone": "+91 88821 19900",
+   "website": "https://goldsgym.in/our-gyms/gold-s-gym-hyderabad-madhapur/",
+   "hours": "Monday to Sunday: 5:30 AM to 10:00 PM",
+   "lat": 17.4454834,
+   "lng": 78.3851992,
+   "sources": [
+    "https://goldsgym.in/our-gyms/gold-s-gym-hyderabad-madhapur/",
+    "https://www.openstreetmap.org/node/5682130471"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-hyderabad-madhapur-madhapur"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Madhapur",
+   "address": "Stark Fitness Studio, 3rd & 4th Floor, H no 1-12/1 E 1-11 part sy no 61, 32Madhapur Road, near metro pillar c1717",
+   "phone": "+91 86881 45561",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-madhapur/530",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.4413675409918,
+   "lng": 78.39505576565341,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-madhapur/530"
+   ],
+   "instagram": "",
+   "id": "web-gym-madhapur"
+  },
+  {
+   "id": "osm-w642169205",
+   "name": "Gym and Jockey",
+   "category": "gym",
+   "brand": "",
+   "area": "Madhapur",
+   "address": "Vinayaka road, Madhapur, Hyderabad, 500081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4432123,
+   "lng": 78.3872339,
+   "sources": [
+    "https://www.openstreetmap.org/way/642169205"
+   ]
+  },
+  {
+   "name": "Gympoint The Fitness Studio",
+   "brand": "GymPoint The Fitness Studio",
+   "category": "gym",
+   "area": "Madhapur",
+   "address": "Plot No: 438, Phase II, Ramachandrapuram ring townChandanagar village, Rangareddy",
+   "phone": "+91 89193 63404",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio/577",
+   "hours": "06:00 AM - 01:00 PM & 04:00 PM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio/577",
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio-madhapur/405"
+   ],
+   "instagram": "",
+   "id": "web-gympoint-the-fitness-studio"
+  },
+  {
+   "id": "osm-n6191414044",
+   "name": "Krish's Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Madhapur",
+   "address": "Vinayaka road, Madhapur, Hyderabad, 500081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4431239,
+   "lng": 78.3872849,
+   "sources": [
+    "https://www.openstreetmap.org/node/6191414044"
+   ]
+  },
+  {
+   "id": "osm-w337346705",
+   "name": "Krish's Fitness & Wellness Spa-Nearyouu.com",
+   "category": "gym",
+   "brand": "",
+   "area": "Madhapur",
+   "address": "Plot No 92/1 H No 1-90/2, 60 Feet Rd Mega Hills, Madhapur, Hyderabad",
+   "phone": "+91 40 6599 6969",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4405077,
+   "lng": 78.3913655,
+   "sources": [
+    "https://www.openstreetmap.org/way/337346705"
+   ]
+  },
+  {
+   "id": "osm-n7025820749",
+   "name": "Potens Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Madhapur",
+   "address": "Madhapur, Hyderabad, 800081",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4356539,
+   "lng": 78.3880758,
+   "sources": [
+    "https://www.openstreetmap.org/node/7025820749"
+   ]
+  },
+  {
+   "id": "osm-n7243974344",
+   "name": "Cultfit Bodyline Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Madinaguda",
+   "address": "Madinaguda, Hyderabad, 500049",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4952507,
+   "lng": 78.3583606,
+   "sources": [
+    "https://www.openstreetmap.org/node/7243974344"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Madinaguda",
+   "address": "25-105, 4th Floor, National Highway 65 Viswaswara Nagar ColonyMiyapur, opp. Madinaguda Arch",
+   "phone": "+91 89777 27399",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/chivan-fitness/1972",
+   "hours": "05:00 AM - 12:00 PM & 04:00 PM - 10:00 PM",
+   "lat": 17.49496506,
+   "lng": 78.34802258,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/chivan-fitness/1972"
+   ],
+   "instagram": "",
+   "id": "web-gym-madinaguda"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Madinaguda",
+   "address": "159, 4, NH65, Sri Durga Colony, Miyapur",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitmax/174",
+   "hours": "06:00 AM - 12:30 PM & 04:30 PM - 10:00 PM",
+   "lat": 17.49551493,
+   "lng": 78.34038831,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitmax/174"
+   ],
+   "instagram": "",
+   "id": "web-gym-madinaguda"
+  },
+  {
+   "name": "GymPoint The Fitness Studio (Malakpet)",
+   "brand": "GymPoint The Fitness Studio",
+   "category": "gym",
+   "area": "Malakpet",
+   "address": "16-11-1/5, 4th floor, Above Reliance TrendsSaleemnagar, Housingboard Colony, Malakpet Extension, Old Malakpet",
+   "phone": "+91 73374 50716",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio-malakpet/598",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio-malakpet/598"
+   ],
+   "instagram": "",
+   "id": "web-gympoint-the-fitness-studio-malakpet-malakpet"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Malkajgiri",
+   "address": "No. 25-40/1/1/B-A, (Old No. 25-40/1/1), in Survey Nos. 554 & 555 Situated at East AnandbaghUnder Greater Hyderabad Municipal Corporation Malkajgiri Circle, Malkajgiri Mandal",
+   "phone": "+91 90001 27663",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cloud-9-fitness/555",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": 17.457903714203884,
+   "lng": 78.54483624232928,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cloud-9-fitness/555"
+   ],
+   "instagram": "",
+   "id": "web-gym-malkajgiri"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Malkajgiri",
+   "address": "Shop no 4-197,first and second floor ,geetha nagarmalkajgiri ,secunderabad",
+   "phone": "+91 95022 44721",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/velocity-fitness-zone-20-malkajgiri/2439",
+   "hours": "05:30 AM - 09:00 AM & 09:00 AM - 05:00 PM & 05:00 PM - 09:45 PM",
+   "lat": 17.4515278,
+   "lng": 78.5331111,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/velocity-fitness-zone-20-malkajgiri/2439"
+   ],
+   "instagram": "",
+   "id": "web-gym-malkajgiri"
+  },
+  {
+   "name": "Cult Neo Gym Mallapur",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Mallapur",
+   "address": "3rd Floor, Ushodaya Building, Mallapur Main Rd, near NFC Bridge, Vivekananda Nagar, Mallapur, Secunderabad,",
+   "phone": "+91 2063115889",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-mallapur/2779",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-mallapur/2779"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-mallapur-mallapur"
+  },
+  {
+   "id": "osm-n8110741753",
+   "name": "GK fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Mangalhat",
+   "address": "13-1-800/2tr, Magra Road, Hyderabad",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3777749,
+   "lng": 78.4603372,
+   "sources": [
+    "https://www.openstreetmap.org/node/8110741753"
+   ]
+  },
+  {
+   "name": "Cult Gym Manikonda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Manikonda",
+   "address": "Cult Manikonda 3rd and 4 th floor Above Reliance TrendsdPanchavati colony Road , Towards Lanco Hills  Manikonda",
+   "phone": "+91 70260 90216",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-manikonda/511",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4070993,
+   "lng": 78.3832868,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-manikonda/511"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-manikonda-manikonda"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Manikonda",
+   "address": "5th floor9 star hills sahasranama complex butter fly circle neknampur road, alkapoor township.",
+   "phone": "+91 99663 37734",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/volt-fitness-studio-alkapur/2517",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.39293081,
+   "lng": 78.3766073,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/volt-fitness-studio-alkapur/2517"
+   ],
+   "instagram": "",
+   "id": "web-gym-manikonda"
+  },
+  {
+   "id": "osm-n8113828146",
+   "name": "Nihar gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Manikonda",
+   "address": "Manikonda, 500089",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4013751,
+   "lng": 78.383753,
+   "sources": [
+    "https://www.openstreetmap.org/node/8113828146"
+   ]
+  },
+  {
+   "name": "Somasfit Martial Arts International Academy",
+   "brand": "Somasfit",
+   "category": "boxing_mma",
+   "area": "Manikonda",
+   "address": "#205, 2nd Floor, Sree Nilayam Building, above Sampoorna Super Market, near Harivillu, Manikonda, Hyderabad 500089",
+   "phone": "+91 98853 12564",
+   "website": "https://somasfit.com",
+   "hours": "Batches per https://www.somasfit.com/timings.html (e.g. adult MMA Tue/Thu/Fri 6:30 AM)",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://somasfit.com/",
+    "https://www.somasfit.com/timings.html"
+   ],
+   "instagram": "",
+   "id": "web-somasfit-martial-arts-international-academy-manikonda"
+  },
+  {
+   "name": "Technolife Fitness Club",
+   "brand": "",
+   "category": "gym",
+   "area": "Manikonda",
+   "address": "401, KBR Complex, Manikonda Pipeline RoadManikonda, beside Indian Oil Petrol Pump",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/technolife-fitness-club/111",
+   "hours": "05:30 AM - 12:00 PM & 04:30 PM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/technolife-fitness-club/111"
+   ],
+   "instagram": "",
+   "id": "web-technolife-fitness-club-manikonda"
+  },
+  {
+   "id": "osm-n9131094944",
+   "name": "ClubFit Studio SC",
+   "category": "gym",
+   "brand": "",
+   "area": "Marredpally",
+   "address": "Wellington Road, Marredpally mandal, Secunderabad, 500003",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4560125,
+   "lng": 78.5053537,
+   "sources": [
+    "https://www.openstreetmap.org/node/9131094944"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Medchal",
+   "address": "Stark Fitness Studio - 4th floor, Above Reliance Trendsbeside KFC, Uma Nagar Colony, Medchal, Secundrabad",
+   "phone": "+91 95050 99559",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/muscle-maniac-exstark-fitness-studio/531",
+   "hours": "05:00 AM - 11:00 AM & 04:00 PM - 10:00 PM",
+   "lat": 17.63686982,
+   "lng": 78.48568017,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/muscle-maniac-exstark-fitness-studio/531"
+   ],
+   "instagram": "",
+   "id": "web-gym-medchal"
+  },
+  {
+   "id": "osm-w357654293",
+   "name": "Shahaja Yoga Mandir",
+   "category": "yoga",
+   "brand": "",
+   "area": "Medpally",
+   "address": "Medpally, 500098",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4116645,
+   "lng": 78.5990272,
+   "sources": [
+    "https://www.openstreetmap.org/way/357654293"
+   ]
+  },
+  {
+   "id": "osm-n7244480680",
+   "name": "Dangal Fitness/gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Mehdipatnam",
+   "address": "Mehdipatnam, Hyderabad, 500028",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3944324,
+   "lng": 78.4379216,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244480680"
+   ]
+  },
+  {
+   "id": "osm-n7244480663",
+   "name": "Hilton Gym Obesity clinic",
+   "category": "gym",
+   "brand": "",
+   "area": "Mehdipatnam",
+   "address": "Mehdipatnam, Hyderabad, 500028",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3947357,
+   "lng": 78.4360881,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244480663"
+   ]
+  },
+  {
+   "name": "Cult Gym Miyapur X Roads",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Miyapur",
+   "address": "Miyapur X Road, Mumbai Highway, 3rd floor, Above Reliance Trends, Opposite to KS bakers, Miyapur",
+   "phone": "+91 1246879394",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-miyapur-x-roads/578",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4963302,
+   "lng": 78.3584097,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-miyapur-x-roads/578"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-miyapur-x-roads-miyapur"
+  },
+  {
+   "id": "osm-n7243974346",
+   "name": "Go fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Miyapur",
+   "address": "Miyapur, Hyderabad, 500049",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4977223,
+   "lng": 78.3620251,
+   "sources": [
+    "https://www.openstreetmap.org/node/7243974346",
+    "https://www.openstreetmap.org/node/7244260610"
+   ]
+  },
+  {
+   "id": "osm-n7243974345",
+   "name": "Naren Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Miyapur",
+   "address": "Bollaram Road, Miyapur, Hyderabad, 500049",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.497158,
+   "lng": 78.3619488,
+   "sources": [
+    "https://www.openstreetmap.org/node/7243974345"
+   ]
+  },
+  {
+   "name": "V2 Fitness Zone Miyapur",
+   "brand": "V2 Fitness Zone",
+   "category": "gym",
+   "area": "Miyapur",
+   "address": "2nd & 3rd Floor, Beside Raichandani Galaxy, SMR Vinays Metro Mall, Ambedkar Nagar, Hafeezpet, Hyderabad, Telangana 500049",
+   "phone": "+91 99339 71222",
+   "website": "https://v2fitnesszone.com/branches/miyapur",
+   "hours": "Mon-Sat 5:30 AM - 10:00 PM; Sun 6:00 AM - 12:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://v2fitnesszone.com/branches/miyapur",
+    "https://v2fitnesszone.com/"
+   ],
+   "instagram": "",
+   "id": "web-v2-fitness-zone-miyapur-miyapur"
+  },
+  {
+   "id": "osm-n11084918125",
+   "name": "Crestal Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Moosapet",
+   "address": "Moosapet, Hyderabad, 500018",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4508957,
+   "lng": 78.4244342,
+   "sources": [
+    "https://www.openstreetmap.org/node/11084918125"
+   ]
+  },
+  {
+   "name": "Cult Gym Moosapet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Moosapet",
+   "address": "APY towers, FC97+GGV, Green Hills Rd, IV Phase, Sevalal Nagar, Kukatpally, Hyderabad, Telangana",
+   "phone": "+91 2245076188",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-moosapet/2690",
+   "hours": "06:00 AM - 10:30 PM",
+   "lat": 17.47115158345621,
+   "lng": 78.41382264871869,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-moosapet/2690"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-moosapet-moosapet"
+  },
+  {
+   "name": "Iron Fist (Moosapet)",
+   "brand": "",
+   "category": "gym",
+   "area": "Moosapet",
+   "address": "Iron Fist Gym, beside Rainbow Vistas Sevalal Nagar, Moosapet",
+   "phone": "+91 90008 88824",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/iron-fist-moosapet/654",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/iron-fist-moosapet/654"
+   ],
+   "instagram": "",
+   "id": "web-iron-fist-moosapet-moosapet"
+  },
+  {
+   "name": "Cult Neo Gym Moula Ali",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Moula Ali",
+   "address": "Sree Tulasi TVS MIGH 101&102 Prashant Nagar, Moula Ali Rd,Moula Ali, Hyderabad, Telangana",
+   "phone": "+91 4447851814",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-moula-ali/2913",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-moula-ali/2913"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-moula-ali-moula-ali"
+  },
+  {
+   "id": "osm-n6772788268",
+   "name": "Vasavi Gods Power Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Musheerabad",
+   "address": "Musheerabad, Hyderabad, 500061",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.422602,
+   "lng": 78.5124898,
+   "sources": [
+    "https://www.openstreetmap.org/node/6772788268"
+   ]
+  },
+  {
+   "id": "osm-n6776351521",
+   "name": "Yogi Fitness Club",
+   "category": "gym",
+   "brand": "",
+   "area": "Musheerabad",
+   "address": "Musheerabad, Hyderabad, 500061",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.422265,
+   "lng": 78.5167513,
+   "sources": [
+    "https://www.openstreetmap.org/node/6776351521"
+   ]
+  },
+  {
+   "name": "Cult Neo Gym Nagaram",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Nagaram",
+   "address": "Sy No 6 to 9 & 14, opposite Shiva temple, Aravind Nagar, Nagaram, Secunderabad, Telangana",
+   "phone": "+91 61267 28289",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-nagaram/2510",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-nagaram/2510"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-nagaram-nagaram"
+  },
+  {
+   "id": "osm-n7244226227",
+   "name": "Fit&run",
+   "category": "gym",
+   "brand": "",
+   "area": "Nagaram",
+   "address": "Rampally X Roads, Nagaram, 500083",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4935119,
+   "lng": 78.6055739,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244226227"
+   ]
+  },
+  {
+   "id": "osm-n10806671070",
+   "name": "KK GYm",
+   "category": "gym",
+   "brand": "",
+   "area": "Nagaram",
+   "address": "Nagaram, 500083",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4996899,
+   "lng": 78.5931556,
+   "sources": [
+    "https://www.openstreetmap.org/node/10806671070",
+    "https://www.openstreetmap.org/way/1161963688"
+   ]
+  },
+  {
+   "name": "BodyScience Pilates Nallagandla",
+   "brand": "BodyScience Pilates",
+   "category": "pilates",
+   "area": "Nallagandla",
+   "address": "Plot #5/C, HIG, HUDA Layout, Near Aparna NEO Mall, Nallagandla, Hyderabad 500046",
+   "phone": "+91 70751 58411",
+   "website": "https://www.bodysciencepilates.com",
+   "hours": "6:00 AM - 8:00 PM Mon-Sat",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.bodysciencepilates.com/contact"
+   ],
+   "instagram": "",
+   "id": "web-bodyscience-pilates-nallagandla-nallagandla"
+  },
+  {
+   "name": "Cult Gym Nallagandla - Huda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Nallagandla - Huda",
+   "address": "Plot no 23 & 24, Above Apollo Pharmacy, Huda Layout, Tellapur Road, Nallagandla",
+   "phone": "+91 1206341894",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-nallagandla-huda/639",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-nallagandla-huda/639"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-nallagandla-huda-nallagandla-huda"
+  },
+  {
+   "name": "Studio Ananta",
+   "brand": "Studio Ananta",
+   "category": "gym",
+   "area": "Nanakramguda",
+   "address": "2-65/157, Khajaguda, Nanakramguda, Hyderabad",
+   "phone": "+91 91578 93030",
+   "website": "https://www.studioananta.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.studioananta.in",
+    "https://www.studioananta.in/contact-us"
+   ],
+   "instagram": "",
+   "id": "web-studio-ananta-nanakramguda"
+  },
+  {
+   "name": "Cult Gym Narsingi",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Narsingi",
+   "address": "3rd & 4th floor, 99M5+VCC, Narsingi - Puppalaguda Main Road, Manchirevula, Manikonda,Hyderabad, Telangana",
+   "phone": "+91 2245076191",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-narsingi/2715",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-narsingi/2715"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-narsingi-narsingi"
+  },
+  {
+   "name": "Gold's Gym Narsingi",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Narsingi",
+   "address": "Gold's Gym, 3rd floor, Above Max, Sy No 346 to 355, SVR Commercial Complex, Plot no 130 to 134, Narsingi, Gandipet, Hyderabad, 500032",
+   "phone": "+91 76998 89999",
+   "website": "https://goldsgym.in/our-gyms/golds-gym-narsingi/",
+   "hours": "Mon to Sat 5 AM to 10 PM | Sundays 6 AM to 2 PM",
+   "lat": 17.38563323201069,
+   "lng": 78.35754692883536,
+   "sources": [
+    "https://goldsgym.in/our-gyms/golds-gym-narsingi/",
+    "https://www.cult.fit/cult/cult-pass/hyderabad/golds-gym-narsingi/1728"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-narsingi-narsingi"
+  },
+  {
+   "name": "Cult Gym Nizampet - Hybrid",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Nizampet",
+   "address": "Plot No. 13, opp. Sri Sampath Vinayak Residency, Nizampet Main Road,",
+   "phone": "+91 80407 56982",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-nizampet-hybrid/2554",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-nizampet-hybrid/2554"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-nizampet-hybrid-nizampet"
+  },
+  {
+   "name": "F99 Fit(Nizampet)",
+   "brand": "F99 Fit",
+   "category": "gym",
+   "area": "Nizampet",
+   "address": "1-123/329, Nizampet Main Road, Block 2, Besides D-MartMedchal, Malkajgiri Dist",
+   "phone": "+91 98483 99199",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/f99-fitnizampet/2273",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/f99-fitnizampet/2273"
+   ],
+   "instagram": "",
+   "id": "web-f99-fit-nizampet-nizampet"
+  },
+  {
+   "name": "Stark Fitness Studio (Nizampet)",
+   "brand": "Stark Fitness Studio",
+   "category": "gym",
+   "area": "Nizampet",
+   "address": "5th & 6th Floor, H.No 1-123/c/1opp. Water Tank, Nizampet",
+   "phone": "+91 63037 79433",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-nizampet/371",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-nizampet/371"
+   ],
+   "instagram": "",
+   "id": "web-stark-fitness-studio-nizampet-nizampet"
+  },
+  {
+   "name": "Cult Gym Nizampet X Roads (new)",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Nizampet X Roads (new)",
+   "address": "Plot No. 13, opp. , Sri Sampath Vinayak ResidencyNizampet Main Road",
+   "phone": "+91 73145 00391",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-nizampet-x-roads-new/3059",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-nizampet-x-roads-new/3059"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-nizampet-x-roads-new-nizampet-x-roads-new"
+  },
+  {
+   "id": "osm-n7244140148",
+   "name": "Olympus Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Patancheru",
+   "address": "Market Road, patancheru",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "Mo-Su 05:00-10:00, 17:00-21:00",
+   "lat": 17.5309205,
+   "lng": 78.2628262,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244140148"
+   ]
+  },
+  {
+   "id": "osm-n7244480282",
+   "name": "Perfect Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Patancheru",
+   "address": "Shanti nagar, patancheru",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5292885,
+   "lng": 78.2633946,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244480282"
+   ]
+  },
+  {
+   "id": "osm-n7244140149",
+   "name": "Tough Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Patancheru",
+   "address": "Sri nagar colony, patancheru",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5262632,
+   "lng": 78.2709169,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244140149"
+   ]
+  },
+  {
+   "id": "osm-n8065496824",
+   "name": "Cross X Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Pragathi Nagar",
+   "address": "Pragathi Nagar, 501002",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5268979,
+   "lng": 78.3943103,
+   "sources": [
+    "https://www.openstreetmap.org/node/8065496824"
+   ]
+  },
+  {
+   "id": "osm-n8193147570",
+   "name": "Flex Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Pragathi Nagar",
+   "address": "Pragathi Nagar Road, Pragathi Nagar, 501002",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5214481,
+   "lng": 78.3965439,
+   "sources": [
+    "https://www.openstreetmap.org/node/8193147570"
+   ]
+  },
+  {
+   "id": "osm-n6934773303",
+   "name": "Grace Fitness Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Pragathi Nagar",
+   "address": "Pragathi Nagar Road, Pragathi Nagar, 501002",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5184798,
+   "lng": 78.396515,
+   "sources": [
+    "https://www.openstreetmap.org/node/6934773303"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Pragathi Nagar",
+   "address": "SV’s Marvella Plot no:59,60,61Dollar Hills opp More supermarket Pragathi Nagar",
+   "phone": "+91 89789 90009",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/f99-fit-pragathi-nagar/1132",
+   "hours": "05:00 AM - 01:00 PM & 04:00 PM - 10:00 PM",
+   "lat": 17.52290498,
+   "lng": 78.39543442,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/f99-fit-pragathi-nagar/1132"
+   ],
+   "instagram": "",
+   "id": "web-gym-pragathi-nagar"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Pragathi Nagar",
+   "address": "D.No:1-135, Manikonda Towers, Ground Floor, Peacock CenterBehind Vijetha Super Market, Pragati Nagar",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/f99-fit/237",
+   "hours": "05:00 AM - 01:00 PM & 04:00 PM - 10:00 PM",
+   "lat": 17.51536875,
+   "lng": 78.39552325,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/f99-fit/237"
+   ],
+   "instagram": "",
+   "id": "web-gym-pragathi-nagar"
+  },
+  {
+   "id": "osm-n8065686027",
+   "name": "Jaguar Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Pragathi Nagar",
+   "address": "Manjera Tank Road, Pragathi Nagar, Hyderabad, 501002",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5225696,
+   "lng": 78.3966438,
+   "sources": [
+    "https://www.openstreetmap.org/node/8065686027"
+   ]
+  },
+  {
+   "id": "osm-n8386537927",
+   "name": "Leaf Home Yoga Classes",
+   "category": "yoga",
+   "brand": "",
+   "area": "Pragathi Nagar",
+   "address": "Pragathi Nagar, 501002",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5196137,
+   "lng": 78.3960139,
+   "sources": [
+    "https://www.openstreetmap.org/node/8386537927"
+   ]
+  },
+  {
+   "name": "Stark Fitness Studio",
+   "brand": "Stark Fitness Studio",
+   "category": "gym",
+   "area": "Pragathi Nagar",
+   "address": "Near Nextgen International SchoolALEAP Industrial Area, Pragathi Nagar",
+   "phone": "+91 97000 75224",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio/113",
+   "hours": "05:00 PM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio/113"
+   ],
+   "instagram": "",
+   "id": "web-stark-fitness-studio-pragathi-nagar"
+  },
+  {
+   "name": "Art of Living Hyderabad Centre",
+   "brand": "Art of Living",
+   "category": "yoga",
+   "area": "Punjagutta",
+   "address": "6-3-883/3, 5th Floor, R.K. Plaza, Punjagutta Circle, Hyderabad",
+   "phone": "+91 40 2340 0782",
+   "website": "https://www.artofliving.org/in-en/yoga-meditation-centers/hyderabad",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.artofliving.org/in-en/yoga-meditation-centers/hyderabad"
+   ],
+   "phones": [
+    "+91 40 2340 0782",
+    "+91 40 6521 8418",
+    "+91 40 6459 0390",
+    "+91 40 6459 0666"
+   ],
+   "instagram": "",
+   "id": "web-art-of-living-hyderabad-centre-punjagutta"
+  },
+  {
+   "id": "osm-n11015885743",
+   "name": "Cult Fitness Centre",
+   "category": "gym",
+   "brand": "",
+   "area": "Punjagutta",
+   "address": "Panjagutta, Hyderabad, 500082",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4255733,
+   "lng": 78.4569252,
+   "sources": [
+    "https://www.openstreetmap.org/node/11015885743"
+   ]
+  },
+  {
+   "name": "Millennium Fitness Club",
+   "brand": "Millennium Fitness Club",
+   "category": "gym",
+   "area": "Punjagutta",
+   "address": "6-3-670, Punjagutta Main Road Above Reliance Digital, Beside Venkateswara Swamy Temple, Telangana",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/millennium-fitness-club/77",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/millennium-fitness-club/77"
+   ],
+   "instagram": "",
+   "id": "web-millennium-fitness-club-punjagutta"
+  },
+  {
+   "id": "osm-n11015866945",
+   "name": "SD fitness Center",
+   "category": "gym",
+   "brand": "",
+   "area": "Punjagutta",
+   "address": "Panjagutta, Hyderabad, 500082",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4255268,
+   "lng": 78.4568063,
+   "sources": [
+    "https://www.openstreetmap.org/node/11015866945"
+   ]
+  },
+  {
+   "name": "Cult Gym Puppalaguda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Puppalaguda",
+   "address": "Manikonda-Shaikpet Main Rd, Kyettaian Gouda NilayamAnupama Homes, Manikonda Jagir, Hyderabad, Telangana",
+   "phone": "+91 70265 67205",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-puppalaguda/1411",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.400712,
+   "lng": 78.367666,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-puppalaguda/1411"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-puppalaguda-puppalaguda"
+  },
+  {
+   "id": "osm-n11690247850",
+   "name": "Cult fit",
+   "category": "gym",
+   "brand": "",
+   "area": "Quthbullapur",
+   "address": "Unique High School Lane, Quthbullapur, Hyderabad, 500037",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4893206,
+   "lng": 78.4508714,
+   "sources": [
+    "https://www.openstreetmap.org/node/11690247850"
+   ]
+  },
+  {
+   "id": "osm-w357612254",
+   "name": "Salus Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "RK Puram",
+   "address": "GreenHills Colony Road Number 3, RK Puram, Hyderabad, 500102",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3606739,
+   "lng": 78.5456641,
+   "sources": [
+    "https://www.openstreetmap.org/way/357612254"
+   ]
+  },
+  {
+   "id": "osm-w357456733",
+   "name": "Z Fitness World",
+   "category": "gym",
+   "brand": "",
+   "area": "RK Puram",
+   "address": "RK Puram, Hyderabad, 500102",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.3578844,
+   "lng": 78.5457946,
+   "sources": [
+    "https://www.openstreetmap.org/way/357456733"
+   ]
+  },
+  {
+   "name": "Pilates & Beyond Raidurgam",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Raidurg",
+   "address": "1st Floor, G Square, Police Station, beside Raidurgam, Madhura Nagar Colony, Gachibowli, Hyderabad 500104",
+   "phone": "+91 89787 98989",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-raidurgam-raidurg"
+  },
+  {
+   "id": "osm-n11484298990",
+   "name": "Muscle Tech Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Ramachandrapuram",
+   "address": "Ramachandrapuram, Hyderabad, 502032",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5093663,
+   "lng": 78.2987017,
+   "sources": [
+    "https://www.openstreetmap.org/node/11484298990"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Ramanthapur",
+   "address": "Survey no. 01, Plot No. A-1/5IDA Uppal, Uppal",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio/344",
+   "hours": "05:30 AM - 01:00 PM & 04:00 PM - 10:00 PM",
+   "lat": 17.40080979,
+   "lng": 78.55146579,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/gympoint-the-fitness-studio/344"
+   ],
+   "instagram": "",
+   "id": "web-gym-ramanthapur"
+  },
+  {
+   "name": "Cult Gym RC Puram - Hybrid",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Ramchandrapuram",
+   "address": "Survey no, 23, 24 25, USB Square, 2nd Floor, Ramachandrapuram Village, Sangareddy District, RC Puram,  Hyderabad, Telangana, 502032",
+   "phone": "+91 61267 28292",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-rc-puram-hybrid/2698",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.5125423,
+   "lng": 78.2928198,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-rc-puram-hybrid/2698"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-rc-puram-hybrid-ramchandrapuram"
+  },
+  {
+   "name": "Cult Neo Gym Ramnagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Ramnagar",
+   "address": "Shop No.1, 3 & 4 Floor, 1-9-629, Ramnagar Gundu Rd, opp. Andhra BankVidya Nagar, Adikmet,",
+   "phone": "+91 1144736603",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-ramnagar/2896",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-ramnagar/2896"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-ramnagar-ramnagar"
+  },
+  {
+   "id": "osm-n7244174331",
+   "name": "Sakhi Beauty Parlour, Gym And Yoga",
+   "category": "yoga",
+   "brand": "",
+   "area": "Ramnagar",
+   "address": "VST Main Road, Ramnagar, Hyderabad, 500044",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4105267,
+   "lng": 78.5069324,
+   "sources": [
+    "https://www.openstreetmap.org/node/7244174331"
+   ]
+  },
+  {
+   "name": "F7 Fitness by Prasad Konda (Risala Bazar)",
+   "brand": "F7 Fitness",
+   "category": "gym",
+   "area": "Risala Bazar",
+   "address": "1st Floor, Above Reliance Smart Point,Stewart Rd, Rizala BazarBanjara Village Colony,Bolarum,Secunderabad",
+   "phone": "+91 62819 76965",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/f7-fitness-by-prasad-konda-risala-bazar/2060",
+   "hours": "05:00 AM - 12:00 PM & 04:30 PM - 09:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/f7-fitness-by-prasad-konda-risala-bazar/2060"
+   ],
+   "instagram": "",
+   "id": "web-f7-fitness-by-prasad-konda-risala-bazar-risala-bazar"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "SR Nagar",
+   "address": "153/2, SR Nagar Main RdSrinivasa Nagar, Ameerpet",
+   "phone": "+91 99899 94499",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-freaks/551",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4413986,
+   "lng": 78.44761479,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitness-freaks/551"
+   ],
+   "instagram": "",
+   "id": "web-gym-sr-nagar"
+  },
+  {
+   "name": "Cult Elite Gym Safilguda",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Safilguda",
+   "address": "4th floor, Survey No. 228 Old 44, 44/ 1 & 44, E Anandbagh Main Rd, Surya nagarSafilguda, Malkajgiri, Secunderabad, Telangana",
+   "phone": "+91 3366785255",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-elite-gym-safilguda/2904",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.4598391,
+   "lng": 78.5339496,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-elite-gym-safilguda/2904"
+   ],
+   "instagram": "",
+   "id": "web-cult-elite-gym-safilguda-safilguda"
+  },
+  {
+   "name": "Cult Gym Sainikpuri",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Sainikpuri",
+   "address": "2nd Floor, Zudio Building, Nirmal NagarSainikpuri, Secunderabad, Telangana 500094",
+   "phone": "+91 2063115893",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-sainikpuri/2861",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.490712914461348,
+   "lng": 78.53756849179165,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-sainikpuri/2861"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-sainikpuri-sainikpuri"
+  },
+  {
+   "name": "Forma Pilates Sainikpuri",
+   "brand": "Forma Pilates",
+   "category": "pilates",
+   "area": "Sainikpuri",
+   "address": "Unit No. 202, 2nd Floor, Shivam Tejas Building, Vayupuri, Sainikpuri, Secunderabad 500094",
+   "phone": "+91 99892 95252",
+   "website": "https://www.formapilates.in",
+   "hours": "Mon-Sat 6 AM - 8 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.formapilates.in/contact"
+   ],
+   "instagram": "",
+   "id": "web-forma-pilates-sainikpuri-sainikpuri"
+  },
+  {
+   "id": "osm-n5569790346",
+   "name": "Michaels Fitness Center",
+   "category": "gym",
+   "brand": "",
+   "area": "Sainikpuri",
+   "address": "Sainikpuri-ECIL Main Road, Sainikpuri, Hyderabad, 500094",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4899503,
+   "lng": 78.5386446,
+   "sources": [
+    "https://www.openstreetmap.org/node/5569790346"
+   ]
+  },
+  {
+   "name": "Pilates & Beyond Sainikpuri",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Sainikpuri",
+   "address": "First Floor, Survey No 218, 1/2, Plot No 185, 5th Ave, Vayupuri, Sainikpuri, Secunderabad 500094",
+   "phone": "+91 96182 89988",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-sainikpuri-sainikpuri"
+  },
+  {
+   "name": "Stark Fitness Studio (Sainikpuri)",
+   "brand": "Stark Fitness Studio",
+   "category": "gym",
+   "area": "Sainikpuri",
+   "address": "1-5-5-B/244, Aruna Arcade2nd floor ,6th Ave, opp. to SOLIS EYE Hospitals, Sainikpuri",
+   "phone": "+91 97000 75224",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-sainikpuri/570",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stark-fitness-studio-sainikpuri/570"
+   ],
+   "instagram": "",
+   "id": "web-stark-fitness-studio-sainikpuri-sainikpuri"
+  },
+  {
+   "id": "osm-n8756925124",
+   "name": "V2 Fitness Zone",
+   "category": "crossfit",
+   "brand": "V2 Fitness Zone",
+   "area": "Sainikpuri",
+   "address": "186, 1st Main street, Sainikpuri-ECIL Main Road, secunnderabad",
+   "phone": "+91 99882 42222",
+   "website": "https://www.v2fitnesszone.com",
+   "instagram": "",
+   "hours": "Mo-Su 05:30-22:00",
+   "lat": 17.4847757,
+   "lng": 78.5475295,
+   "sources": [
+    "https://www.openstreetmap.org/node/8756925124",
+    "https://www.openstreetmap.org/way/945921774",
+    "https://v2fitnesszone.com/branches/sainikpuri",
+    "https://v2fitnesszone.com/"
+   ]
+  },
+  {
+   "id": "osm-n13208170227",
+   "name": "cult.fit",
+   "category": "gym",
+   "brand": "cult.fit",
+   "area": "Sanath Nagar",
+   "address": "Sanath Nagar, Hyderabad, 500018",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4560802,
+   "lng": 78.4348133,
+   "sources": [
+    "https://www.openstreetmap.org/node/13208170227"
+   ]
+  },
+  {
+   "id": "osm-n8110775263",
+   "name": "Hanuman vhayamsala",
+   "category": "gym",
+   "brand": "",
+   "area": "Sanath Nagar",
+   "address": "Sanath Nagar Main Road, Hyderabad",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4540782,
+   "lng": 78.447557,
+   "sources": [
+    "https://www.openstreetmap.org/node/8110775263"
+   ]
+  },
+  {
+   "name": "Cult Neo Gym Santosh Nagar",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Santosh Nagar",
+   "address": "2nd Floor, Hanuman Towers, 215 & 217, Santosh Nagar Main Rd, near Yadagiri Theater, Maruthi Nagar, New Santoshnagar Hyderabad, Telangana 500059",
+   "phone": "+91 95381 40047",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-santosh-nagar/2124",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-neo-gym-santosh-nagar/2124"
+   ],
+   "instagram": "",
+   "id": "web-cult-neo-gym-santosh-nagar-santosh-nagar"
+  },
+  {
+   "name": "FitLifez Gym and Spa",
+   "brand": "FitLifez Gym and Spa",
+   "category": "gym",
+   "area": "Secunderabad",
+   "address": "Near, Shop No. 9-7-101/142, Above Ushodaya Super Market Manasarovar Heights Road, Secunderabad",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/fitlifez-gym-and-spa/165",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitlifez-gym-and-spa/165",
+    "https://www.cult.fit/cult/cult-pass/hyderabad/fitlifez-gym-and-spa/87"
+   ],
+   "instagram": "",
+   "id": "web-fitlifez-gym-and-spa-secunderabad"
+  },
+  {
+   "name": "G8 Fitness",
+   "brand": "",
+   "category": "gym",
+   "area": "Secunderabad",
+   "address": "Plot no 139/c, Hi-Tension Road Eshwaripuri Colony, Sainikpuri, Secunderabad",
+   "phone": "+91 97043 44388",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/g8-fitness/584",
+   "hours": "05:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/g8-fitness/584"
+   ],
+   "instagram": "",
+   "id": "web-g8-fitness-secunderabad"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Secunderabad",
+   "address": "Survey No. 30, Plot No. 79, 3rd Floor, Chaitanyapuri Main Rdnear RTO Office, P & T Colony, Tirumalagiri, Secunderabad",
+   "phone": "+91 96767 67609",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/nexus-club-tirumalagiri-/1991",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.46842183,
+   "lng": 78.50763901,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/nexus-club-tirumalagiri-/1991"
+   ],
+   "instagram": "",
+   "id": "web-gym-secunderabad"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Secunderabad",
+   "address": "6-1-284, Padmarao Nagar Main Rd, 5 Park, opposite Waker Town, Padmarao Nagar",
+   "phone": "+91 90325 38619",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/shark-fitness-secunderabad/886",
+   "hours": "05:30 AM - 09:30 PM",
+   "lat": 17.425525,
+   "lng": 78.506765,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/shark-fitness-secunderabad/886"
+   ],
+   "instagram": "",
+   "id": "web-gym-secunderabad"
+  },
+  {
+   "name": "Cult Gym Shaikpet",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Shaikpet",
+   "address": "2nd & 3rd Floor, Beside WestsideTolichowki Road, Shaikpet",
+   "phone": "+91 99164 75614",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-shaikpet/928",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-shaikpet/928"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-shaikpet-shaikpet"
+  },
+  {
+   "name": "Gold's Gym Shaikpet",
+   "brand": "Gold's Gym India",
+   "category": "gym",
+   "area": "Shaikpet",
+   "address": "8-1-293/e/10, Aparna Astute, 3rd Floor, Shaikpet, Hyderabad, Telangana - 500008",
+   "phone": "+91 83092 53300",
+   "website": "https://goldsgym.in/our-gyms/gold-s-gym-shaikpet/",
+   "hours": "Monday to Saturday: 6:00 AM to 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://goldsgym.in/our-gyms/gold-s-gym-shaikpet/"
+   ],
+   "instagram": "",
+   "id": "web-gold-s-gym-shaikpet-shaikpet"
+  },
+  {
+   "id": "osm-n7002815272",
+   "name": "Velocity Fitness Zone",
+   "category": "gym",
+   "brand": "",
+   "area": "Shaikpet",
+   "address": "8-1-303/45, vivekananda nagar colony , street no.3, Hyderabad",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4061774,
+   "lng": 78.4011287,
+   "sources": [
+    "https://www.openstreetmap.org/node/7002815272"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Shivam Road",
+   "address": "2nd Floor, Shivam RoadAbove Reliance Digital, Vidya Nagar",
+   "phone": "+91 99633 36457",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/body-zone-gym-and-fitness-center/163",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.40462558,
+   "lng": 78.51504778,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/body-zone-gym-and-fitness-center/163"
+   ],
+   "instagram": "",
+   "id": "web-gym-shivam-road"
+  },
+  {
+   "name": "Cult Gym Somajiguda - Hybrid",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Somajiguda",
+   "address": "Raj Bhavan Rd, Lumbini Classic Apartment, Somajiguda, ,",
+   "phone": "+91 61267 28285",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-somajiguda-rajbhavan-road-hybrid/2646",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-somajiguda-rajbhavan-road-hybrid/2646"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-somajiguda-hybrid-somajiguda"
+  },
+  {
+   "id": "osm-n11015826294",
+   "name": "Max Fitness",
+   "category": "gym",
+   "brand": "",
+   "area": "Somajiguda",
+   "address": "Raj Bhavan Road, Somajiguda, Hyderabad, 500082",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4268318,
+   "lng": 78.4576327,
+   "sources": [
+    "https://www.openstreetmap.org/node/11015826294"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Srinagar Colony",
+   "address": "4th & 5th Floor, 8-3-988, 34/7, Srinagar Colony Main RdSBH Colony,Banjara Hills",
+   "phone": "+91 83096 87010",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/velocity-fitness-studio/1868",
+   "hours": "05:30 AM - 09:45 PM",
+   "lat": 17.431781115813514,
+   "lng": 78.43434569313222,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/velocity-fitness-studio/1868"
+   ],
+   "instagram": "",
+   "id": "web-gym-srinagar-colony"
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "Suchitra",
+   "address": "D.NO : 6-105/5, Plot no :57, Godavari homes Qutubulla road Suchitra Junction, Jeedimetla, Medchal Dist",
+   "phone": "+91 74166 92881",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-xtreme-fitness/537",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": 17.50378434156648,
+   "lng": 78.46879498194976,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-xtreme-fitness/537"
+   ],
+   "instagram": "",
+   "id": "web-gym-suchitra"
+  },
+  {
+   "name": "Cult Gym Suchitra Road",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Suchitra Road",
+   "address": "2nd floor Bliss MVM Adjacent to Mahindra Automotive service center Suchitra X roads Hyderabad",
+   "phone": "+91 80407 56983",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-suchitra-road/2540",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-suchitra-road/2540"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-suchitra-road-suchitra-road"
+  },
+  {
+   "name": "Cult Gym Tarnaka",
+   "brand": "Cult.fit",
+   "category": "gym",
+   "area": "Tarnaka",
+   "address": "Ganapathi Nilayam, 12, Street Number 8, Krishna Giri Enclave, Tarnaka, HyderabadSecunderabad",
+   "phone": "+91 1414843708",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-tarnaka/2899",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/cult-gym-tarnaka/2899"
+   ],
+   "instagram": "",
+   "id": "web-cult-gym-tarnaka-tarnaka"
+  },
+  {
+   "name": "Pilates & Beyond Trimulgherry",
+   "brand": "Pilates & Beyond",
+   "category": "pilates",
+   "area": "Trimulgherry",
+   "address": "Yusufi Manzil, Plot No 12, Ward No 7, Durga Vihar Colony, Tirumalagiri, Secunderabad 500015",
+   "phone": "+91 96182 89988",
+   "website": "https://pilatesandbeyond.in",
+   "hours": "",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://pilatesandbeyond.in/our-studios/"
+   ],
+   "instagram": "",
+   "id": "web-pilates-beyond-trimulgherry-trimulgherry"
+  },
+  {
+   "id": "osm-n8389341313",
+   "name": "Lion's gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Uppal",
+   "address": "Ayyappa Temple Road, Uppal, 500039",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4099936,
+   "lng": 78.5731373,
+   "sources": [
+    "https://www.openstreetmap.org/node/8389341313"
+   ]
+  },
+  {
+   "id": "osm-n8233184800",
+   "name": "LIV IT",
+   "category": "gym",
+   "brand": "",
+   "area": "Uppal",
+   "address": "Prashanth Nagar Main road",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4074687,
+   "lng": 78.5564944,
+   "sources": [
+    "https://www.openstreetmap.org/node/8233184800"
+   ]
+  },
+  {
+   "id": "osm-n6575821850",
+   "name": "Shakthi Gold Gym",
+   "category": "gym",
+   "brand": "",
+   "area": "Uppal",
+   "address": "Chilkanagar Main Road, Uppal, Hyderabad, 500039",
+   "phone": "+91 98484 96829",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4179636,
+   "lng": 78.5661598,
+   "sources": [
+    "https://www.openstreetmap.org/node/6575821850"
+   ]
+  },
+  {
+   "id": "osm-n6615554124",
+   "name": "Prakritik Yodha",
+   "category": "yoga",
+   "brand": "",
+   "area": "Vanasthalipuram",
+   "address": "Survey 14 & 15, Bhoolakshmi Nagar, Vanasthalipuram, Hyderabad",
+   "phone": "+91 77997 66446",
+   "website": "www.prakritikyodha.com",
+   "instagram": "",
+   "hours": "Mo-Su 05:00-09:00,18:00-21:00",
+   "lat": 17.3278573,
+   "lng": 78.5818212,
+   "sources": [
+    "https://www.openstreetmap.org/node/6615554124"
+   ]
+  },
+  {
+   "name": "V Fitness Studio",
+   "brand": "",
+   "category": "gym",
+   "area": "Vanasthalipuram",
+   "address": "plot ; 65, srila gardens 3rd & 4th floor, MiyapurSerilingampally mandal , RR district , ghmc",
+   "phone": "+91 98497 41071",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/v-fitness-studio/2181",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": 17.3305811,
+   "lng": 78.5768589,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/v-fitness-studio/2181",
+    "https://www.openstreetmap.org/node/10902985403"
+   ],
+   "instagram": "",
+   "id": "web-v-fitness-studio"
+  },
+  {
+   "id": "osm-n8909248528",
+   "name": "M7 Fitness Studio",
+   "category": "gym",
+   "brand": "",
+   "area": "Vengal Rao Nagar",
+   "address": "Vengal Rao Nagar, Hyderabad, 500873",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4437688,
+   "lng": 78.432683,
+   "sources": [
+    "https://www.openstreetmap.org/node/8909248528"
+   ]
+  },
+  {
+   "name": "V2 Fitness Zone Secunderabad (West Marredpally)",
+   "brand": "V2 Fitness Zone",
+   "category": "gym",
+   "area": "West Marredpally",
+   "address": "10-2-203, Entrenchment Road, Nehru Nagar Colony, West Marredpally, Secunderabad, Telangana 500026",
+   "phone": "+91 99334 47759",
+   "website": "https://v2fitnesszone.com/branches/secunderabad",
+   "hours": "Mon-Sat 5:00 AM - 10:00 PM; Sun 6:00 AM - 12:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://v2fitnesszone.com/branches/secunderabad",
+    "https://v2fitnesszone.com/"
+   ],
+   "instagram": "",
+   "id": "web-v2-fitness-zone-secunderabad-west-marredpally-west-marredpally"
+  },
+  {
+   "id": "osm-n5571207488",
+   "name": "Carnival Club Fitness Center",
+   "category": "gym",
+   "brand": "",
+   "area": "Yapral",
+   "address": "Yapral, Hyderabad, 500087",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5017337,
+   "lng": 78.5528804,
+   "sources": [
+    "https://www.openstreetmap.org/node/5571207488"
+   ]
+  },
+  {
+   "id": "osm-n11209446995",
+   "name": "Dream Fitness GYM",
+   "category": "crossfit",
+   "brand": "",
+   "area": "Yapral",
+   "address": "3rd Floor, Dream Fitness, shaili gardens beside Yapral, Secunderabad, Secunderabad",
+   "phone": "",
+   "website": "https://www.fitternity.com/dream-fitness-yapral",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.5028621,
+   "lng": 78.5471819,
+   "sources": [
+    "https://www.openstreetmap.org/node/11209446995"
+   ]
+  },
+  {
+   "id": "osm-w414608588",
+   "name": "Satya Yoga Education",
+   "category": "yoga",
+   "brand": "",
+   "area": "Zamistanpur",
+   "address": "Zamistanpur, Hyderabad, 500080",
+   "phone": "",
+   "website": "",
+   "instagram": "",
+   "hours": "",
+   "lat": 17.4196132,
+   "lng": 78.4905391,
+   "sources": [
+    "https://www.openstreetmap.org/way/414608588"
+   ]
+  },
+  {
+   "name": "Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "gowlidoddy",
+   "address": "Door No. 5-5/2 Near American Embassy, Vattinagulapally village, Gandipet Mandal,Ranga Reddy dist",
+   "phone": "+91 79895 91831",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-gowlidoddy/1782",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": 17.42751608,
+   "lng": 78.32845918,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/impackt-fitness-gowlidoddy/1782"
+   ],
+   "instagram": "",
+   "id": "web-gym-gowlidoddy"
+  },
+  {
+   "name": "1Life Fitness",
+   "brand": "",
+   "category": "gym",
+   "area": "",
+   "address": "1 Life Fitness, Floor 1&2, above vijetha supermarket,beside Kalyan Jewellers, Balaji Nagar, Hyderabad",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/1life-fitness/479",
+   "hours": "05:30 AM - 12:00 PM & 04:30 PM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/1life-fitness/479"
+   ],
+   "instagram": "",
+   "id": "web-1life-fitness"
+  },
+  {
+   "name": "Hypertrophy Gym",
+   "brand": "",
+   "category": "gym",
+   "area": "",
+   "address": "H.No. 8-65/9, KBR Colony, Whisper Vally , IDA Bollaram Road ,Bachupallybeside SLI Power Engineer pvt ltd",
+   "phone": "+91 77990 43232",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/hypertrophy-gym/1999",
+   "hours": "04:00 PM - 10:00 PM & 05:00 AM - 01:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/hypertrophy-gym/1999"
+   ],
+   "instagram": "",
+   "id": "web-hypertrophy-gym"
+  },
+  {
+   "name": "Platinum Fitness Club",
+   "brand": "",
+   "category": "gym",
+   "area": "",
+   "address": "Opp. Pillar No. 151 Above Ratnadeep Supermarket",
+   "phone": "",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/platinum-fitness-club/70",
+   "hours": "06:00 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/platinum-fitness-club/70"
+   ],
+   "instagram": "",
+   "id": "web-platinum-fitness-club"
+  },
+  {
+   "name": "Stallion Xtreme Fitness",
+   "brand": "Stallion Fitness",
+   "category": "gym",
+   "area": "",
+   "address": "Stallion Fitness Beside Pista house23-35/1 Ashok nagar Bhel, Rc Puram",
+   "phone": "+91 95503 06257",
+   "website": "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-xtreme-fitness/519",
+   "hours": "05:30 AM - 10:00 PM",
+   "lat": null,
+   "lng": null,
+   "sources": [
+    "https://www.cult.fit/cult/cult-pass/hyderabad/stallion-xtreme-fitness/519"
+   ],
+   "instagram": "",
+   "id": "web-stallion-xtreme-fitness"
+  }
+ ]
+}
